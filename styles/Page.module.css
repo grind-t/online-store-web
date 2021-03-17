@@ -1,0 +1,6 @@
+.container {
+    margin: 10px 10px 0 10px;
+    min-height: calc(100vh - 20px);
+    background-color: #FFFFFF;
+    border-radius: 10px;
+}
