@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import styles from '../styles/Page.module.css'
+import styles from 'styles/Page.module.css'
 
 export default function Main() {
   return (
