@@ -1,6 +1,13 @@
 .container {
-    margin: 10px 10px 0 10px;
-    min-height: calc(100vh - 20px);
-    background-color: #FFFFFF;
-    border-radius: 10px;
+  margin: 10px 10px 0 10px;
+  min-height: calc(100vh - 20px);
+  background-color: #ffffff;
+  border-radius: 10px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  height: 9.29rem;
+  border-bottom: 1px solid #f7f7f7;
 }
