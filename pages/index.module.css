@@ -9,8 +9,7 @@
 .cart {
   display: block;
   padding: 1.07rem 1.79rem 1.07rem 1.79rem;
-  margin-left: auto;
-  margin-right: 5.14rem;
+  margin: 0 5.14rem 1.07rem auto;
   background: #fe5f1e;
   border: none;
   color: white;
