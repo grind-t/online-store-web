@@ -15,10 +15,12 @@
   border: none;
   color: white;
   border-radius: 2.14rem;
+  font-size: 1.14rem;
+  font-weight: 700;
 }
 
 .cartTotalPrice {
-  padding: 0.26rem 0.71rem 0.26rem 0;
+  padding: 0.16rem 0.71rem 0.16rem 0;
   border-right: 1px solid rgba(255, 255, 255, 0.25);
 }
 
@@ -27,7 +29,7 @@
   width: 1.14rem;
   height: 1.14rem;
   margin-left: 0.71rem;
-  margin-bottom: -0.18rem;
+  margin-bottom: -0.11rem;
 }
 
 .cartItemsCount {
