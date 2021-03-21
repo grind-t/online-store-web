@@ -23,6 +23,12 @@ export default function Main() {
           </a>
         </Link>
       </header>
+      <main>
+        <div className={styles.productsBar}>
+          <button className={styles.productsBarButton}>Все</button>
+          <button className={styles.productsBarButton}>Playstation Plus</button>
+        </div>
+      </main>
     </div>
   )
 }
