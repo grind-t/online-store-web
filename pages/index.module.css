@@ -1,0 +1,35 @@
+.page {
+  font-size: 14px;
+  margin: 10px 10px 0 10px;
+  min-height: calc(100vh - 20px);
+  background-color: #ffffff;
+  border-radius: 10px;
+}
+
+.cart {
+  display: block;
+  padding: 1.07rem 1.79rem 1.07rem 1.79rem;
+  margin-left: auto;
+  margin-right: 5.14rem;
+  background: #fe5f1e;
+  border: none;
+  color: white;
+  border-radius: 2.14rem;
+}
+
+.cartTotalPrice {
+  padding: 0.26rem 0.71rem 0.26rem 0;
+  border-right: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.cartIcon {
+  display: inline;
+  width: 1.14rem;
+  height: 1.14rem;
+  margin-left: 0.71rem;
+  margin-bottom: -0.18rem;
+}
+
+.cartItemsCount {
+  margin-left: 0.57rem;
+}
