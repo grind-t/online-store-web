@@ -75,9 +75,9 @@ body {
   background-color: #ffdf8c;
 }
 
-/* A elements that don't have a class get default styles */
-a:not([class]) {
-  text-decoration-skip-ink: auto;
+/* Remove link text decoration */
+a {
+  text-decoration: none;
 }
 
 /* Make images easier to work with */
@@ -107,5 +107,12 @@ select {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+/* Set font sizes */
+@media screen {
+  html {
+    font-size: 14px;
   }
 }
