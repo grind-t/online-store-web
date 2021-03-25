@@ -27,11 +27,13 @@
   margin-left: 0.57rem;
 }
 
+.main {
+  margin: 4.29rem 5.86rem 0 5.86rem;
+}
+
 .productsBar {
   display: flex;
   align-items: center;
-  padding: 0 5.86rem;
-  margin-top: 4.29rem;
 }
 
 .productsBarButton {
@@ -46,4 +48,13 @@
   background-color: #282828;
   border: none;
   border-radius: 7.14rem 4.29rem 4.29rem 2.14rem;
+}
+
+.heading {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 2.28rem;
+  line-height: 3.15rem;
+  letter-spacing: 0.01em;
+  margin-top: 0.5rem;
 }

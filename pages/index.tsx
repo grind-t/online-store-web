@@ -24,12 +24,13 @@ export default function Main() {
           </a>
         </Link>
       </header>
-      <main>
+      <main className={styles.main}>
         <div className={styles.productsBar}>
           <button className={styles.productsBarButton}>Все</button>
           <button className={styles.productsBarButton}>Playstation Plus</button>
-          <SortBy options={['популярности', 'цене', 'алфавиту']}/>
+          <SortBy options={['популярности', 'цене', 'алфавиту']} />
         </div>
+        <h1 className={styles.heading}>Все товары</h1>
       </main>
     </div>
   )
