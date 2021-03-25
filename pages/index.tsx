@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import Link from 'next/link'
+import SortBy from 'components/sort-by'
 import pageStyles from 'styles/page.module.css'
 import styles from './index.module.css'
 
@@ -27,6 +28,7 @@ export default function Main() {
         <div className={styles.productsBar}>
           <button className={styles.productsBarButton}>Все</button>
           <button className={styles.productsBarButton}>Playstation Plus</button>
+          <SortBy options={['популярности', 'цене', 'алфавиту']}/>
         </div>
       </main>
     </div>
