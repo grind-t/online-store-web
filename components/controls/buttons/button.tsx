@@ -7,7 +7,7 @@ const Button = styled.button`
   border: none;
   border-radius: 2.14rem;
   font-size: 1.14rem;
-  line-height: 1.57rem;
+  line-height: 1.375;
 `
 
 export default Button
