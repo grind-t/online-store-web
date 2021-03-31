@@ -8,7 +8,7 @@ const Header = styled.header`
 `
 
 const Page = styled.div`
-  margin: 10px 10px 0 10px;
+  margin: 10px;
   min-height: calc(100vh - 20px);
   background-color: #ffffff;
   border-radius: 10px;
