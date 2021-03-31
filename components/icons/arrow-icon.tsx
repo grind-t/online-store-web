@@ -1,4 +1,4 @@
-export interface ArrowIconProps {
+interface ArrowIconProps {
   className?: string
 }
 
@@ -12,3 +12,4 @@ const ArrowIcon = ({ className }: ArrowIconProps) => (
 )
 
 export default ArrowIcon
+export type { ArrowIconProps }

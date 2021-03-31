@@ -1,4 +1,4 @@
-export interface CartIconProps {
+interface CartIconProps {
   className?: string
   stroke?: string
   strokeWidth?: string | number
@@ -22,3 +22,4 @@ const CartIcon = ({ className, stroke, strokeWidth }: CartIconProps) => (
 )
 
 export default CartIcon
+export type { CartIconProps }

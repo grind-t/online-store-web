@@ -1,6 +1,9 @@
 import Image from 'next/image'
-import RadioButton from 'components/controls/buttons/radio-button'
+import { font14, font22 } from 'components/typography'
+import Button from 'components/controls/buttons/button'
+import RadioButton from 'components/controls/radios/radio-button'
 import styled from 'styled-components'
+import AddToCart from 'components/controls/buttons/add-to-cart'
 
 const ImageContainer = styled.div`
   width: fit-content;
@@ -15,15 +18,13 @@ const PurchaseOptions = styled.div`
   padding: 0.5rem 0.42rem;
 `
 
-const Format = styled.button`
+const Format = styled(Button)`
   padding: 0.5rem 1.43rem;
-  border: none;
   background: white;
   box-shadow: 0 0.14rem 0.28rem rgba(0, 0, 0, 0.04);
   border-radius: 0.35rem;
+  ${font14}
   font-weight: bold;
-  line-height: 1.35rem;
-  letter-spacing: 0.015em;
 `
 
 const Subscriptions = styled.div`
@@ -31,6 +32,21 @@ const Subscriptions = styled.div`
   flex-wrap: wrap;
   gap: 1px;
   margin-top: 0.5rem;
+
+  & > * {
+    flex: 1;
+  }
+`
+
+const Purchase = styled.div`
+  display: flex;
+  align-items: center;
+  margin-top: 1.21rem;
+`
+
+const Price = styled.span`
+  margin-right: 2.28rem;
+  ${font22}
 `
 
 const ProductTile = () => (
@@ -51,6 +67,10 @@ const ProductTile = () => (
         <RadioButton name="subscription" label="12 месяцев" />
       </Subscriptions>
     </PurchaseOptions>
+    <Purchase>
+      <Price>от 395 ₽</Price>
+      <AddToCart count={2} />
+    </Purchase>
   </div>
 )
 

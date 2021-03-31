@@ -1,15 +1,11 @@
 import { useSelect } from 'downshift'
+import { font14 } from 'components/typography'
+import Accessible from 'components/accessibility'
 import ArrowIcon from 'components/icons/arrow-icon'
+import Button from 'components/controls/buttons/button'
 import styled from 'styled-components'
 
-export interface SortByProps {
-  options: string[]
-}
-
-const OrderButton = styled.button`
-  background: none;
-  border: none;
-  padding: 0;
+const OrderButton = styled(Button)`
   margin-right: 0.5rem;
 `
 
@@ -19,20 +15,16 @@ const OrderIcon = styled(ArrowIcon)`
 `
 
 const Label = styled.label`
-  letter-spacing: 0.015em;
-  line-height: 1.36;
   color: #2c2c2c;
   margin-right: 0.5rem;
+  ${font14}
 `
 
-const ToggleButton = styled.button`
-  background: none;
-  border: none;
-  padding: 0;
-  letter-spacing: 0.015em;
-  line-height: 1.36;
-  color: #fe5f1e;
+const ToggleButton = styled(Button)`
+  border-radius: 0;
   border-bottom: 1px dashed #fe5f1e;
+  color: #fe5f1e;
+  ${font14}
 `
 
 const Menu = styled.ul`
@@ -45,7 +37,6 @@ const Menu = styled.ul`
   background: #ffffff;
   box-shadow: 0px 0.36rem 1.07rem rgba(0, 0, 0, 0.09);
   border-radius: 0.71rem;
-  letter-spacing: 0.05em;
 
   &:focus,
   &:active {
@@ -53,8 +44,11 @@ const Menu = styled.ul`
   }
 `
 
-const Option = styled.li`
+const Option = styled.li<{ highlighted: boolean }>`
   padding: 0.72rem 2.14rem 0.72rem 1.07rem;
+  ${(props) => props.highlighted && 'background: rgba(254, 95, 30, 0.05);'}
+  ${(props) => props.highlighted && 'color: #fe5f1e;'}
+  ${font14}
 
   &:first-of-type {
     margin-top: 0.72rem;
@@ -64,17 +58,16 @@ const Option = styled.li`
   }
 `
 
-const HighlightedOption = styled(Option)`
-  background: rgba(254, 95, 30, 0.05);
-  color: #fe5f1e;
-`
-
 const StyledSortBy = styled.div`
   display: flex;
   align-items: center;
   margin-left: auto;
   position: relative;
 `
+
+interface SortByProps {
+  options: string[]
+}
 
 const SortBy = ({ options }: SortByProps) => {
   const {
@@ -94,7 +87,7 @@ const SortBy = ({ options }: SortByProps) => {
     <StyledSortBy>
       <OrderButton type="button">
         <OrderIcon />
-        <span className="sr-only">По возрастанию</span>
+        <Accessible>По возрастанию</Accessible>
       </OrderButton>
       <Label {...getLabelProps()}>Сортировка по:</Label>
       <ToggleButton type="button" {...getToggleButtonProps()}>
@@ -102,23 +95,19 @@ const SortBy = ({ options }: SortByProps) => {
       </ToggleButton>
       <Menu {...getMenuProps()}>
         {isOpen &&
-          options.map((option, index) =>
-            highlightedIndex === index ? (
-              <HighlightedOption
-                key={option}
-                {...getItemProps({ item: option, index })}
-              >
-                {option}
-              </HighlightedOption>
-            ) : (
-              <Option key={option} {...getItemProps({ item: option, index })}>
-                {option}
-              </Option>
-            )
-          )}
+          options.map((option, index) => (
+            <Option
+              highlighted={index === highlightedIndex}
+              key={option}
+              {...getItemProps({ item: option, index })}
+            >
+              {option}
+            </Option>
+          ))}
       </Menu>
     </StyledSortBy>
   )
 }
 
 export default SortBy
+export type { SortByProps }

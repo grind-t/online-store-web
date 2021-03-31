@@ -2,9 +2,10 @@ import Head from 'next/head'
 import Page, { Header } from 'components/pages/page'
 import CartLink from 'components/links/cart-link'
 import CategoryButton from 'components/controls/buttons/category-button'
-import SortBy from 'components/controls/lists/sort-by'
+import SortBy from 'components/controls/selects/sort-by'
 import ProductTile from 'components/tiles/product-tile'
 import { Heading } from 'components/typography'
+import Accessible from 'components/accessibility'
 import styled from 'styled-components'
 
 const Main = styled.main`
@@ -53,9 +54,9 @@ const Home = () => {
         <CartLink />
       </Header>
       <Main>
-        <h1 className="sr-only">Товары</h1>
+        <Accessible as="h1">Товары</Accessible>
         <section>
-          <h2 className="sr-only">Показать товары</h2>
+          <Accessible as="h2">Показать товары</Accessible>
           <ProductsBar>
             <Categories>
               <Category>

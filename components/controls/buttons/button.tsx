@@ -1,10 +1,7 @@
-import { Text } from 'components/typography'
 import styled from 'styled-components'
 
-const Button = styled(Text).attrs({
-  font: '16',
-})`
-  padding: 1.21rem 2.85rem;
+const Button = styled.button`
+  padding: 0;
   margin: 0;
   background: none;
   border: none;

@@ -9,10 +9,12 @@ const CustomRadio = styled.input.attrs({
 
   & + span {
     display: inline-block;
-    padding: 0.5rem 1.43rem;
+    width: 100%;
+    padding: 0.5rem 0;
     color: #c4c4c4;
     ${font14}
     font-weight: bold;
+    text-align: center;
   }
 
   &:checked + span,
