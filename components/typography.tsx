@@ -16,14 +16,14 @@ const font16 = css`
 const font18 = css`
   font-weight: normal;
   font-size: 1.29rem;
-  line-height: 1.39rem;
+  line-height: 1.39;
   letter-spacing: 0.015em;
 `
 
 const font22 = css`
   font-weight: bold;
   font-size: 1.57rem;
-  line-height: 1.36rem;
+  line-height: 1.36;
   letter-spacing: 0.01em;
 `
 
@@ -71,3 +71,4 @@ const Heading = styled.h1<HeadingProps>`
 `
 
 export { Heading, Text, font32, font22, font18, font16, font14 }
+export type { HeadingProps, TextProps }
