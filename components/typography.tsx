@@ -70,4 +70,4 @@ const Heading = styled.h1<HeadingProps>`
   }}
 `
 
-export { Text, Heading }
+export { Heading, Text, font32, font22, font18, font16, font14 }
