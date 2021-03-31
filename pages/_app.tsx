@@ -56,6 +56,11 @@ const reset = css`
     list-style: none;
   }
 
+  // TODO: Удалить
+  html {
+    font-size: 14px;
+  }
+
   html:focus-within {
     scroll-behavior: smooth;
   }
@@ -98,26 +103,9 @@ const reset = css`
   }
 `
 
-const globalClasses = css`
-  .sr-only {
-    clip: rect(1px, 1px, 1px, 1px);
-    -webkit-clip-path: inset(50%);
-    clip-path: inset(50%);
-    position: absolute;
-    overflow: hidden;
-    white-space: nowrap;
-    width: 1px;
-    height: 1px;
-    margin: -1px;
-    padding: 0;
-    border: 0;
-  }
-`
-
 const GlobalStyle = createGlobalStyle`
   ${fontFaces}
   ${reset}
-  ${globalClasses}
 `
 
 const App = ({ Component, pageProps }: AppProps) => {
