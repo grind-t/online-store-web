@@ -1,14 +1,14 @@
 import Head from 'next/head'
-import pageStyles from 'styles/Page.module.css'
+import Page, { Header } from 'components/pages/page'
 
-export default function Cart() {
-  return (
-    <div className={pageStyles.container}>
-      <Head>
-        <title>Online store</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <header className={pageStyles.header}></header>
-    </div>
-  )
-}
+const Cart = () => (
+  <Page>
+    <Head>
+      <title>Online store</title>
+      <link rel="icon" href="/favicon.ico" />
+    </Head>
+    <Header></Header>
+  </Page>
+)
+
+export default Cart
