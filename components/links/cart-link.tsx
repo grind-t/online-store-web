@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import Accessible from 'components/accessibility'
-import PrimaryButton from 'components/controls/buttons/primary-button'
-import CartIcon from 'components/icons/cart-icon'
+import NavigateButton from 'components/controls/buttons/navigate'
+import CartIcon from 'components/icons/cart'
 import styled from 'styled-components'
 
 const TotalPrice = styled.span`
@@ -24,9 +24,10 @@ const ItemsCount = styled.span`
   margin-left: 0.57rem;
 `
 
-const CartButton = styled(PrimaryButton)`
-  padding: 1.07rem 1.79rem 1.07rem 1.79rem;
+const CartButton = styled(NavigateButton)`
   margin: 0 5.14rem 1.07rem auto;
+  background: #fe5f1e;
+  color: white;
 `
 
 const CartLink = () => (
