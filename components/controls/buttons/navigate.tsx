@@ -2,11 +2,11 @@ import { font16 } from 'components/typography'
 import Button from 'components/controls/buttons/button'
 import styled from 'styled-components'
 
-const PrimaryButton = styled(Button)`
-  padding: 1.21rem 2.85rem;
-  background: #fe5f1e;
-  color: white;
+const NavigateButton = styled(Button)`
+  max-width: 15rem;
+  padding: 1.1rem 1.8rem;
   ${font16}
+  text-align: center;
 `
 
-export default PrimaryButton
+export default NavigateButton
