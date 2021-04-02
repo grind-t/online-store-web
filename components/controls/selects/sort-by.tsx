@@ -1,9 +1,9 @@
-import { useSelect } from 'downshift'
-import { font14 } from 'components/typography'
-import Accessible from 'components/accessibility'
-import ArrowIcon from 'components/icons/arrow-icon'
+import VisuallyHidden from 'components/accessibility'
+import ArrowIcon from 'components/icons/arrow'
 import Button from 'components/controls/buttons/button'
+import { font14 } from 'components/typography'
 import styled from 'styled-components'
+import { useSelect } from 'downshift'
 
 const OrderButton = styled(Button)`
   margin-right: 0.5rem;
@@ -87,7 +87,7 @@ const SortBy = ({ options }: SortByProps) => {
     <StyledSortBy>
       <OrderButton type="button">
         <OrderIcon />
-        <Accessible>По возрастанию</Accessible>
+        <VisuallyHidden>По возрастанию</VisuallyHidden>
       </OrderButton>
       <Label {...getLabelProps()}>Сортировка по:</Label>
       <ToggleButton type="button" {...getToggleButtonProps()}>

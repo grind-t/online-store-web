@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import Accessible from 'components/accessibility'
+import VisuallyHidden from 'components/accessibility'
 import NavigateButton from 'components/controls/buttons/navigate'
 import CartIcon from 'components/icons/cart'
 import styled from 'styled-components'
@@ -33,11 +33,11 @@ const CartButton = styled(NavigateButton)`
 const CartLink = () => (
   <Link href="/cart">
     <CartButton as="a">
-      <Accessible>Корзина</Accessible>
-      <Accessible>Сумма</Accessible>
+      <VisuallyHidden>Корзина</VisuallyHidden>
+      <VisuallyHidden>Сумма</VisuallyHidden>
       <TotalPrice>520 ₽</TotalPrice>
       <Icon />
-      <Accessible>Количество товаров</Accessible>
+      <VisuallyHidden>Количество товаров</VisuallyHidden>
       <ItemsCount>3</ItemsCount>
     </CartButton>
   </Link>
