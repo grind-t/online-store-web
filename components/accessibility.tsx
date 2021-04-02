@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components'
 
-const accessible = css`
+const visuallyHidden = css`
   clip: rect(1px, 1px, 1px, 1px);
   -webkit-clip-path: inset(50%);
   clip-path: inset(50%);
@@ -14,8 +14,8 @@ const accessible = css`
   border: 0;
 `
 
-const Accessible = styled.span`
-  ${accessible}
+const VisuallyHidden = styled.span`
+  ${visuallyHidden}
 `
 
-export { Accessible as default, accessible }
+export { VisuallyHidden as default, visuallyHidden }
