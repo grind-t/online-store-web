@@ -60,6 +60,7 @@ const Purchase = styled.div`
 const Price = styled.span`
   margin-right: 2.28rem;
   ${font22}
+  font-weight: bold;
 `
 
 export { ImageContainer, PurchaseOptions, OptionGroup, Option, Purchase, Price }

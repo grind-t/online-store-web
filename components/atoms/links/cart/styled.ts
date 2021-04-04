@@ -10,6 +10,7 @@ const StyledLink = styled.a`
   background: #fe5f1e;
   color: white;
   ${font16}
+  font-weight: bold;
 `
 
 const TotalPrice = styled.span`

@@ -1,4 +1,4 @@
-import { Heading, font18 } from 'components/atoms/typography'
+import { font32, font18 } from 'components/atoms/typography'
 import styled from 'styled-components'
 
 const Main = styled.main`
@@ -33,11 +33,10 @@ const CategoryButton = styled.button`
   ${font18}
 `
 
-const ProductsHeading = styled(Heading).attrs({
-  as: 'h2',
-  font: '32',
-})`
+const ProductsHeading = styled.h2`
   margin-top: 0.5rem;
+  ${font32}
+  font-weight: normal;
 `
 
 const Products = styled.div`

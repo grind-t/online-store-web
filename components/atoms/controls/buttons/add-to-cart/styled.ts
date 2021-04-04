@@ -14,6 +14,7 @@ const StyledButton = styled.button`
   background: none;
   color: #eb5a1e;
   ${font16}
+  font-weight: bold;
 `
 
 const Icon = styled(PlusIcon).attrs({
