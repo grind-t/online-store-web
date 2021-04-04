@@ -1,51 +1,23 @@
 import Head from 'next/head'
-import Page, { Header } from 'components/pages/page'
-import CartLink from 'components/links/cart'
-import CategoryButton from 'components/controls/buttons/category'
-import SortBy from 'components/controls/selects/sort-by'
-import ProductTile from 'components/tiles/product-tile'
-import { Heading } from 'components/typography'
-import VisuallyHidden from 'components/accessibility'
-import styled from 'styled-components'
-
-const Main = styled.main`
-  margin: 4.29rem 5.86rem 0 5.86rem;
-`
-
-const ProductsBar = styled.div`
-  display: flex;
-  align-items: center;
-`
-
-const Categories = styled.ul`
-  padding: 0;
-  margin: 0;
-  list-style: none;
-`
-
-const Category = styled.li`
-  display: inline-block;
-  padding: 0;
-  margin: 0;
-`
-
-const ProductsHeading = styled(Heading).attrs({
-  as: 'h2',
-  font: '32',
-})`
-  margin-top: 0.5rem;
-`
-
-const Products = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2.57rem;
-  margin-top: 6rem;
-`
+import VisuallyHidden from 'components/atoms/accessibility'
+import CartLink from 'components/atoms/links/cart-link'
+import SortBy from 'components/atoms/controls/selects/sort-by'
+import ProductTile from 'components/molecules/tiles/product'
+import Header from 'components/organisms/header'
+import PageTemplate from 'components/templates/page'
+import {
+  Main,
+  ProductsBar,
+  Categories,
+  Category,
+  CategoryButton,
+  ProductsHeading,
+  Products,
+} from './styled'
 
 const Home = () => {
   return (
-    <Page>
+    <PageTemplate>
       <Head>
         <title>TODO</title>
         <link rel="icon" href="/favicon.ico" />
@@ -77,7 +49,7 @@ const Home = () => {
           </Products>
         </section>
       </Main>
-    </Page>
+    </PageTemplate>
   )
 }
 
