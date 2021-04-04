@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import VisuallyHidden from 'components/atoms/accessibility'
-import CartLink from 'components/atoms/links/cart-link'
+import CartLink from 'components/atoms/links/cart'
 import SortBy from 'components/atoms/controls/selects/sort-by'
 import ProductTile from 'components/molecules/tiles/product'
 import Header from 'components/organisms/header'
