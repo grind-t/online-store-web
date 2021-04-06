@@ -1,6 +1,6 @@
 import VisuallyHidden from 'components/atoms/accessibility'
 import SortItems from 'components/molecules/sort-items'
-import ProductTile from 'components/molecules/tiles/product'
+import ProductTile from 'components/molecules/product-tile'
 import {
   ViewOptions,
   Categories,

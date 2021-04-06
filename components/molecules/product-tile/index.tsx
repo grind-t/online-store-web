@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import VisuallyHidden from 'components/atoms/accessibility'
-import AddToCart from 'components/atoms/controls/buttons/add-to-cart'
+import AddToCart from 'components/atoms/buttons/add-to-cart'
 import {
   ImageContainer,
   PurchaseOptions,
