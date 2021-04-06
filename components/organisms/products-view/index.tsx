@@ -1,5 +1,5 @@
 import VisuallyHidden from 'components/atoms/accessibility'
-import SortBy from 'components/atoms/controls/selects/sort-by'
+import SortItems from 'components/molecules/sort-items'
 import ProductTile from 'components/molecules/tiles/product'
 import {
   ViewOptions,
@@ -25,7 +25,10 @@ const ProductsView = () => {
               <CategoryButton>Playstation Plus</CategoryButton>
             </Category>
           </Categories>
-          <SortBy options={['популярности', 'цене', 'алфавиту']} />
+          <SortItems
+            filters={['популярности', 'цене', 'алфавиту']}
+            filter="популярности"
+          />
         </ViewOptions>
       </section>
       <section>

@@ -9,10 +9,11 @@ const Container = styled.div`
   position: relative;
 `
 
-const SortOrderButton = styled.button`
+const SortOrderButton = styled.button<{ ascending: boolean }>`
   margin-right: 0.5rem;
   border: none;
   background: none;
+  ${(props) => !props.ascending && 'transform: rotate(180deg);'}
 `
 
 const SortOrderIcon = styled(ArrowIcon)`
@@ -51,7 +52,7 @@ const Menu = styled.ul`
   }
 `
 
-const Option = styled.li<{ highlighted: boolean }>`
+const Item = styled.li<{ highlighted: boolean }>`
   padding: 0.72rem 2.14rem 0.72rem 1.07rem;
   ${(props) => props.highlighted && 'background: rgba(254, 95, 30, 0.05);'}
   ${(props) => props.highlighted && 'color: #fe5f1e;'}
@@ -72,5 +73,5 @@ export {
   Label,
   ToggleButton,
   Menu,
-  Option,
+  Item,
 }
