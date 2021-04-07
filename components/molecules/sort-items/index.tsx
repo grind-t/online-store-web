@@ -1,4 +1,5 @@
 import VisuallyHidden from 'components/atoms/accessibility'
+import { useUID } from 'react-uid'
 import { useSelect } from 'downshift'
 import {
   Container,
@@ -25,6 +26,7 @@ const SortItems = ({
   onFilterChange,
   onOrderChange,
 }: SortItemsProps) => {
+  const uid = useUID()
   const {
     isOpen,
     highlightedIndex,
@@ -33,6 +35,7 @@ const SortItems = ({
     getMenuProps,
     getItemProps,
   } = useSelect({
+    id: uid,
     items: filters,
     onSelectedItemChange: ({ selectedItem }) =>
       onFilterChange && onFilterChange(selectedItem),
