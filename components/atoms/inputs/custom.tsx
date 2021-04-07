@@ -8,7 +8,7 @@ const CustomInput = ({
   className,
   ...rest
 }: InputHTMLAttributes<HTMLInputElement>) => {
-  const uid = id && useUID()
+  const uid = id || useUID()
   return (
     <>
       <VisuallyHidden as="input" id={uid} {...rest} />
