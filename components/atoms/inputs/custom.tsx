@@ -11,7 +11,6 @@ const CustomInput = ({
   const uid = id && useUID()
   return (
     <>
-      <input />
       <VisuallyHidden as="input" id={uid} {...rest} />
       <label htmlFor={uid} className={className}>
         {children}
