@@ -1,4 +1,5 @@
 import { font14, font22 } from 'components/atoms/typography'
+import CustomInput from 'components/atoms/inputs/custom'
 import styled from 'styled-components'
 
 const ImageContainer = styled.div`
@@ -23,31 +24,25 @@ const OptionGroup = styled.div`
   gap: 1px;
 `
 
-const Option = styled.label`
+const Option = styled(CustomInput)`
   flex: 1;
   display: block;
   max-width: 50%;
+  padding: 0.5rem 0;
+  border-radius: 0.35rem;
+  background: none;
+  color: #c4c4c4;
+  ${font14}
+  font-weight: bold;
+  text-align: center;
 
-  & > input {
-    + span {
-      display: inline-block;
-      width: 100%;
-      padding: 0.5rem 0;
-      border-radius: 0.35rem;
-      background: none;
-      color: #c4c4c4;
-      ${font14}
-      font-weight: bold;
-      text-align: center;
-    }
-    :focus + span,
-    :hover + span,
-    :active + span,
-    :checked + span {
-      background: white;
-      box-shadow: 0 0.14rem 0.28rem rgba(0, 0, 0, 0.04);
-      color: black;
-    }
+  input:focus + &,
+  input:hover + &,
+  input:active + &,
+  input:checked + & {
+    background: white;
+    box-shadow: 0 0.14rem 0.28rem rgba(0, 0, 0, 0.04);
+    color: black;
   }
 `
 
