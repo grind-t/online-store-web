@@ -1,5 +1,6 @@
 import { AppProps } from 'next/app'
 import { createGlobalStyle, css } from 'styled-components'
+import { UIDReset } from 'react-uid'
 
 const fontFaces = css`
   @font-face {
@@ -112,7 +113,9 @@ const App = ({ Component, pageProps }: AppProps) => {
   return (
     <>
       <GlobalStyle />
-      <Component {...pageProps} />
+      <UIDReset>
+        <Component {...pageProps} />
+      </UIDReset>
     </>
   )
 }
