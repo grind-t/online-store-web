@@ -1,19 +1,15 @@
 interface CartIconProps {
   className?: string
-  stroke?: string
-  strokeWidth?: string | number
 }
 
-const CartIcon = ({ className, stroke, strokeWidth }: CartIconProps) => (
+const CartIcon = ({ className }: CartIconProps) => (
   <svg
     viewBox="0 0 18 18"
     fill="none"
-    stroke={stroke}
-    strokeWidth={strokeWidth}
     strokeLinecap="round"
     strokeLinejoin="round"
     className={className}
-    aria-hidden="true"
+    aria-hidden
   >
     <path d="M6.51283 16.161C7.25877 16.161 7.86348 15.5449 7.86348 14.7849C7.86348 14.025 7.25877 13.4089 6.51283 13.4089C5.76688 13.4089 5.16217 14.025 5.16217 14.7849C5.16217 15.5449 5.76688 16.161 6.51283 16.161Z" />
     <path d="M14.6142 16.161C15.3602 16.161 15.9649 15.5449 15.9649 14.7849C15.9649 14.025 15.3602 13.4089 14.6142 13.4089C13.8683 13.4089 13.2635 14.025 13.2635 14.7849C13.2635 15.5449 13.8683 16.161 14.6142 16.161Z" />

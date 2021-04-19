@@ -36,44 +36,14 @@ const reset = css`
   *,
   *::before,
   *::after {
+    padding: 0;
+    margin: 0;
     box-sizing: border-box;
   }
 
-  body,
-  h1,
-  h2,
-  h3,
-  h4,
-  p,
-  figure,
-  blockquote,
-  dl,
-  dd {
-    margin: 0;
-  }
-
-  ul[role='list'],
-  ol[role='list'] {
-    list-style: none;
-  }
-
-  // TODO: Удалить
-  html {
-    font-size: 14px;
-  }
-
-  html:focus-within {
-    scroll-behavior: smooth;
-  }
-
   body {
-    line-height: 1.5;
     font-family: 'Nunito', 'Trebuchet MS', sans-serif;
     background-color: #ffdf8c;
-  }
-
-  a:not([class]) {
-    text-decoration-skip-ink: auto;
   }
 
   img,
@@ -87,6 +57,14 @@ const reset = css`
   textarea,
   select {
     font: inherit;
+  }
+
+  ul {
+    list-style: none;
+  }
+
+  a {
+    text-decoration: none;
   }
 
   @media (prefers-reduced-motion: reduce) {

@@ -3,7 +3,6 @@ import styled, { css } from 'styled-components'
 const font14 = css`
   font-size: 1rem;
   line-height: 1.36;
-  letter-spacing: 0.015em;
 `
 
 const font16 = css`
@@ -14,19 +13,16 @@ const font16 = css`
 const font18 = css`
   font-size: 1.29rem;
   line-height: 1.39;
-  letter-spacing: 0.015em;
 `
 
 const font22 = css`
   font-size: 1.57rem;
   line-height: 1.36;
-  letter-spacing: 0.01em;
 `
 
 const font32 = css`
   font-size: 2.28rem;
   line-height: 1.38;
-  letter-spacing: 0.01em;
 `
 
 interface TypographyProps {

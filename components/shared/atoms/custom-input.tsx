@@ -1,6 +1,7 @@
-import VisuallyHidden from 'components/atoms/accessibility'
 import { InputHTMLAttributes } from 'react'
 import { useUID } from 'react-uid'
+import VisuallyHidden from 'components/shared/atoms/visually-hidden'
+import styled from 'styled-components'
 
 const CustomInput = ({
   id,
@@ -19,4 +20,8 @@ const CustomInput = ({
   )
 }
 
-export default CustomInput
+const Styled = styled(CustomInput)`
+  display: inline-block;
+`
+
+export default Styled
