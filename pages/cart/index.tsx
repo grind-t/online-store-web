@@ -1,4 +1,4 @@
-import Head from 'next/head'
+import Head from 'next/head';
 
 const Cart = () => (
   <div>
@@ -7,6 +7,6 @@ const Cart = () => (
       <link rel="icon" href="/images/favicon.ico" />
     </Head>
   </div>
-)
+);
 
-export default Cart
+export default Cart;

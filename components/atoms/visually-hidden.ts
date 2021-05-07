@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components'
+import styled, { css } from 'styled-components';
 
 const visuallyHidden = css`
   clip: rect(1px, 1px, 1px, 1px);
@@ -10,10 +10,10 @@ const visuallyHidden = css`
   height: 1px;
   margin: -1px;
   border: 0;
-`
+`;
 
 const VisuallyHidden = styled.span`
   ${visuallyHidden}
-`
+`;
 
-export { VisuallyHidden as default, visuallyHidden }
+export { VisuallyHidden as default, visuallyHidden };

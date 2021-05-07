@@ -1,4 +1,4 @@
-import Head from 'next/head'
+import Head from 'next/head';
 
 const Home = () => (
   <div>
@@ -7,6 +7,6 @@ const Home = () => (
       <link rel="icon" href="/images/favicon.ico" />
     </Head>
   </div>
-)
+);
 
-export default Home
+export default Home;

@@ -1,5 +1,5 @@
 interface TrashIconProps {
-  className?: string
+  className?: string;
 }
 
 const TrashIcon = ({ className }: TrashIconProps) => (
@@ -16,7 +16,7 @@ const TrashIcon = ({ className }: TrashIconProps) => (
     <path d="M8.33337 9.16667V14.1667" />
     <path d="M11.6666 9.16667V14.1667" />
   </svg>
-)
+);
 
-export default TrashIcon
-export type { TrashIconProps }
+export default TrashIcon;
+export type { TrashIconProps };

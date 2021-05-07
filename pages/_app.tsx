@@ -1,6 +1,6 @@
-import { AppProps } from 'next/app'
-import { createGlobalStyle, css } from 'styled-components'
-import { UIDReset } from 'react-uid'
+import { AppProps } from 'next/app';
+import { createGlobalStyle, css } from 'styled-components';
+import { UIDReset } from 'react-uid';
 
 const fontFaces = css`
   @font-face {
@@ -30,7 +30,7 @@ const fontFaces = css`
       url('/fonts/nunito-v16-latin_cyrillic-700.ttf') format('truetype'),
       url('/fonts/nunito-v16-latin_cyrillic-700.svg#Nunito') format('svg');
   }
-`
+`;
 
 const reset = css`
   html {
@@ -85,12 +85,12 @@ const reset = css`
       scroll-behavior: auto !important;
     }
   }
-`
+`;
 
 const GlobalStyle = createGlobalStyle`
   ${fontFaces}
   ${reset}
-`
+`;
 
 const App = ({ Component, pageProps }: AppProps) => {
   return (
@@ -100,7 +100,7 @@ const App = ({ Component, pageProps }: AppProps) => {
         <Component {...pageProps} />
       </UIDReset>
     </>
-  )
-}
+  );
+};
 
-export default App
+export default App;
