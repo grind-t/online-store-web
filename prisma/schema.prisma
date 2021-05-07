@@ -10,14 +10,8 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Product {
-  id           Int               @id @default(autoincrement())
-  name         String
-  description  String
-  price        Decimal
-  formats      ProductFormat[]
-  categories   ProductCategory[]
-  subscription Subscription?
+enum ProductType {
+  Subscription
 }
 
 model ProductFormat {
@@ -32,15 +26,20 @@ model ProductCategory {
   products Product[]
 }
 
-model Subscription {
-  productId       Int                    @id
-  key             String
-  product         Product                @relation(fields: [productId], references: [id])
-  durationOptions SubscriptionDuration[]
+model Product {
+  id           Int               @id @default(autoincrement())
+  name         String
+  description  String
+  price        Decimal
+  type         ProductType
+  formats      ProductFormat[]
+  categories   ProductCategory[]
+  subscription Subscription?
 }
 
-model SubscriptionDuration {
-  id            Int            @id @default(autoincrement())
-  value         DateTime
-  subscriptions Subscription[]
+model Subscription {
+  productId Int     @id
+  secretKey String
+  product   Product @relation(fields: [productId], references: [id])
+
 }
