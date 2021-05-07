@@ -1,6 +1,6 @@
 import Head from 'next/head'
 
-const HomePage = () => (
+const Cart = () => (
   <div>
     <Head>
       <title>TODO</title>
@@ -9,4 +9,4 @@ const HomePage = () => (
   </div>
 )
 
-export default HomePage
+export default Cart

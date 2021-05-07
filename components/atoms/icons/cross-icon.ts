@@ -1,4 +1,4 @@
-import PlusIcon from 'components/shared/atoms/icons/plus-icon'
+import PlusIcon from 'components/atoms/icons/plus-icon'
 import styled from 'styled-components'
 
 const CrossIcon = styled(PlusIcon)`

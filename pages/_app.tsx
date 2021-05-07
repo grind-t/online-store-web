@@ -33,16 +33,21 @@ const fontFaces = css`
 `
 
 const reset = css`
+  html {
+    box-sizing: border-box;
+  }
+
   *,
-  *::before,
-  *::after {
+  *:before,
+  *:after {
+    box-sizing: inherit;
     padding: 0;
     margin: 0;
-    box-sizing: border-box;
   }
 
   body {
     font-family: 'Nunito', 'Trebuchet MS', sans-serif;
+    line-height: 1.364;
     background-color: #ffdf8c;
   }
 
