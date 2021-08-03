@@ -7,7 +7,7 @@ const PlusIcon = ({ className }: PlusIconProps) => {
     <svg
       width="10"
       viewBox="0 0 10 10"
-      fill="none"
+      fill="#EB5A1E"
       className={className}
       aria-hidden
     >

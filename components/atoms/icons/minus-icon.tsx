@@ -6,7 +6,7 @@ const MinusIcon = ({ className }: MinusIconProps) => (
   <svg
     width="10"
     viewBox="0 0 10 2"
-    fill="none"
+    fill="#FE5F1E"
     className={className}
     aria-hidden
   >
