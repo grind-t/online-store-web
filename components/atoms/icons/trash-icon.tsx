@@ -4,8 +4,11 @@ interface TrashIconProps {
 
 const TrashIcon = ({ className }: TrashIconProps) => (
   <svg
+    width="20"
     viewBox="0 0 20 20"
     fill="none"
+    stroke="#B6B6B6"
+    strokeWidth="1.2"
     strokeLinecap="round"
     strokeLinejoin="round"
     className={className}
