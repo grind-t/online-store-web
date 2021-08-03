@@ -33,19 +33,24 @@ const ViewOptions = styled.div`
 
 const ProductList = styled.ul`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 291px));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   grid-gap: 10px;
   gap: 10px;
   justify-content: center;
   list-style: none;
 
-  @media ${up(breakpoints.md)} {
-    justify-content: start;
+  @media ${up(breakpoints.sm)} {
     grid-gap: 20px;
     gap: 20px;
   }
 
+  @media ${up(breakpoints.md)} {
+    grid-template-columns: repeat(auto-fit, minmax(291px, 1fr));
+    justify-content: start;
+  }
+
   @media ${up(breakpoints.xl)} {
+    //-template-columns: repeat(4, 1fr);
     grid-gap: 30px;
     gap: 30px;
   }
