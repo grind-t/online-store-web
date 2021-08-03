@@ -17,6 +17,7 @@ const lerpByFontSize = (from: number, to: number) =>
   lerpByEM(from, to, xsFontSize, xlFontSize);
 
 const BearIcon = styled(StandaloneBearIcon)`
+  flex-shrink: 0;
   width: ${lerpByFontSize(42, 60)};
   margin-right: ${em(15, xsFontSize)};
 `;
@@ -41,6 +42,7 @@ const CartLink = styled(StandaloneCartLink)`
 `;
 
 const BurgerMenuIcon = styled(StandaloneBurgerMenuIcon)`
+  flex-shrink: 0;
   width: ${em(22, xsFontSize)};
 `;
 
