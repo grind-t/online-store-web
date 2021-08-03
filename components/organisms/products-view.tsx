@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { lerpByVW, up } from 'styles/mixins';
+import { up } from 'styles/mixins';
 import { breakpoints } from 'styles/varibles';
 import CategoryList from 'components/molecules/category-list';
 import Sorting from 'components/molecules/sorting';
@@ -11,7 +11,7 @@ const ViewOptions = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-bottom: ${lerpByVW(7, 30, breakpoints.xs, breakpoints.xl)};
+  margin-bottom: 10px;
 
   & > * + * {
     margin: 15px 0 0 0;
@@ -19,10 +19,15 @@ const ViewOptions = styled.div`
 
   @media ${up(breakpoints.md)} {
     flex-direction: row;
+    margin-bottom: 20px;
 
     & > * + * {
       margin: 0 0 0 15px;
     }
+  }
+
+  @media ${up(breakpoints.xl)} {
+    margin-bottom: 30px;
   }
 `;
 
