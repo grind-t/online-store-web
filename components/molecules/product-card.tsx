@@ -53,7 +53,7 @@ const ProductCard = ({ options }: ProductCardProps) => {
         <Image
           src="/images/product-placeholder.png"
           alt="подписка"
-          width="291"
+          width="320"
           height="253"
         />
       </ImageContainer>

@@ -10,6 +10,10 @@ import { breakpoints } from 'styles/varibles';
 const Main = styled.main`
   padding: 20px 4px 60px;
 
+  @media ${up(breakpoints.sm)} {
+    padding: 20px 20px 60px;
+  }
+
   @media ${up(breakpoints.md)} {
     padding: 40px 40px 60px;
   }
