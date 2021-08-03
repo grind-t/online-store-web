@@ -18,7 +18,7 @@ const lerpByFontSize = (from: number, to: number) =>
   lerpByEM(from, to, xsFontSize, xlFontSize);
 
 const BearIcon = styled(StandaloneBearIcon)`
-  flex-shrink: 0;
+  flex: none;
   width: ${lerpByFontSize(42, 60)};
   margin-right: ${em(15, xsFontSize)};
 `;
@@ -30,24 +30,26 @@ const Heading = styled.h1`
 `;
 
 const CartLink = styled(StandaloneCartLink)`
+  flex: none;
   position: fixed;
   right: 15px;
   bottom: 12px;
   font-size: 1rem;
   z-index: 1;
 
-  @media ${up(breakpoints.lg)} {
+  @media ${up(breakpoints.md)} {
     position: static;
     margin-right: 30px;
+    margin-left: 15px;
   }
 `;
 
 const BurgerMenuIcon = styled(StandaloneBurgerMenuIcon)`
-  flex-shrink: 0;
   width: ${em(22, xsFontSize)};
 `;
 
 const BurgerMenu = styled.button`
+  flex: none;
   background: none;
   border: none;
   line-height: 0;
@@ -62,7 +64,7 @@ const Header = styled.header`
   border-bottom: 1px solid #e5e5e5;
   font-size: ${em(xsFontSize)};
 
-  @media ${up(breakpoints.lg)} {
+  @media ${up(breakpoints.md)} {
     font-size: ${em((xlFontSize + xsFontSize) / 2)};
   }
 
@@ -73,17 +75,17 @@ const Header = styled.header`
 //#endregion
 
 const StoreHeader = () => {
-  const upLG = useMediaQuery(up(breakpoints.lg));
+  const upMD = useMediaQuery(up(breakpoints.md));
   const canHover = useMediaQuery('(hover: hover)');
-  const isClient = upLG !== undefined;
+  const isClient = upMD !== undefined;
 
   return (
     <Header>
       <BearIcon />
       <Heading>Самый долгий магазин цифровых товаров</Heading>
-      {isClient && <CartLink detailed={upLG} />}
+      {isClient && <CartLink detailed={upMD} />}
       {isClient &&
-        (canHover && upLG ? (
+        (canHover && upMD ? (
           <HoverNav
             links={[
               { href: '/me', icon: <PersonIcon />, alt: 'Личный кабинет' },
