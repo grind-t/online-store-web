@@ -4,12 +4,11 @@ import VisuallyHidden from 'components/atoms/visually-hidden';
 import styled from 'styled-components';
 
 const CustomInput = ({
-  id,
   children,
   className,
   ...rest
 }: InputHTMLAttributes<HTMLInputElement>) => {
-  const uid = id || useUID();
+  const uid = useUID();
   return (
     <>
       <VisuallyHidden as="input" id={uid} {...rest} />
