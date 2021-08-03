@@ -30,6 +30,7 @@ const FloatingNavListItem = styled.li<{ index: number }>`
 const NavList = styled.ul`
   position: relative;
   list-style: none;
+  z-index: 1;
 
   &:hover {
     ${FloatingNavListItem} {
