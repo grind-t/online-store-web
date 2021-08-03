@@ -33,7 +33,7 @@ const ViewOptions = styled.div`
 
 const ProductList = styled.ul`
   display: grid;
-  grid-template-columns: repeat(auto-fit, 291px);
+  grid-template-columns: repeat(auto-fit, minmax(200px, 291px));
   grid-gap: 10px;
   gap: 10px;
   justify-content: center;
