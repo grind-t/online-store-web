@@ -1,9 +1,7 @@
 import { AppProps } from 'next/app';
 import { createGlobalStyle } from 'styled-components';
 import { UIDReset } from 'react-uid';
-import { ThemeProvider } from 'styled-components';
 import { miniReset, nunitoFont } from 'styles/mixins';
-import { breakpoints } from 'styles/varibles';
 
 const GlobalStyle = createGlobalStyle`
   ${nunitoFont()}
@@ -25,9 +23,7 @@ const App = ({ Component, pageProps }: AppProps) => {
     <>
       <GlobalStyle />
       <UIDReset>
-        <ThemeProvider theme={{ breakpoints }}>
-          <Component {...pageProps} />
-        </ThemeProvider>
+        <Component {...pageProps} />
       </UIDReset>
     </>
   );
