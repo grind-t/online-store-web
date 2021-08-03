@@ -15,7 +15,7 @@ const Option = styled(CustomInput).attrs({ type: 'radio' })`
   flex: 1;
   max-width: 50%;
   min-width: max-content;
-  margin: 0 3px;
+  margin: 3px;
   padding: 3px 11px;
   border-radius: 5px;
   ${(props) =>
@@ -27,18 +27,13 @@ const Option = styled(CustomInput).attrs({ type: 'radio' })`
 const OptionGroup = styled.div`
   display: flex;
   flex-wrap: wrap;
-  margin: 0 -3px;
 `;
 
 const OptionsContainer = styled.div`
-  padding: 6px;
+  padding: 3px;
   background: #f3f3f3;
   border-radius: 10px;
   font-size: ${em(15)};
-
-  & > ${OptionGroup} + ${OptionGroup} {
-    margin-top: 7px;
-  }
 `;
 //#endregion
 
@@ -54,7 +49,7 @@ const ProductCard = ({ options }: ProductCardProps) => {
           src="/images/product-placeholder.png"
           alt="подписка"
           width="320"
-          height="253"
+          height="278"
         />
       </ImageContainer>
       <OptionsContainer>
