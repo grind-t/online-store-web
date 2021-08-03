@@ -12,6 +12,9 @@ const ImageContainer = styled.div`
 `;
 
 const Option = styled(CustomInput).attrs({ type: 'radio' })`
+  flex: 1;
+  max-width: 50%;
+  min-width: max-content;
   margin: 0 3px;
   padding: 3px 11px;
   border-radius: 5px;
