@@ -45,7 +45,6 @@ const ProductList = styled.ul`
   }
 
   @media ${up(breakpoints.lg)} {
-    //grid-template-columns: repeat(auto-fit, minmax(240px, auto));
     justify-content: start;
   }
 
