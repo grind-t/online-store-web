@@ -9,6 +9,7 @@ import HoverNav from 'components/molecules/hover-nav';
 import PersonIcon from 'components/atoms/icons/person-icon';
 import OrdersIcon from 'components/atoms/icons/orders-icon';
 import SignOutIcon from 'components/atoms/icons/sign-out-icon';
+import VisuallyHidden from 'components/atoms/visually-hidden';
 
 //#region styled
 const xsFontSize = 18;
@@ -92,6 +93,7 @@ const StoreHeader = () => {
           />
         ) : (
           <BurgerMenu>
+            <VisuallyHidden>Меню</VisuallyHidden>
             <BurgerMenuIcon />
           </BurgerMenu>
         ))}
