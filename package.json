@@ -10,7 +10,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@react-hookz/web": "^6.0.1",
+    "@react-hookz/web": "^6.1.0",
     "downshift": "^6.1.5",
     "firebase": "^8.8.1",
     "next": "^11.0.1",
