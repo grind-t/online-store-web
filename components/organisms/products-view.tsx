@@ -1,9 +1,10 @@
 import styled from 'styled-components';
-import { up } from 'styles/mixins';
-import { breakpoints } from 'styles/varibles';
 import CategoryList from 'components/molecules/category-list';
 import Sorting from 'components/molecules/sorting';
 import ProductCard from 'components/molecules/product-card';
+import { breakpoints } from 'styles/varibles';
+import { up } from 'styles/mixins';
+import { Product } from 'lib/product';
 
 //#region styled
 const ViewOptions = styled.div`
@@ -55,7 +56,11 @@ const ProductList = styled.ul`
 `;
 //#endregion
 
-const ProductsView = () => {
+interface ProductsViewProps {
+  initialProducts?: Product[];
+}
+
+const ProductsView = ({ initialProducts }: ProductsViewProps) => {
   return (
     <>
       <ViewOptions>
@@ -66,6 +71,12 @@ const ProductsView = () => {
         />
       </ViewOptions>
       <ProductList>
+        {initialProducts &&
+          initialProducts.map((v, i) => (
+            <li key={i}>
+              <ProductCard options={v.options} />
+            </li>
+          ))}
         <li>
           <ProductCard
             options={[['Электронный'], ['1 месяц', '3 месяца', '12 месяцев']]}

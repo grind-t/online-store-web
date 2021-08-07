@@ -1,10 +1,13 @@
-import Head from 'next/head';
 import styled from 'styled-components';
+import Head from 'next/head';
+import { InferGetStaticPropsType } from 'next';
 import PageTemplate from 'components/templates/page-template';
 import StoreHeader from 'components/organisms/store-header';
 import ProductsView from 'components/organisms/products-view';
-import { up } from 'styles/mixins';
 import { breakpoints } from 'styles/varibles';
+import { up } from 'styles/mixins';
+import { productConverter } from 'lib/product';
+import admin from 'firebase/server';
 
 //#region styled
 const Main = styled.main`
@@ -24,7 +27,7 @@ const Main = styled.main`
 `;
 //#endregion
 
-const Home = () => {
+const Home = ({ products }: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
     <PageTemplate>
       <Head>
@@ -33,10 +36,24 @@ const Home = () => {
       </Head>
       <StoreHeader />
       <Main>
-        <ProductsView />
+        <ProductsView initialProducts={products} />
       </Main>
     </PageTemplate>
   );
 };
+
+export async function getStaticProps() {
+  const db = admin.firestore();
+  const snapshot = await db
+    .collection('products')
+    .withConverter(productConverter)
+    .get();
+  const products = snapshot.docs.map((v) => v.data());
+  return {
+    props: {
+      products,
+    },
+  };
+}
 
 export default Home;
