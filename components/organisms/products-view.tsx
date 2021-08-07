@@ -74,17 +74,21 @@ const ProductsView = ({ initialProducts }: ProductsViewProps) => {
         {initialProducts &&
           initialProducts.map((v, i) => (
             <li key={i}>
-              <ProductCard options={v.options} />
+              <ProductCard {...v} />
             </li>
           ))}
         <li>
           <ProductCard
+            img="/images/product-placeholder.png"
             options={[['Электронный'], ['1 месяц', '3 месяца', '12 месяцев']]}
+            price={395}
           />
         </li>
         <li>
           <ProductCard
+            img="/images/product-placeholder.png"
             options={[['Электронный'], ['1 месяц', '3 месяца', '12 месяцев']]}
+            price={795}
           />
         </li>
       </ProductList>

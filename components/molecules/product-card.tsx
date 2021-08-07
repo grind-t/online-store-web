@@ -51,20 +51,16 @@ const PurchaseContainer = styled.div`
 //#endregion
 
 interface ProductCardProps {
+  img: string;
   options: string[][];
   price: number;
 }
 
-const ProductCard = ({ options, price }: ProductCardProps) => {
+const ProductCard = ({ img, options, price }: ProductCardProps) => {
   return (
     <>
       <ImageContainer>
-        <Image
-          src="/images/product-placeholder.png"
-          alt="подписка"
-          width="320"
-          height="278"
-        />
+        <Image src={img} alt="TODO" width="320" height="278" quality={100} />
       </ImageContainer>
       <OptionsContainer>
         {options.map((group) => (
