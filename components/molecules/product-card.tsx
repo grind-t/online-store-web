@@ -2,6 +2,7 @@ import Image from 'next/image';
 import CustomInput from 'components/atoms/custom-input';
 import styled from 'styled-components';
 import { em } from 'styles/mixins';
+import AddToCartButton from 'components/atoms/buttons/add-to-cart-button';
 
 //#region styled
 // https://github.com/vercel/next.js/discussions/18312
@@ -35,13 +36,26 @@ const OptionsContainer = styled.div`
   border-radius: 10px;
   font-size: ${em(15)};
 `;
+
+const Price = styled.strong`
+  font-size: ${em(21)};
+  letter-spacing: 0.015em;
+`;
+
+const PurchaseContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 14px;
+`;
 //#endregion
 
 interface ProductCardProps {
   options: string[][];
+  price: number;
 }
 
-const ProductCard = ({ options }: ProductCardProps) => {
+const ProductCard = ({ options, price }: ProductCardProps) => {
   return (
     <>
       <ImageContainer>
@@ -63,6 +77,10 @@ const ProductCard = ({ options }: ProductCardProps) => {
           </OptionGroup>
         ))}
       </OptionsContainer>
+      <PurchaseContainer>
+        <Price>от {price} ₽</Price>
+        <AddToCartButton />
+      </PurchaseContainer>
     </>
   );
 };
