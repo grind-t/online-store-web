@@ -1,7 +1,7 @@
-import Image from 'next/image';
-import CustomInput from 'components/atoms/custom-input';
 import styled from 'styled-components';
+import Image from 'next/image';
 import { em } from 'styles/mixins';
+import CustomInput from 'components/atoms/custom-input';
 import AddToCartButton from 'components/atoms/buttons/add-to-cart-button';
 
 //#region styled
@@ -60,7 +60,7 @@ const ProductCard = ({ img, options, price }: ProductCardProps) => {
   return (
     <>
       <ImageContainer>
-        <Image src={img} alt="TODO" width="320" height="278" quality={100} />
+        <Image src={img} alt="TODO" width="360" height="313" quality={100} />
       </ImageContainer>
       <OptionsContainer>
         {options.map((group) => (
