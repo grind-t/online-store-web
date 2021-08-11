@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 import Head from 'next/head';
 import { InferGetStaticPropsType } from 'next';
-import PageTemplate from 'components/templates/page-template';
+import PageTemplate, { pageMargin } from 'components/templates/page-template';
 import StoreHeader from 'components/organisms/store-header';
-import ProductsView from 'components/organisms/products-view';
+import ProductsView, { ProductList } from 'components/organisms/products-view';
 import { breakpoints } from 'styles/varibles';
 import { up } from 'styles/mixins';
 import { productConverter } from 'lib/product';
@@ -11,18 +11,28 @@ import admin from 'firebase/server';
 
 //#region styled
 const Main = styled.main`
+  width: fit-content;
+  margin: 0 auto;
   padding: 20px 4px 60px;
+
+  & > ${ProductList} {
+    max-width: calc(100vw - ${pageMargin * 2}px - 8px);
+  }
 
   @media ${up(breakpoints.sm)} {
     padding: 20px 20px 60px;
+
+    & > ${ProductList} {
+      max-width: calc(100vw - ${pageMargin * 2}px - 40px);
+    }
   }
 
   @media ${up(breakpoints.md)} {
     padding: 40px 40px 60px;
-  }
 
-  @media ${up(breakpoints.xl)} {
-    padding: 60px 85px;
+    & > ${ProductList} {
+      max-width: calc(100vw - ${pageMargin * 2}px - 80px);
+    }
   }
 `;
 //#endregion

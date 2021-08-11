@@ -1,10 +1,13 @@
 import styled from 'styled-components';
 
+const pageMargin = 10;
+
 const PageTemplate = styled.div`
-  min-height: calc(100vh - 20px);
-  margin: 10px;
+  min-height: calc(100vh - ${pageMargin * 2}px);
+  margin: ${pageMargin}px;
   background: white;
   border-radius: 10px;
 `;
 
 export default PageTemplate;
+export { pageMargin };

@@ -34,10 +34,9 @@ const ViewOptions = styled.div`
 
 const ProductList = styled.ul`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, auto));
+  grid-template-columns: repeat(auto-fit, minmax(290px, auto));
   grid-gap: 10px;
   gap: 10px;
-  justify-content: center;
   list-style: none;
 
   @media ${up(breakpoints.sm)} {
@@ -45,8 +44,9 @@ const ProductList = styled.ul`
     gap: 20px;
   }
 
-  @media ${up(breakpoints.lg)} {
-    justify-content: start;
+  @media ${up(breakpoints.md)} {
+    grid-gap: 25px;
+    gap: 25px;
   }
 
   @media ${up(breakpoints.xl)} {
@@ -97,3 +97,4 @@ const ProductsView = ({ initialProducts }: ProductsViewProps) => {
 };
 
 export default ProductsView;
+export { ViewOptions, ProductList };
