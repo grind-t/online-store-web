@@ -34,12 +34,13 @@ const ViewOptions = styled.div`
 
 const ProductList = styled.ul`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(290px, auto));
+  grid-template-columns: repeat(auto-fit, minmax(200px, auto));
   grid-gap: 10px;
   gap: 10px;
   list-style: none;
 
   @media ${up(breakpoints.sm)} {
+    grid-template-columns: repeat(auto-fit, minmax(290px, auto));
     grid-gap: 20px;
     gap: 20px;
   }
