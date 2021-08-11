@@ -13,10 +13,10 @@ import admin from 'firebase/server';
 const Main = styled.main`
   width: fit-content;
   margin: 0 auto;
-  padding: 20px 4px 60px;
+  padding: 20px 5px 60px;
 
   & > ${ProductList} {
-    max-width: calc(100vw - ${pageMargin * 2}px - 8px);
+    max-width: calc(100vw - ${pageMargin * 2}px - 10px);
   }
 
   @media ${up(breakpoints.sm)} {
