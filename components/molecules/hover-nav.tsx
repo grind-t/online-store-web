@@ -8,13 +8,9 @@ const linkSize = 49;
 const gap = 4;
 
 const Anchor = styled.a`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  display: block;
   width: ${linkSize}px;
   height: ${linkSize}px;
-  background: #fe5f1e;
-  border-radius: 50%;
 `;
 
 const FloatingNavListItem = styled.li<{ index: number }>`
