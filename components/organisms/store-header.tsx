@@ -39,8 +39,7 @@ const CartLink = styled(StandaloneCartLink)`
 
   @media ${up(breakpoints.md)} {
     position: static;
-    margin-right: 30px;
-    margin-left: 15px;
+    margin: 0 30px;
   }
 `;
 
@@ -83,7 +82,7 @@ const StoreHeader = () => {
     <Header>
       <BearIcon />
       <Heading>Самый долгий магазин цифровых товаров</Heading>
-      {isClient && <CartLink detailed={upMD} />}
+      <CartLink />
       {isClient &&
         (canHover && upMD ? (
           <HoverNav
