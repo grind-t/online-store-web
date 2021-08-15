@@ -1,8 +1,10 @@
 import styled from 'styled-components';
 import Image from 'next/image';
+import { useState } from 'react';
 import { em } from 'styles/mixins';
 import CustomInput from 'components/atoms/custom-input';
 import AddToCartButton from 'components/atoms/buttons/add-to-cart-button';
+import { ProductVariant, ProductOption } from 'lib/product';
 
 //#region styled
 // https://github.com/vercel/next.js/discussions/18312
@@ -51,30 +53,56 @@ const PurchaseContainer = styled.div`
 //#endregion
 
 interface ProductCardProps {
-  img: string;
-  options: string[][];
-  price: number;
+  options?: ProductOption[];
+  variants: Record<string, ProductVariant>;
 }
 
-const ProductCard = ({ img, options, price }: ProductCardProps) => {
+const ProductCard = ({ options, variants }: ProductCardProps) => {
+  const initialOptions = () => options.map((option) => option.values[0]);
+  const [selectedOptions, setSelectedOptions] = useState(initialOptions);
+  const variantPath = selectedOptions.join('/');
+  const variant = variants[variantPath];
+
+  const handleOptionChange = (index: number, value: string) => {
+    setSelectedOptions((selected) => [
+      ...selected.slice(0, index),
+      value,
+      ...selected.slice(index + 1),
+    ]);
+  };
+
   return (
     <>
       <ImageContainer>
-        <Image src={img} alt="TODO" width="360" height="313" quality={100} />
+        <Image
+          src={variant.image.url}
+          alt={variant.image.alt}
+          width="360"
+          height="313"
+          quality={100}
+        />
       </ImageContainer>
-      <OptionsContainer>
-        {options.map((group) => (
-          <OptionGroup key={group.join()}>
-            {group.map((v, i) => (
-              <Option key={v} checked={i === 0} readOnly>
-                {v}
-              </Option>
-            ))}
-          </OptionGroup>
-        ))}
-      </OptionsContainer>
+      {options && (
+        <OptionsContainer>
+          {options.map((option, index) => (
+            <OptionGroup key={option.name}>
+              {option.values.map((value) => (
+                <Option
+                  key={value}
+                  name={option.name}
+                  value={value}
+                  checked={selectedOptions[index] === value}
+                  onChange={() => handleOptionChange(index, value)}
+                >
+                  {value}
+                </Option>
+              ))}
+            </OptionGroup>
+          ))}
+        </OptionsContainer>
+      )}
       <PurchaseContainer>
-        <Price>от {price} ₽</Price>
+        <Price>от {variant.price.value} ₽</Price>
         <AddToCartButton />
       </PurchaseContainer>
     </>

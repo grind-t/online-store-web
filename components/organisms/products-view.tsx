@@ -73,25 +73,14 @@ const ProductsView = ({ initialProducts }: ProductsViewProps) => {
       </ViewOptions>
       <ProductList>
         {initialProducts &&
-          initialProducts.map((v, i) => (
-            <li key={i}>
-              <ProductCard {...v} />
+          initialProducts.map((product) => (
+            <li key={product.id}>
+              <ProductCard
+                options={product.options}
+                variants={product.variants}
+              />
             </li>
           ))}
-        <li>
-          <ProductCard
-            img="/images/product-placeholder.png"
-            options={[['Электронный'], ['1 месяц', '3 месяца', '12 месяцев']]}
-            price={395}
-          />
-        </li>
-        <li>
-          <ProductCard
-            img="/images/product-placeholder.png"
-            options={[['Электронный'], ['1 месяц', '3 месяца', '12 месяцев']]}
-            price={795}
-          />
-        </li>
       </ProductList>
     </>
   );
