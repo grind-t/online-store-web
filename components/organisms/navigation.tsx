@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import Link from 'next/link';
 import { useMediaQuery } from '@react-hookz/web';
-import { ReactNode, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { hideVisually, up, em } from 'styles/mixins';
 import { breakpoints } from 'styles/varibles';
 import DisplayNone from 'components/atoms/utils/display-none';
@@ -96,7 +96,7 @@ const Nav = styled.nav<{ isVisible?: boolean }>`
 `;
 
 const BurgerMenuIcon = styled(StandaloneBurgerMenuIcon)`
-  width: 100%;
+  width: ${em(22, xsFontSize)};
 `;
 
 const CloseIcon = styled(CrossIcon)`
@@ -137,6 +137,10 @@ const Navigation = ({ links, className }: NavigationProps) => {
   const [isModalOpen, showModal] = useState(false);
   const isHoverNav = useMediaQuery(hoverNavQuery);
   const isClient = isHoverNav !== undefined;
+
+  useEffect(() => {
+    document.body.style.overflow = isModalOpen ? 'hidden' : '';
+  }, [isModalOpen]);
 
   return (
     <>
