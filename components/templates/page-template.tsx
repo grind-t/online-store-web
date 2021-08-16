@@ -7,6 +7,7 @@ const PageTemplate = styled.div`
   margin: ${pageMargin}px;
   background: white;
   border-radius: 10px;
+  overflow: hidden;
 `;
 
 export default PageTemplate;

@@ -1,15 +1,12 @@
 import styled from 'styled-components';
-import { useMediaQuery } from '@react-hookz/web';
 import { em, lerpByEM, up } from 'styles/mixins';
 import { breakpoints } from 'styles/varibles';
 import StandaloneBearIcon from 'components/atoms/icons/bear-icon';
 import StandaloneCartLink from 'components/atoms/links/cart-link';
-import StandaloneBurgerMenuIcon from 'components/atoms/icons/burger-menu-icon';
-import HoverNav from 'components/molecules/hover-nav';
 import PersonIcon from 'components/atoms/icons/person-icon';
 import OrdersIcon from 'components/atoms/icons/orders-icon';
 import SignOutIcon from 'components/atoms/icons/sign-out-icon';
-import VisuallyHidden from 'components/atoms/visually-hidden';
+import Navigation from 'components/organisms/navigation';
 
 //#region styled
 const xsFontSize = 18;
@@ -30,7 +27,6 @@ const Heading = styled.h1`
 `;
 
 const CartLink = styled(StandaloneCartLink)`
-  flex: none;
   position: fixed;
   right: 15px;
   bottom: 12px;
@@ -43,18 +39,8 @@ const CartLink = styled(StandaloneCartLink)`
   }
 `;
 
-const BurgerMenuIcon = styled(StandaloneBurgerMenuIcon)`
-  width: ${em(22, xsFontSize)};
-`;
-
-const BurgerMenu = styled.button`
-  flex: none;
-  background: none;
-  border: none;
-  line-height: 0;
-`;
-
 const Header = styled.header`
+  position: relative;
   display: flex;
   align-items: center;
   min-height: ${em(50, xsFontSize)};
@@ -74,30 +60,40 @@ const Header = styled.header`
 //#endregion
 
 const StoreHeader = () => {
-  const upMD = useMediaQuery(up(breakpoints.md));
-  const canHover = useMediaQuery('(hover: hover)');
-  const isClient = upMD !== undefined;
+  const isSignedIn = true;
+  const links = [
+    {
+      href: '/sign-in',
+      icon: <PersonIcon />,
+      text: 'Войти',
+      display: !isSignedIn,
+    },
+    {
+      href: '/user',
+      icon: <PersonIcon />,
+      text: 'Личный кабинет',
+      display: isSignedIn,
+    },
+    {
+      href: '/orders',
+      icon: <OrdersIcon />,
+      text: 'Заказы',
+      display: isSignedIn,
+    },
+    {
+      href: '/sign-out',
+      icon: <SignOutIcon />,
+      text: 'Выйти',
+      display: isSignedIn,
+    },
+  ];
 
   return (
     <Header>
       <BearIcon />
       <Heading>Самый долгий магазин цифровых товаров</Heading>
       <CartLink />
-      {isClient &&
-        (canHover && upMD ? (
-          <HoverNav
-            links={[
-              { href: '/me', icon: <PersonIcon />, alt: 'Личный кабинет' },
-              { href: '/orders', icon: <OrdersIcon />, alt: 'Заказы' },
-              { href: '/sign-out', icon: <SignOutIcon />, alt: 'Выход' },
-            ]}
-          />
-        ) : (
-          <BurgerMenu>
-            <VisuallyHidden>Меню</VisuallyHidden>
-            <BurgerMenuIcon />
-          </BurgerMenu>
-        ))}
+      <Navigation links={links} />
     </Header>
   );
 };
