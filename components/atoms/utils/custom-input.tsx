@@ -1,6 +1,6 @@
 import { InputHTMLAttributes } from 'react';
 import { useUID } from 'react-uid';
-import VisuallyHidden from 'components/atoms/visually-hidden';
+import VisuallyHidden from 'components/atoms/utils/visually-hidden';
 import styled from 'styled-components';
 
 const CustomInput = ({

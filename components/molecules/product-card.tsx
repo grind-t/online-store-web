@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import Image from 'next/image';
 import { useState } from 'react';
 import { em } from 'styles/mixins';
-import CustomInput from 'components/atoms/custom-input';
+import CustomInput from 'components/atoms/utils/custom-input';
 import AddToCartButton from 'components/atoms/buttons/add-to-cart-button';
 import { ProductVariant, ProductOption } from 'lib/product';
 

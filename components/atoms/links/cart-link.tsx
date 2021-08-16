@@ -4,7 +4,7 @@ import { useMediaQuery } from '@react-hookz/web';
 import { up } from 'styles/mixins';
 import { breakpoints } from 'styles/varibles';
 import CartIcon from 'components/atoms/icons/cart-icon';
-import VisuallyHidden from 'components/atoms/visually-hidden';
+import VisuallyHidden from 'components/atoms/utils/visually-hidden';
 
 //#region styled
 const Anchor = styled.a<{ detailedStyle?: boolean }>`
