@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import { useSigninCheck } from 'reactfire';
+import { useMemo } from 'react';
 import { em, lerpByEM, up } from 'styles/mixins';
 import { breakpoints } from 'styles/varibles';
 import StandaloneBearIcon from 'components/atoms/icons/bear-icon';
@@ -60,33 +62,36 @@ const Header = styled.header`
 //#endregion
 
 const StoreHeader = () => {
-  const isSignedIn = true;
-  const links = [
-    {
-      href: '/sign-in',
-      icon: <PersonIcon />,
-      text: 'Войти',
-      display: !isSignedIn,
-    },
-    {
-      href: '/user',
-      icon: <PersonIcon />,
-      text: 'Личный кабинет',
-      display: isSignedIn,
-    },
-    {
-      href: '/orders',
-      icon: <OrdersIcon />,
-      text: 'Заказы',
-      display: isSignedIn,
-    },
-    {
-      href: '/sign-out',
-      icon: <SignOutIcon />,
-      text: 'Выйти',
-      display: isSignedIn,
-    },
-  ];
+  const isSignedIn = useSigninCheck().data?.signedIn;
+  const links = useMemo(
+    () => [
+      {
+        href: '/sign-in',
+        icon: <PersonIcon />,
+        text: 'Войти',
+        display: !isSignedIn,
+      },
+      {
+        href: '/user',
+        icon: <PersonIcon />,
+        text: 'Личный кабинет',
+        display: isSignedIn,
+      },
+      {
+        href: '/orders',
+        icon: <OrdersIcon />,
+        text: 'Заказы',
+        display: isSignedIn,
+      },
+      {
+        href: '/sign-out',
+        icon: <SignOutIcon />,
+        text: 'Выйти',
+        display: isSignedIn,
+      },
+    ],
+    [isSignedIn]
+  );
 
   return (
     <Header>

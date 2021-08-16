@@ -25,6 +25,10 @@ if (!firebase.apps.length) {
     //@ts-ignore Add firebase to window for firebaseui.
     window.firebase = firebase;
   }
+
+  if (process.env.NODE_ENV === 'development') {
+    firebase.auth().useEmulator('http://localhost:9099');
+  }
 }
 
 export default firebase;
