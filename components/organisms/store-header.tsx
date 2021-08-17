@@ -61,44 +61,26 @@ const Header = styled.header`
 `;
 //#endregion
 
+const guestLinks = [{ href: '/sign-in', icon: <PersonIcon />, text: 'Войти' }];
+
+const userLinks = [
+  { href: '/user', icon: <PersonIcon />, text: 'Личный кабинет' },
+  { href: '/orders', icon: <OrdersIcon />, text: 'Заказы' },
+  { href: '/sign-out', icon: <SignOutIcon />, text: 'Выйти' },
+];
+
 const StoreHeader = () => {
   const isSignedIn = useSigninCheck().data?.signedIn;
-  const links = useMemo(
-    () => [
-      {
-        href: '/sign-in',
-        icon: <PersonIcon />,
-        text: 'Войти',
-        display: !isSignedIn,
-      },
-      {
-        href: '/user',
-        icon: <PersonIcon />,
-        text: 'Личный кабинет',
-        display: isSignedIn,
-      },
-      {
-        href: '/orders',
-        icon: <OrdersIcon />,
-        text: 'Заказы',
-        display: isSignedIn,
-      },
-      {
-        href: '/sign-out',
-        icon: <SignOutIcon />,
-        text: 'Выйти',
-        display: isSignedIn,
-      },
-    ],
-    [isSignedIn]
-  );
 
   return (
     <Header>
       <BearIcon />
       <Heading>Самый долгий магазин цифровых товаров</Heading>
       <CartLink />
-      <Navigation links={links} />
+      <Navigation
+        links={isSignedIn ? userLinks : guestLinks}
+        hiddenLinks={isSignedIn ? guestLinks : userLinks}
+      />
     </Header>
   );
 };

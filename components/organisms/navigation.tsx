@@ -14,6 +14,7 @@ const xsFontSize = 18;
 const hoverLinkWidth = 49;
 const hoverLinkHeight = 49;
 const hoverNavQuery = `${up(breakpoints.md)} and (hover: hover)`;
+const burgerNavQuery = `not all and ${hoverNavQuery}`;
 
 const AnchorText = styled.span`
   @media ${hoverNavQuery} {
@@ -22,52 +23,52 @@ const AnchorText = styled.span`
 `;
 
 const Anchor = styled.a`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: ${em(122, xsFontSize)};
-  min-height: ${em(40, xsFontSize)};
-  margin-bottom: ${em(8, xsFontSize)};
-  border: 1.5px solid black;
-  border-radius: 30px;
-  color: inherit;
-  text-align: center;
-
-  @media ${hoverNavQuery} {
-    width: ${hoverLinkWidth}px;
-    min-height: ${hoverLinkHeight}px;
-    margin: 0 0 4px 0;
-    border: none;
+  @media ${burgerNavQuery} {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: ${em(122, xsFontSize)};
+    min-height: ${em(40, xsFontSize)};
+    margin-bottom: ${em(8, xsFontSize)};
+    border: 1.5px solid black;
+    border-radius: 30px;
+    color: inherit;
+    text-align: center;
   }
-`;
 
-const NavListItem = styled.li`
   @media ${hoverNavQuery} {
-    & ~ & {
-      visibility: hidden;
-      opacity: 0;
-      transition: opacity 500ms;
-    }
+    display: block;
+    width: ${hoverLinkWidth}px;
+    height: ${hoverLinkHeight}px;
+    margin: 0 0 4px 0;
   }
 `;
 
 const NavList = styled.ul`
-  position: relative;
-  width: fit-content;
-  margin: 1em auto 0;
   list-style: none;
+
+  @media ${burgerNavQuery} {
+    position: relative;
+    width: fit-content;
+    margin: 1em auto 0;
+  }
 
   @media ${hoverNavQuery} {
     position: absolute;
     top: 0;
     left: 0;
     max-height: 100%;
-    margin: 0;
 
-    &:hover {
+    li + li {
+      visibility: hidden;
+      opacity: 0;
+      transition: visibility 500ms, opacity 500ms;
+    }
+
+    :hover {
       max-height: none;
 
-      ${NavListItem} {
+      li {
         visibility: visible;
         opacity: 1;
       }
@@ -75,28 +76,34 @@ const NavList = styled.ul`
   }
 `;
 
-const Nav = styled.nav<{ isVisible?: boolean }>`
-  display: ${(props) => (props.isVisible ? 'block' : 'none')};
-  position: absolute;
-  top: 100%;
-  left: 0;
-  width: 100%;
-  min-height: 100vh;
-  background: white;
-  border-top: 1px solid #e5e5e5;
-  z-index: 3;
+const Nav = styled.nav<{ isBurgerNav?: boolean; isBurgerOpen?: boolean }>`
+  @media ${burgerNavQuery} {
+    ${(props) => !props.isBurgerNav && 'display: none;'}
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    min-height: 100vh;
+    background: white;
+    border-top: 1px solid #e5e5e5;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 200ms, opacity 200ms;
+    z-index: 3;
+
+    ${(props) => props.isBurgerOpen && 'visibility: visible; opacity: 1;'}
+  }
 
   @media ${hoverNavQuery} {
+    ${(props) => props.isBurgerNav && 'display: none;'}
     position: relative;
     width: ${hoverLinkWidth}px;
     min-height: ${hoverLinkHeight}px;
-    background: none;
-    border: none;
   }
 `;
 
 const BurgerMenuIcon = styled(StandaloneBurgerMenuIcon)`
-  width: ${em(22, xsFontSize)};
+  width: 100%;
 `;
 
 const CloseIcon = styled(CrossIcon)`
@@ -104,7 +111,7 @@ const CloseIcon = styled(CrossIcon)`
 `;
 
 const BurgerMenu = styled.button.attrs({ type: 'button' })`
-  min-width: ${em(22, xsFontSize)};
+  width: ${em(22, xsFontSize)};
   background: none;
   border: none;
   line-height: 0;
@@ -116,7 +123,6 @@ interface NavLinkProps {
   href: string;
   text: string;
   icon?: ReactNode;
-  display?: boolean;
 }
 
 const NavLink = ({ href, text, icon }: NavLinkProps) => (
@@ -130,45 +136,51 @@ const NavLink = ({ href, text, icon }: NavLinkProps) => (
 
 interface NavigationProps {
   links: NavLinkProps[];
+  hiddenLinks?: NavLinkProps[];
   className?: string;
 }
 
-const Navigation = ({ links, className }: NavigationProps) => {
-  const [isModalOpen, showModal] = useState(false);
+const Navigation = ({ links, hiddenLinks, className }: NavigationProps) => {
   const isHoverNav = useMediaQuery(hoverNavQuery);
+  const isBurgerNav = !isHoverNav;
   const isClient = isHoverNav !== undefined;
+  const [isBurgerOpen, showBurgerNav] = useState(false);
 
   useEffect(() => {
-    document.body.style.overflow = isModalOpen ? 'hidden' : '';
-  }, [isModalOpen]);
+    document.body.style.overflow = isBurgerOpen ? 'hidden' : '';
+  }, [isBurgerOpen]);
 
   return (
     <>
-      <Nav className={className} isVisible={isModalOpen || isHoverNav}>
+      <Nav
+        className={className}
+        isBurgerNav={isBurgerNav}
+        isBurgerOpen={isBurgerOpen}
+      >
         <NavList>
-          {links.map((link) =>
-            link.display ? (
-              <NavListItem key={link.href}>
-                <NavLink
-                  href={link.href}
-                  text={link.text}
-                  icon={isHoverNav && link.icon}
-                />
-              </NavListItem>
-            ) : (
+          {links.map((link) => (
+            <li key={link.href}>
+              <NavLink
+                href={link.href}
+                text={link.text}
+                icon={isHoverNav && link.icon}
+              />
+            </li>
+          ))}
+          {hiddenLinks &&
+            hiddenLinks.map((link) => (
               <DisplayNone as="li" key={link.href}>
                 <NavLink href={link.href} text={link.text} />
               </DisplayNone>
-            )
-          )}
+            ))}
         </NavList>
       </Nav>
-      {isClient && !isHoverNav && (
-        <BurgerMenu onClick={() => showModal((v) => !v)}>
+      {isClient && isBurgerNav && (
+        <BurgerMenu onClick={() => showBurgerNav((v) => !v)}>
           <VisuallyHidden>
-            {isModalOpen ? 'Открыть меню' : 'Закрыть меню'}
+            {isBurgerOpen ? 'Закрыть меню' : 'Открыть меню'}
           </VisuallyHidden>
-          {isModalOpen ? <CloseIcon /> : <BurgerMenuIcon />}
+          {isBurgerOpen ? <CloseIcon /> : <BurgerMenuIcon />}
         </BurgerMenu>
       )}
     </>
