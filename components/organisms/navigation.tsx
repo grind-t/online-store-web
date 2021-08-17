@@ -103,7 +103,7 @@ const Nav = styled.nav<{ isBurgerNav?: boolean; isBurgerOpen?: boolean }>`
 `;
 
 const BurgerMenuIcon = styled(StandaloneBurgerMenuIcon)`
-  width: 100%;
+  width: ${em(22, xsFontSize)};
 `;
 
 const CloseIcon = styled(CrossIcon)`
