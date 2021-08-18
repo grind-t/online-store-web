@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import Head from 'next/head';
 import Script from 'next/script';
 import firebase from 'firebase/client';
+import { useEffect } from 'react';
 
 //#region styled
 const Page = styled.div`
@@ -17,8 +18,14 @@ const Main = styled.main`
 //#endregion
 
 function initUI() {
-  //@ts-ignore
-  const ui = new window.firebaseui.auth.AuthUI(firebase.auth());
+  // @ts-ignore
+  const firebaseUI = window.firebaseui;
+  if (!firebaseUI) return;
+
+  const ui =
+    firebaseUI.auth.AuthUI.getInstance() ||
+    new firebaseUI.auth.AuthUI(firebase.auth());
+
   ui.start('#firebaseui-auth-container', {
     signInOptions: [
       {
@@ -35,6 +42,7 @@ function initUI() {
 }
 
 const SignIn = () => {
+  useEffect(initUI, []);
   return (
     <Page>
       <Script
