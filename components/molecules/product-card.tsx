@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 import Image from 'next/image';
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { em } from 'styles/mixins';
 import CustomInput from 'components/atoms/utils/custom-input';
 import AddToCartButton from 'components/atoms/buttons/add-to-cart-button';
-import { ProductVariant, ProductOption } from 'lib/product';
+import { Product, getVariant, selectInitialOptions } from 'lib/product';
 
 //#region styled
 // https://github.com/vercel/next.js/discussions/18312
@@ -53,46 +53,44 @@ const PurchaseContainer = styled.div`
 //#endregion
 
 interface ProductCardProps {
-  options?: ProductOption[];
-  variants: Record<string, ProductVariant>;
+  product: Product;
 }
 
-const ProductCard = ({ options, variants }: ProductCardProps) => {
-  const initialOptions = () => options.map((option) => option.values[0]);
-  const [selectedOptions, setSelectedOptions] = useState(initialOptions);
-  const variantPath = selectedOptions.join('/');
-  const variant = variants[variantPath];
+const ProductCard = ({ product }: ProductCardProps) => {
+  const [selectedOptions, setSelectedOptions] = useState(() =>
+    selectInitialOptions(product.options)
+  );
+  const variant = getVariant(product.variants, selectedOptions);
+  const image = variant.image || product.image;
+  const price = variant.price || product.price;
 
-  const handleOptionChange = (index: number, value: string) => {
-    setSelectedOptions((selected) => [
-      ...selected.slice(0, index),
-      value,
-      ...selected.slice(index + 1),
-    ]);
+  const handleOptionChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setSelectedOptions((prev) => ({ ...prev, [name]: value }));
   };
 
   return (
     <>
       <ImageContainer>
         <Image
-          src={variant.image.url}
-          alt={variant.image.alt}
+          src={image.url}
+          alt={image.alt}
           width="360"
           height="313"
           quality={100}
         />
       </ImageContainer>
-      {options && (
+      {product.options && (
         <OptionsContainer>
-          {options.map((option, index) => (
-            <OptionGroup key={option.name}>
-              {option.values.map((value) => (
+          {product.options.map(({ name, values }) => (
+            <OptionGroup key={name}>
+              {values.map((value) => (
                 <Option
                   key={value}
-                  name={option.name}
+                  name={name}
                   value={value}
-                  checked={selectedOptions[index] === value}
-                  onChange={() => handleOptionChange(index, value)}
+                  checked={selectedOptions[name] === value}
+                  onChange={handleOptionChange}
                 >
                   {value}
                 </Option>
@@ -102,7 +100,7 @@ const ProductCard = ({ options, variants }: ProductCardProps) => {
         </OptionsContainer>
       )}
       <PurchaseContainer>
-        <Price>от {variant.price.value} ₽</Price>
+        <Price>от {price.value} ₽</Price>
         <AddToCartButton />
       </PurchaseContainer>
     </>

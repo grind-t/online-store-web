@@ -74,10 +74,7 @@ const ProductsView = ({ initialProducts }: ProductsViewProps) => {
         {initialProducts &&
           initialProducts.map((product) => (
             <li key={product.id}>
-              <ProductCard
-                options={product.options}
-                variants={product.variants}
-              />
+              <ProductCard product={product} />
             </li>
           ))}
       </ProductList>

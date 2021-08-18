@@ -6,7 +6,7 @@ import StoreHeader from 'components/organisms/store-header';
 import ProductsView, { ProductList } from 'components/organisms/products-view';
 import { breakpoints } from 'styles/varibles';
 import { up } from 'styles/mixins';
-import { productConverter } from 'lib/product';
+import { getProductsFromFirestore } from 'lib/product';
 import admin from 'firebase/server';
 
 //#region styled
@@ -54,11 +54,8 @@ const Home = ({ products }: InferGetStaticPropsType<typeof getStaticProps>) => {
 
 export async function getStaticProps() {
   const db = admin.firestore();
-  const snapshot = await db
-    .collection('products')
-    .withConverter(productConverter)
-    .get();
-  const products = snapshot.docs.map((v) => v.data());
+  const products = await getProductsFromFirestore(db);
+
   return {
     props: {
       products,

@@ -14,8 +14,10 @@ interface ProductOption {
 }
 
 interface ProductVariant {
-  image: ProductImage;
-  price: ProductPrice;
+  id: string;
+  options: Record<string, string>;
+  image?: ProductImage;
+  price?: ProductPrice;
   quantity: number;
 }
 
@@ -23,29 +25,60 @@ interface Product {
   id: string;
   name: string;
   description: string;
-  image?: ProductImage;
-  price?: ProductPrice;
+  image: ProductImage;
+  price: ProductPrice;
   options?: ProductOption[];
-  variants: Record<string, ProductVariant>;
+  variants: ProductVariant[];
 }
 
-const productConverter: FirebaseFirestore.FirestoreDataConverter<Product> = {
-  toFirestore: (product: Product) => {
-    const { id, ...rest } = product;
-    return rest;
-  },
-  fromFirestore: (snap: FirebaseFirestore.QueryDocumentSnapshot) => {
-    const product = { id: snap.id, ...snap.data() } as Product;
-    // Populate variants with base product image and price.
-    Object.values(product.variants).forEach((v) => {
-      v.image = v.image ?? product.image;
-      v.price = v.price ?? product.price;
-    });
-    return product;
-  },
-};
+function getVariant(
+  variants: ProductVariant[],
+  selectedOptions?: Record<string, string>
+): ProductVariant {
+  if (!selectedOptions) return variants[0];
+  const keys = Object.keys(selectedOptions);
+  return variants.find((variant) =>
+    keys.every((key) => selectedOptions[key] === variant.options[key])
+  );
+}
 
-export { productConverter };
+function selectInitialOptions(
+  options?: ProductOption[]
+): Record<string, string> | null {
+  if (!options) return null;
+  let record = {};
+  for (const option of options) record[option.name] = option.values[0];
+  return record;
+}
+
+async function getVariantsFromFirestore(
+  productDocRef: FirebaseFirestore.DocumentReference<FirebaseFirestore.DocumentData>
+): Promise<ProductVariant[]> {
+  const snap = await productDocRef.collection('variants').get();
+  const variants = new Array(snap.docs.length);
+  for (let i = 0; i < variants.length; i++) {
+    const doc = snap.docs[i];
+    variants[i] = doc.data();
+    variants[i].id = doc.id;
+  }
+  return variants;
+}
+
+async function getProductsFromFirestore(
+  db: FirebaseFirestore.Firestore
+): Promise<Product[]> {
+  const snap = await db.collection('products').get();
+  const products = new Array(snap.docs.length);
+  for (let i = 0; i < products.length; i++) {
+    const doc = snap.docs[i];
+    products[i] = doc.data();
+    products[i].id = doc.id;
+    products[i].variants = await getVariantsFromFirestore(doc.ref);
+  }
+  return products;
+}
+
+export { getVariant, selectInitialOptions, getProductsFromFirestore };
 export type {
   Product,
   ProductVariant,
