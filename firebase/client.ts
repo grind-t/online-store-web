@@ -1,7 +1,8 @@
 import firebase from 'firebase/app';
-import 'firebase/auth'; // If you need it
-import 'firebase/analytics'; // If you need it
-import 'firebase/performance'; // If you need it
+import 'firebase/auth';
+import 'firebase/firestore';
+import 'firebase/analytics';
+import 'firebase/performance';
 
 const clientCredentials = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -28,6 +29,7 @@ if (!firebase.apps.length) {
 
   if (process.env.NODE_ENV === 'development') {
     firebase.auth().useEmulator('http://localhost:9099');
+    firebase.firestore().useEmulator('localhost', 8080);
   }
 }
 
