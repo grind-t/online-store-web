@@ -27,6 +27,7 @@ function initUI() {
     new firebaseUI.auth.AuthUI(firebase.auth());
 
   ui.start('#firebaseui-auth-container', {
+    signInSuccessUrl: window.location.origin,
     signInOptions: [
       {
         provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
