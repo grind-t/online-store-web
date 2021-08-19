@@ -1,6 +1,4 @@
 import styled from 'styled-components';
-import { useSigninCheck } from 'reactfire';
-import { useMemo } from 'react';
 import { em, lerpByEM, up } from 'styles/mixins';
 import { breakpoints } from 'styles/varibles';
 import StandaloneBearIcon from 'components/atoms/icons/bear-icon';
@@ -9,6 +7,8 @@ import PersonIcon from 'components/atoms/icons/person-icon';
 import OrdersIcon from 'components/atoms/icons/orders-icon';
 import SignOutIcon from 'components/atoms/icons/sign-out-icon';
 import Navigation from 'components/organisms/navigation';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { useEffect, useState } from 'react';
 
 //#region styled
 const xsFontSize = 18;
@@ -70,7 +70,11 @@ const userLinks = [
 ];
 
 const StoreHeader = () => {
-  const isSignedIn = useSigninCheck().data?.signedIn;
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    return onAuthStateChanged(getAuth(), setUser);
+  }, []);
 
   return (
     <Header>
@@ -78,8 +82,8 @@ const StoreHeader = () => {
       <Heading>Самый долгий магазин цифровых товаров</Heading>
       <CartLink />
       <Navigation
-        links={isSignedIn ? userLinks : guestLinks}
-        hiddenLinks={isSignedIn ? guestLinks : userLinks}
+        links={user ? userLinks : guestLinks}
+        hiddenLinks={user ? guestLinks : userLinks}
       />
     </Header>
   );

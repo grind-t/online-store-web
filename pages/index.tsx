@@ -7,7 +7,7 @@ import ProductsView, { ProductList } from 'components/organisms/products-view';
 import { breakpoints } from 'styles/varibles';
 import { up } from 'styles/mixins';
 import { getProductsFromFirestore } from 'lib/product';
-import admin from 'firebase/server';
+import admin from 'next-firebase/server-app';
 
 //#region styled
 const Main = styled.main`

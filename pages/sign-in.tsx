@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 import Head from 'next/head';
 import Script from 'next/script';
-import firebase from 'firebase/client';
+import firebase from 'next-firebase/client-app/compat';
+import 'firebase/compat/auth';
 import { useEffect } from 'react';
 
 //#region styled

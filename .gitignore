@@ -37,4 +37,4 @@ ui-debug.log*
 .vercel
 
 # firebase
-/firebase/serviceAccountKey.json
+/next-firebase/server-app/serviceAccountKey.json
