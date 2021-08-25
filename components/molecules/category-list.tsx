@@ -1,8 +1,8 @@
-import styled from 'styled-components';
 import { useEffect, useRef } from 'react';
+import ScrollBooster from 'scrollbooster';
+import styled from 'styled-components';
 import { em, lerpByEM, up } from 'styles/mixins';
 import { breakpoints } from 'styles/varibles';
-import ScrollBooster from 'scrollbooster';
 
 //#region styled
 const minFontSize = 14;

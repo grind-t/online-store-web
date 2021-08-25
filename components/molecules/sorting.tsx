@@ -1,8 +1,8 @@
-import styled from 'styled-components';
+import StandaloneArrowIcon from 'components/atoms/icons/arrow-icon';
 import { useSelect } from 'downshift';
 import { useUID } from 'react-uid';
+import styled from 'styled-components';
 import { em } from 'styles/mixins';
-import StandaloneArrowIcon from 'components/atoms/icons/arrow-icon';
 
 //#region styled
 const ArrowIcon = styled(StandaloneArrowIcon)<{ down?: boolean }>`

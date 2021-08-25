@@ -1,6 +1,6 @@
-import { useUID } from 'react-uid';
 import MinusIcon from 'components/atoms/icons/minus-icon';
 import PlusIcon from 'components/atoms/icons/plus-icon';
+import { useUID } from 'react-uid';
 import styled, { css } from 'styled-components';
 
 //#region

@@ -1,13 +1,13 @@
-import styled from 'styled-components';
-import Link from 'next/link';
 import { useMediaQuery } from '@react-hookz/web';
-import { ReactNode, useEffect, useState } from 'react';
-import { hideVisually, up, em } from 'styles/mixins';
-import { breakpoints } from 'styles/varibles';
-import DisplayNone from 'components/atoms/utils/display-none';
 import StandaloneBurgerMenuIcon from 'components/atoms/icons/burger-menu-icon';
 import CrossIcon from 'components/atoms/icons/cross-icon';
+import DisplayNone from 'components/atoms/utils/display-none';
 import VisuallyHidden from 'components/atoms/utils/visually-hidden';
+import Link from 'next/link';
+import { ReactNode, useEffect, useState } from 'react';
+import styled from 'styled-components';
+import { hideVisually, up, em } from 'styles/mixins';
+import { breakpoints } from 'styles/varibles';
 
 //#region styled
 const xsFontSize = 18;

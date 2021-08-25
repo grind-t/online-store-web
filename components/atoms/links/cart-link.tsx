@@ -1,10 +1,10 @@
-import styled, { css } from 'styled-components';
-import Link from 'next/link';
 import { useMediaQuery } from '@react-hookz/web';
-import { up } from 'styles/mixins';
-import { breakpoints } from 'styles/varibles';
 import CartIcon from 'components/atoms/icons/cart-icon';
 import VisuallyHidden from 'components/atoms/utils/visually-hidden';
+import Link from 'next/link';
+import styled, { css } from 'styled-components';
+import { up } from 'styles/mixins';
+import { breakpoints } from 'styles/varibles';
 
 //#region styled
 const Anchor = styled.a<{ detailedStyle?: boolean }>`
