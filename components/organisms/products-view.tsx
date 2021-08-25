@@ -1,10 +1,13 @@
-import styled from 'styled-components';
+import { useAppDispatch } from 'app/redux/hooks';
+import { productsUpdated } from 'app/redux/products-slice';
 import CategoryList from 'components/molecules/category-list';
-import Sorting from 'components/molecules/sorting';
 import ProductCard from 'components/molecules/product-card';
-import { breakpoints } from 'styles/varibles';
+import Sorting from 'components/molecules/sorting';
+import { ProductsWithVariants } from 'lib/products';
+import { useEffect } from 'react';
+import styled from 'styled-components';
 import { up } from 'styles/mixins';
-import { Product } from 'lib/product';
+import { breakpoints } from 'styles/varibles';
 
 //#region styled
 const ViewOptions = styled.div`
@@ -57,10 +60,17 @@ const ProductList = styled.ul`
 //#endregion
 
 interface ProductsViewProps {
-  initialProducts?: Product[];
+  initialProducts?: ProductsWithVariants;
 }
 
 const ProductsView = ({ initialProducts }: ProductsViewProps) => {
+  const products = initialProducts;
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(productsUpdated(initialProducts));
+  }, [initialProducts, dispatch]);
+
   return (
     <>
       <ViewOptions>
@@ -71,12 +81,11 @@ const ProductsView = ({ initialProducts }: ProductsViewProps) => {
         />
       </ViewOptions>
       <ProductList>
-        {initialProducts &&
-          initialProducts.map((product) => (
-            <li key={product.id}>
-              <ProductCard product={product} />
-            </li>
-          ))}
+        {Object.values(products).map(([product, variants]) => (
+          <li key={product.id}>
+            <ProductCard product={product} variants={variants} />
+          </li>
+        ))}
       </ProductList>
     </>
   );
