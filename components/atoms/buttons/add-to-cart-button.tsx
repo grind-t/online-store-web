@@ -1,5 +1,5 @@
-import styled from 'styled-components';
 import PlusIcon from 'components/atoms/icons/plus-icon';
+import styled from 'styled-components';
 
 //#region styled
 const Icon = styled(PlusIcon)`
@@ -30,14 +30,20 @@ const Button = styled.button`
   border-radius: 30px;
   color: #eb5a1e;
   font-weight: bold;
+  line-height: 1;
 `;
 //#endregion
 
-const AddToCartButton = () => (
-  <Button>
+interface AddToCartButtonProps {
+  count: number;
+  onClick: () => void;
+}
+
+const AddToCartButton = ({ count, onClick }: AddToCartButtonProps) => (
+  <Button onClick={onClick}>
     <Icon />
     Добавить
-    <Count>0</Count>
+    <Count>{count}</Count>
   </Button>
 );
 
