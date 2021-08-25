@@ -1,13 +1,15 @@
-import styled from 'styled-components';
-import Head from 'next/head';
-import { InferGetStaticPropsType } from 'next';
-import PageTemplate, { pageMargin } from 'components/templates/page-template';
-import StoreHeader from 'components/organisms/store-header';
+import admin from 'app/firebase-admin';
+import { path } from 'app/firebase/firestore';
 import ProductsView, { ProductList } from 'components/organisms/products-view';
-import { breakpoints } from 'styles/varibles';
+import StoreHeader from 'components/organisms/store-header';
+import PageTemplate, { pageMargin } from 'components/templates/page-template';
+import { Product, ProductVariant, ProductVariants } from 'lib/product';
+import { ProductsWithVariants } from 'lib/products';
+import { InferGetStaticPropsType } from 'next';
+import Head from 'next/head';
+import styled from 'styled-components';
 import { up } from 'styles/mixins';
-import { getProductsFromFirestore } from 'lib/product';
-import admin from 'next-firebase/server-app';
+import { breakpoints } from 'styles/varibles';
 
 //#region styled
 const Main = styled.main`
@@ -54,11 +56,22 @@ const Home = ({ products }: InferGetStaticPropsType<typeof getStaticProps>) => {
 
 export async function getStaticProps() {
   const db = admin.firestore();
-  const products = await getProductsFromFirestore(db);
+  const productsWithVariants: ProductsWithVariants = {};
+  const productsSnap = await db.collection(path.products).get();
+  for (const productDoc of productsSnap.docs) {
+    const product = { id: productDoc.id, ...productDoc.data() };
+    const variants: ProductVariants = {};
+    const variantsSnap = await productDoc.ref.collection(path.variants).get();
+    for (const variantDoc of variantsSnap.docs) {
+      const variant = { id: variantDoc.id, ...variantDoc.data() };
+      variants[variant.id] = variant as ProductVariant;
+    }
+    productsWithVariants[product.id] = [product as Product, variants];
+  }
 
   return {
     props: {
-      products,
+      products: productsWithVariants,
     },
     revalidate: 10,
   };
