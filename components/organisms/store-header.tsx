@@ -1,14 +1,14 @@
+import { selectUser } from 'app/redux/user-slice';
+import StandaloneBearIcon from 'components/atoms/icons/bear-icon';
+import OrdersIcon from 'components/atoms/icons/orders-icon';
+import PersonIcon from 'components/atoms/icons/person-icon';
+import SignOutIcon from 'components/atoms/icons/sign-out-icon';
+import StandaloneCartLink from 'components/atoms/links/cart-link';
+import Navigation from 'components/organisms/navigation';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { em, lerpByEM, up } from 'styles/mixins';
 import { breakpoints } from 'styles/varibles';
-import StandaloneBearIcon from 'components/atoms/icons/bear-icon';
-import StandaloneCartLink from 'components/atoms/links/cart-link';
-import PersonIcon from 'components/atoms/icons/person-icon';
-import OrdersIcon from 'components/atoms/icons/orders-icon';
-import SignOutIcon from 'components/atoms/icons/sign-out-icon';
-import Navigation from 'components/organisms/navigation';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { useEffect, useState } from 'react';
 
 //#region styled
 const xsFontSize = 18;
@@ -70,11 +70,7 @@ const userLinks = [
 ];
 
 const StoreHeader = () => {
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    return onAuthStateChanged(getAuth(), setUser);
-  }, []);
+  const user = useSelector(selectUser);
 
   return (
     <Header>
