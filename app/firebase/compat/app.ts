@@ -12,6 +12,12 @@ if (!firebase.apps.length) {
     //@ts-ignore firebaseui need it.
     window.firebase = firebase;
   }
+  if (process.env.NODE_ENV === 'development') {
+    require('firebase/compat/auth');
+    require('firebase/compat/firestore');
+    firebase.auth().useEmulator('http://localhost:9099');
+    firebase.firestore().useEmulator('localhost', 8080);
+  }
 }
 
 export default firebase;
