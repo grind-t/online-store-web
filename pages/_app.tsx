@@ -1,8 +1,9 @@
+import store from 'app/redux/store';
 import { AppProps } from 'next/app';
-import { createGlobalStyle } from 'styled-components';
+import { Provider } from 'react-redux';
 import { UIDReset } from 'react-uid';
+import { createGlobalStyle } from 'styled-components';
 import { miniReset, nunitoFont } from 'styles/mixins';
-import { initializeClientApp } from 'next-firebase/client-app';
 
 const GlobalStyle = createGlobalStyle`
   ${nunitoFont()}
@@ -20,22 +21,13 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const App = ({ Component, pageProps }: AppProps) => {
-  initializeClientApp();
-  if (process.env.NODE_ENV === 'development') {
-    const { getAuth, connectAuthEmulator } = require('firebase/auth');
-    const {
-      getFirestore,
-      connectFirestoreEmulator,
-    } = require('firebase/firestore');
-    connectAuthEmulator(getAuth(), 'http://localhost:9099');
-    connectFirestoreEmulator(getFirestore(), 'localhost', 8080);
-  }
-
   return (
     <>
       <GlobalStyle />
       <UIDReset>
-        <Component {...pageProps} />
+        <Provider store={store}>
+          <Component {...pageProps} />
+        </Provider>
       </UIDReset>
     </>
   );
