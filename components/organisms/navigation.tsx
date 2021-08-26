@@ -1,7 +1,6 @@
 import { useMediaQuery } from '@react-hookz/web';
 import StandaloneBurgerMenuIcon from 'components/atoms/icons/burger-menu-icon';
 import CrossIcon from 'components/atoms/icons/cross-icon';
-import DisplayNone from 'components/atoms/utils/display-none';
 import VisuallyHidden from 'components/atoms/utils/visually-hidden';
 import Link from 'next/link';
 import { ReactNode, useEffect, useState } from 'react';
@@ -11,18 +10,22 @@ import { breakpoints } from 'styles/varibles';
 
 //#region styled
 const xsFontSize = 18;
-const hoverLinkWidth = 49;
-const hoverLinkHeight = 49;
+const hoverItemWidth = 49;
+const hoverItemHeight = 49;
 const hoverNavQuery = `${up(breakpoints.md)} and (hover: hover)`;
 const burgerNavQuery = `not all and ${hoverNavQuery}`;
 
-const AnchorText = styled.span`
+const NavItemText = styled.span`
   @media ${hoverNavQuery} {
     ${hideVisually()}
   }
 `;
 
-const Anchor = styled.a`
+const NavItem = styled.span`
+  background: none;
+  border: none;
+  cursor: pointer;
+
   @media ${burgerNavQuery} {
     display: flex;
     align-items: center;
@@ -38,8 +41,8 @@ const Anchor = styled.a`
 
   @media ${hoverNavQuery} {
     display: block;
-    width: ${hoverLinkWidth}px;
-    height: ${hoverLinkHeight}px;
+    width: ${hoverItemWidth}px;
+    height: ${hoverItemHeight}px;
     margin: 0 0 4px 0;
   }
 `;
@@ -58,6 +61,7 @@ const NavList = styled.ul`
     top: 0;
     left: 0;
     max-height: 100%;
+    z-index: 2;
 
     li + li {
       visibility: hidden;
@@ -89,7 +93,7 @@ const Nav = styled.nav<{ isBurgerNav?: boolean; isBurgerOpen?: boolean }>`
     visibility: hidden;
     opacity: 0;
     transition: visibility 200ms, opacity 200ms;
-    z-index: 3;
+    z-index: 2;
 
     ${(props) => props.isBurgerOpen && 'visibility: visible; opacity: 1;'}
   }
@@ -97,8 +101,8 @@ const Nav = styled.nav<{ isBurgerNav?: boolean; isBurgerOpen?: boolean }>`
   @media ${hoverNavQuery} {
     ${(props) => props.isBurgerNav && 'display: none;'}
     position: relative;
-    width: ${hoverLinkWidth}px;
-    min-height: ${hoverLinkHeight}px;
+    width: ${hoverItemWidth}px;
+    min-height: ${hoverItemHeight}px;
   }
 `;
 
@@ -119,28 +123,72 @@ const BurgerMenu = styled.button.attrs({ type: 'button' })`
 `;
 //#endregion
 
-interface NavLinkProps {
+interface NavigationLinkProps {
   href: string;
   text: string;
   icon?: ReactNode;
 }
 
-const NavLink = ({ href, text, icon }: NavLinkProps) => (
+const NavigationLink = ({ href, text, icon }: NavigationLinkProps) => (
   <Link href={href} passHref>
-    <Anchor>
-      <AnchorText>{text}</AnchorText>
+    <NavItem as="a">
+      <NavItemText>{text}</NavItemText>
       {icon}
-    </Anchor>
+    </NavItem>
   </Link>
 );
 
-interface NavigationProps {
-  links: NavLinkProps[];
-  hiddenLinks?: NavLinkProps[];
+interface NavigationButtonProps {
+  text: string;
+  icon?: ReactNode;
+  onClick?: () => void;
+}
+
+const NavigationButton = ({ text, icon, onClick }: NavigationButtonProps) => (
+  <NavItem as="button" onClick={onClick}>
+    <NavItemText>{text}</NavItemText>
+    {icon}
+  </NavItem>
+);
+
+type NavigationItemProps = NavigationItem & { showIcon?: boolean };
+
+const NavigationItem = (props: NavigationItemProps) =>
+  'href' in props ? (
+    <NavigationLink
+      href={props.href}
+      text={props.text}
+      icon={props.showIcon && props.icon}
+    />
+  ) : (
+    <NavigationButton
+      text={props.text}
+      icon={props.showIcon && props.icon}
+      onClick={props.onClick}
+    />
+  );
+
+export interface NavigationLink {
+  text: string;
+  icon: ReactNode;
+  href: string;
+}
+
+export interface NavigationButton {
+  text: string;
+  icon: ReactNode;
+  onClick: () => void;
+}
+
+export type NavigationItem = NavigationLink | NavigationButton;
+
+export interface NavigationProps {
+  items: NavigationItem[];
+  hiddenItems?: NavigationItem[];
   className?: string;
 }
 
-const Navigation = ({ links, hiddenLinks, className }: NavigationProps) => {
+const Navigation = ({ items, hiddenItems, className }: NavigationProps) => {
   const isHoverNav = useMediaQuery(hoverNavQuery);
   const isBurgerNav = !isHoverNav;
   const isClient = isHoverNav !== undefined;
@@ -158,20 +206,16 @@ const Navigation = ({ links, hiddenLinks, className }: NavigationProps) => {
         isBurgerOpen={isBurgerOpen}
       >
         <NavList>
-          {links.map((link) => (
-            <li key={link.href}>
-              <NavLink
-                href={link.href}
-                text={link.text}
-                icon={isHoverNav && link.icon}
-              />
+          {items.map((item) => (
+            <li key={item.text}>
+              <NavigationItem {...item} showIcon={isHoverNav} />
             </li>
           ))}
-          {hiddenLinks &&
-            hiddenLinks.map((link) => (
-              <DisplayNone as="li" key={link.href}>
-                <NavLink href={link.href} text={link.text} />
-              </DisplayNone>
+          {hiddenItems &&
+            hiddenItems.map((item) => (
+              <li style={{ display: 'none' }} key={item.text}>
+                <NavigationItem {...item} />
+              </li>
             ))}
         </NavList>
       </Nav>

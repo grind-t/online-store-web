@@ -1,10 +1,11 @@
+import { getAppAuth, signOut } from 'app/firebase/auth';
 import { selectUser } from 'app/redux/user-slice';
 import StandaloneBearIcon from 'components/atoms/icons/bear-icon';
 import OrdersIcon from 'components/atoms/icons/orders-icon';
 import PersonIcon from 'components/atoms/icons/person-icon';
 import SignOutIcon from 'components/atoms/icons/sign-out-icon';
 import StandaloneCartLink from 'components/atoms/links/cart-link';
-import Navigation from 'components/organisms/navigation';
+import Navigation, { NavigationItem } from 'components/organisms/navigation';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { em, lerpByEM, up } from 'styles/mixins';
@@ -61,12 +62,18 @@ const Header = styled.header`
 `;
 //#endregion
 
-const guestLinks = [{ href: '/sign-in', icon: <PersonIcon />, text: 'Войти' }];
+const guestNav: NavigationItem[] = [
+  { href: '/sign-in', icon: <PersonIcon />, text: 'Войти' },
+];
 
-const userLinks = [
+const userNav: NavigationItem[] = [
   { href: '/user', icon: <PersonIcon />, text: 'Личный кабинет' },
   { href: '/orders', icon: <OrdersIcon />, text: 'Заказы' },
-  { href: '/sign-out', icon: <SignOutIcon />, text: 'Выйти' },
+  {
+    text: 'Выйти',
+    icon: <SignOutIcon />,
+    onClick: () => signOut(getAppAuth()),
+  },
 ];
 
 const StoreHeader = () => {
@@ -78,8 +85,8 @@ const StoreHeader = () => {
       <Heading>Самый долгий магазин цифровых товаров</Heading>
       <CartLink />
       <Navigation
-        links={user ? userLinks : guestLinks}
-        hiddenLinks={user ? guestLinks : userLinks}
+        items={user ? userNav : guestNav}
+        hiddenItems={user ? guestNav : userNav}
       />
     </Header>
   );
