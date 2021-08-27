@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import styled from 'styled-components';
 
 //#region styled
-const Button = styled.button`
+const Button = styled.button.attrs({ type: 'button' })`
   display: inline-flex;
   justify-content: center;
   align-items: center;

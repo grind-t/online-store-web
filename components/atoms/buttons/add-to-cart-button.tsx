@@ -20,7 +20,7 @@ const Count = styled.span`
   font-size: 13px;
 `;
 
-const Button = styled.button`
+const Button = styled.button.attrs({ type: 'button' })`
   display: inline-flex;
   align-items: center;
   justify-content: center;

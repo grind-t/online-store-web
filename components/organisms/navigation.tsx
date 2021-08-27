@@ -145,7 +145,7 @@ interface NavigationButtonProps {
 }
 
 const NavigationButton = ({ text, icon, onClick }: NavigationButtonProps) => (
-  <NavItem as="button" onClick={onClick}>
+  <NavItem as="button" type="button" onClick={onClick}>
     <NavItemText>{text}</NavItemText>
     {icon}
   </NavItem>

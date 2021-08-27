@@ -10,7 +10,7 @@ const maxFontSize = 18;
 const lerpByFontSize = (from: number, to: number) =>
   lerpByEM(from, to, minFontSize, maxFontSize);
 
-const CategoryButton = styled.button`
+const CategoryButton = styled.button.attrs({ type: 'button' })`
   min-width: ${lerpByFontSize(14, 18)};
   padding: ${lerpByFontSize(4, 11)} ${lerpByFontSize(10, 18)};
   background: #282828;

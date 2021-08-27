@@ -19,7 +19,7 @@ const PlusIcon = styled(StandalonePlusIcon)`
   height: 0.43em;
 `;
 
-const Button = styled.button`
+const Button = styled.button.attrs({ type: 'button' })`
   display: inline-flex;
   justify-content: center;
   align-items: center;
