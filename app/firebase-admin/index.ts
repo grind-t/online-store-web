@@ -26,30 +26,21 @@ if (process.env.NODE_ENV === 'development') {
           Формат: 'Электронный',
           Длительность: '1 месяц',
         },
-        price: {
-          value: 100,
-          currency: 'RUB',
-        },
+        price: 10000,
       },
       sample2: {
         options: {
           Формат: 'Электронный',
           Длительность: '3 месяца',
         },
-        price: {
-          value: 200,
-          currency: 'RUB',
-        },
+        price: 20000,
       },
       sample3: {
         options: {
           Формат: 'Электронный',
           Длительность: '12 месяцев',
         },
-        price: {
-          value: 300,
-          currency: 'RUB',
-        },
+        price: 30000,
       },
     },
   };

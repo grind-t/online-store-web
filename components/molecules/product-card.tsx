@@ -2,6 +2,8 @@ import { lineItemChanged, selectLineItem } from 'app/redux/cart-slice';
 import { useAppSelector } from 'app/redux/hooks';
 import AddToCartButton from 'components/atoms/buttons/add-to-cart-button';
 import CustomInput from 'components/atoms/utils/custom-input';
+import { dinero } from 'dinero.js';
+import { defaultCurrency, formatPrice } from 'lib/checkout';
 import { Product, getVariant, selectInitialOptions } from 'lib/product';
 import Image from 'next/image';
 import { ChangeEvent, useMemo, useState } from 'react';
@@ -74,6 +76,9 @@ const ProductCard = ({ productId, product }: ProductCardProps) => {
   const quantity = lineItem ? lineItem.quantity : 0;
   const image = variant.image || product.image;
   const price = variant.price || product.price;
+  const priceString = formatPrice(
+    dinero({ amount: price, currency: defaultCurrency })
+  );
 
   const handleOptionChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -120,7 +125,7 @@ const ProductCard = ({ productId, product }: ProductCardProps) => {
         </OptionsContainer>
       )}
       <PurchaseContainer>
-        <Price>от {price.value} ₽</Price>
+        <Price>от {priceString}</Price>
         <AddToCartButton count={quantity} onClick={handleAddToCart} />
       </PurchaseContainer>
     </>

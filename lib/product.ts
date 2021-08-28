@@ -5,11 +5,6 @@ export interface ProductImage {
   alt?: string;
 }
 
-export interface ProductPrice {
-  value: number;
-  currency: 'RUB';
-}
-
 export interface ProductOption {
   name: string;
   values: string[];
@@ -20,7 +15,7 @@ export type SelectedOptions = Record<string, string>;
 export interface ProductVariant {
   options: SelectedOptions;
   image?: ProductImage;
-  price?: ProductPrice;
+  price: number;
   quantity: number;
 }
 
@@ -30,7 +25,7 @@ export interface Product {
   name: string;
   description: string;
   image: ProductImage;
-  price: ProductPrice;
+  price: number;
   options?: ProductOption[];
   variants: ProductVariants;
 }
