@@ -4,9 +4,7 @@ import { Firestore, getFirestore } from 'firebase/firestore';
 
 export const path = Object.freeze({
   products: 'products',
-  variants: 'variants',
-  customers: 'customers',
-  cart: 'cart',
+  carts: 'carts',
 });
 
 export function getAppFirestore(): Firestore {
