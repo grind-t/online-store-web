@@ -61,6 +61,7 @@ interface ProductCardProps {
 }
 
 const ProductCard = ({ productId, product }: ProductCardProps) => {
+  const dispatch = useDispatch();
   const [selectedOptions, setSelectedOptions] = useState(() =>
     selectInitialOptions(product.options)
   );
@@ -73,7 +74,6 @@ const ProductCard = ({ productId, product }: ProductCardProps) => {
   const quantity = lineItem ? lineItem.quantity : 0;
   const image = variant.image || product.image;
   const price = variant.price || product.price;
-  const dispatch = useDispatch();
 
   const handleOptionChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;

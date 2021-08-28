@@ -1,15 +1,12 @@
-import { Unsubscribe } from 'app/firebase/auth';
+import { Entities } from './utils';
+import { getAppAuth } from 'app/firebase/auth';
 import {
   doc,
   setDoc,
-  onSnapshot,
   getAppFirestore,
-  collection,
-  deleteDoc,
-  writeBatch,
   path,
+  getDoc,
 } from 'app/firebase/firestore';
-import { User } from 'lib/user';
 
 export interface LineItem {
   productId: string;
@@ -17,94 +14,62 @@ export interface LineItem {
   quantity: number;
 }
 
-export type Cart = Record<string, LineItem>;
-export type CartChangedCallback = (cart: Cart) => void;
+export type LineItems = Entities<LineItem>;
+
+export interface Cart {
+  items: LineItems;
+}
+
+export function isCartEmpty(cart: Cart): boolean {
+  return Object.keys(cart.items).length <= 0;
+}
+
+export function getEmptyCart(): Cart {
+  return { items: {} };
+}
 
 export function getLocalCart(): Cart {
   const cartJSON = window.localStorage.getItem('cart');
-  return cartJSON ? JSON.parse(cartJSON) : {};
+  return cartJSON ? JSON.parse(cartJSON) : getEmptyCart();
 }
 
-export function getLineItemFromLocalCart(itemId: string): LineItem | null {
-  const cart = getLocalCart();
-  return cart[itemId] || null;
+export async function getFirestoreCart(userId: string): Promise<Cart> {
+  const snap = await getDoc(doc(getAppFirestore(), path.carts, userId));
+  const cart = snap.exists() ? snap.data() : getEmptyCart();
+  return cart as Cart;
 }
 
-export function handleLocalLineItemChange(
-  itemId: string,
-  item: LineItem
-): void {
-  const cart = getLocalCart();
-  if (item.quantity <= 0) delete cart[itemId];
-  else cart[itemId] = item;
-  window.dispatchEvent(new CustomEvent('local-cart', { detail: cart }));
+export async function getCart(): Promise<Cart> {
+  const user = getAppAuth().currentUser;
+  if (!user) return Promise.resolve(getLocalCart());
+  await mergeLocalCartWithFirestore(user.uid)
+    .then(clearLocalCart)
+    .catch(console.error);
+  return getFirestoreCart(user.uid);
+}
+
+export function setLocalCart(cart: Cart): void {
   window.localStorage.setItem('cart', JSON.stringify(cart));
 }
 
-export function handleFirestoreLineItemChange(
-  itemId: string,
-  item: LineItem,
-  user: User
-): void {
-  const db = getAppFirestore();
-  const itemRef = doc(db, path.customers, user.id, path.cart, itemId);
-  if (item.quantity <= 0) deleteDoc(itemRef).catch(console.error);
-  else setDoc(itemRef, item).catch(console.error);
+export function setFirestoreCart(cart: Cart, userId: string): Promise<void> {
+  return setDoc(doc(getAppFirestore(), path.carts, userId), cart);
 }
 
-export function handleLineItemChange(
-  itemId: string,
-  item: LineItem,
-  user: User
-): void {
-  if (user) handleFirestoreLineItemChange(itemId, item, user);
-  else handleLocalLineItemChange(itemId, item);
+export function setCart(cart: Cart): Promise<void> {
+  const user = getAppAuth().currentUser;
+  return user
+    ? setFirestoreCart(cart, user.uid)
+    : Promise.resolve(setLocalCart(cart));
 }
 
 export function clearLocalCart() {
   window.localStorage.removeItem('cart');
 }
 
-export function mergeLocalCartWithFirestore(user: User): Promise<void> {
-  const localItems = Object.entries(getLocalCart());
-  if (!localItems.length) return Promise.resolve();
+function mergeLocalCartWithFirestore(userId: string): Promise<void> {
+  const localCart = getLocalCart();
+  if (isCartEmpty(localCart)) return Promise.resolve();
   const db = getAppFirestore();
-  const cartRef = collection(db, path.customers, user.id, path.cart);
-  const batch = writeBatch(db);
-  for (const [id, item] of localItems) {
-    const docRef = doc(cartRef, id);
-    batch.set(docRef, item, { merge: true });
-  }
-  return batch.commit();
-}
-
-export function onLocalCartChange(cb: CartChangedCallback): Unsubscribe {
-  cb(getLocalCart());
-  const listener = (e: CustomEvent) => cb(e.detail);
-  window.addEventListener('local-cart', listener);
-  return () => window.removeEventListener('local-cart', listener);
-}
-
-export function onFirestoreCartChange(
-  user: User,
-  cb: CartChangedCallback
-): Unsubscribe {
-  const ref = collection(getAppFirestore(), path.customers, user.id, path.cart);
-  return onSnapshot(
-    ref,
-    (snap) => {
-      const cart = {};
-      for (const doc of snap.docs) {
-        cart[doc.id] = doc.data();
-      }
-      cb(cart);
-    },
-    console.error
-  );
-}
-
-export function onCartChange(user: User, cb: CartChangedCallback): Unsubscribe {
-  if (!user) return onLocalCartChange(cb);
-  mergeLocalCartWithFirestore(user).then(clearLocalCart).catch(console.error);
-  return onFirestoreCartChange(user, cb);
+  return setDoc(doc(db, path.carts, userId), localCart, { merge: true });
 }

@@ -1,3 +1,5 @@
+import { Entity, Entities } from './utils';
+
 export interface ProductImage {
   url: string;
   alt?: string;
@@ -16,13 +18,13 @@ export interface ProductOption {
 export type SelectedOptions = Record<string, string>;
 
 export interface ProductVariant {
-  options: Record<string, string>;
+  options: SelectedOptions;
   image?: ProductImage;
   price?: ProductPrice;
   quantity: number;
 }
 
-export type ProductVariants = Record<string, ProductVariant>;
+export type ProductVariants = Entities<ProductVariant>;
 
 export interface Product {
   name: string;
@@ -45,7 +47,7 @@ export function selectInitialOptions(
 export function getVariant(
   variants: ProductVariants,
   selectedOptions?: SelectedOptions
-): [string, ProductVariant] {
+): Entity<ProductVariant> {
   const entries = Object.entries(variants);
   if (!selectedOptions) return entries[0];
   const names = Object.keys(selectedOptions);

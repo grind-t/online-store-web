@@ -3,8 +3,8 @@ import { path } from 'app/firebase/firestore';
 import ProductsView, { ProductList } from 'components/organisms/products-view';
 import StoreHeader from 'components/organisms/store-header';
 import PageTemplate, { pageMargin } from 'components/templates/page-template';
-import { Product, ProductVariant, ProductVariants } from 'lib/product';
-import { ProductsWithVariants } from 'lib/products';
+import { Product } from 'lib/product';
+import { Products } from 'lib/products';
 import { InferGetStaticPropsType } from 'next';
 import Head from 'next/head';
 import styled from 'styled-components';
@@ -56,22 +56,13 @@ const Home = ({ products }: InferGetStaticPropsType<typeof getStaticProps>) => {
 
 export async function getStaticProps() {
   const db = admin.firestore();
-  const productsWithVariants: ProductsWithVariants = {};
-  const productsSnap = await db.collection(path.products).get();
-  for (const productDoc of productsSnap.docs) {
-    const product = { id: productDoc.id, ...productDoc.data() };
-    const variants: ProductVariants = {};
-    const variantsSnap = await productDoc.ref.collection(path.variants).get();
-    for (const variantDoc of variantsSnap.docs) {
-      const variant = { id: variantDoc.id, ...variantDoc.data() };
-      variants[variant.id] = variant as ProductVariant;
-    }
-    productsWithVariants[product.id] = [product as Product, variants];
-  }
+  const snap = await db.collection(path.products).get();
+  const products: Products = {};
+  snap.forEach((doc) => (products[doc.id] = doc.data() as Product));
 
   return {
     props: {
-      products: productsWithVariants,
+      products,
     },
     revalidate: 10,
   };
