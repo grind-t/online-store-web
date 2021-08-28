@@ -1,4 +1,5 @@
 import store from 'app/redux/store';
+import { AuthProvider } from 'hooks/useAuth';
 import { AppProps } from 'next/app';
 import { Provider } from 'react-redux';
 import { UIDReset } from 'react-uid';
@@ -25,9 +26,11 @@ const App = ({ Component, pageProps }: AppProps) => {
     <>
       <GlobalStyle />
       <UIDReset>
-        <Provider store={store}>
-          <Component {...pageProps} />
-        </Provider>
+        <AuthProvider>
+          <Provider store={store}>
+            <Component {...pageProps} />
+          </Provider>
+        </AuthProvider>
       </UIDReset>
     </>
   );

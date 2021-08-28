@@ -1,5 +1,4 @@
 import { getAppAuth, signOut } from 'app/firebase/auth';
-import { selectUser } from 'app/redux/user-slice';
 import StandaloneBearIcon from 'components/atoms/icons/bear-icon';
 import OrdersIcon from 'components/atoms/icons/orders-icon';
 import PersonIcon from 'components/atoms/icons/person-icon';
@@ -10,7 +9,7 @@ import HeaderTemplate, {
   xsFontSize,
   lerpByFontSize,
 } from 'components/templates/header-template';
-import { useSelector } from 'react-redux';
+import { useAuth } from 'hooks/useAuth';
 import styled from 'styled-components';
 import { em, up } from 'styles/mixins';
 import { breakpoints } from 'styles/varibles';
@@ -61,7 +60,7 @@ const userNav: NavigationItem[] = [
 ];
 
 const StoreHeader = () => {
-  const user = useSelector(selectUser);
+  const user = useAuth();
 
   return (
     <Header>
