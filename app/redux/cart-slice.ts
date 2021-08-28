@@ -1,6 +1,6 @@
 import { AppState, AppThunk } from './store';
 import { createSlice, PayloadAction, Selector } from '@reduxjs/toolkit';
-import { Cart, getEmptyCart, LineItem, setCart } from 'lib/cart';
+import { Cart, getEmptyCart, LineItem, LineItems, setCart } from 'lib/cart';
 import { Entity } from 'lib/utils';
 
 const cartSlice = createSlice({
@@ -27,6 +27,10 @@ function selectCart(state: AppState): Cart {
   return state.cart;
 }
 
+function selectCartItems(state: AppState): LineItems {
+  return state.cart.items;
+}
+
 function selectLineItem(id: string): Selector<AppState, LineItem> {
   return (state: AppState) => state.cart.items[id];
 }
@@ -34,4 +38,4 @@ function selectLineItem(id: string): Selector<AppState, LineItem> {
 export default cartSlice.reducer;
 export const { cartChanged } = cartSlice.actions;
 export { lineItemChanged };
-export { selectCart, selectLineItem };
+export { selectCart, selectCartItems, selectLineItem };

@@ -1,8 +1,13 @@
 import { useMediaQuery } from '@react-hookz/web';
+import { selectCart } from 'app/redux/cart-slice';
+import { useAppSelector } from 'app/redux/hooks';
+import { selectProducts } from 'app/redux/products-slice';
 import CartIcon from 'components/atoms/icons/cart-icon';
 import VisuallyHidden from 'components/atoms/utils/visually-hidden';
+import { formatPrice, getCartPrice } from 'lib/checkout';
 import Link from 'next/link';
-import styled, { css } from 'styled-components';
+import { useMemo } from 'react';
+import styled from 'styled-components';
 import { up } from 'styles/mixins';
 import { breakpoints } from 'styles/varibles';
 
@@ -41,13 +46,26 @@ const Icon = styled(CartIcon)<{ detailedStyle?: boolean }>`
 
 const CompactContent = () => <Icon />;
 
-const DetailedContent = () => (
-  <>
-    <VisuallyHidden>Сумма</VisuallyHidden> 520 ₽
-    <Icon />
-    <VisuallyHidden>Количество товаров</VisuallyHidden> 3
-  </>
-);
+const DetailedContent = () => {
+  const cart = useAppSelector(selectCart);
+  const products = useAppSelector(selectProducts);
+  const totalItems = useMemo(
+    () =>
+      Object.values(cart.items).reduce((acc, item) => acc + item.quantity, 0),
+    [cart.items]
+  );
+  const totalPrice = useMemo(
+    () => formatPrice(getCartPrice(cart, products)),
+    [cart, products]
+  );
+  return (
+    <>
+      <VisuallyHidden>Сумма</VisuallyHidden> {totalPrice}
+      <Icon />
+      <VisuallyHidden>Количество товаров</VisuallyHidden> {totalItems}
+    </>
+  );
+};
 
 interface CartLinkProps {
   className?: string;
