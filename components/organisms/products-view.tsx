@@ -3,7 +3,7 @@ import { productsUpdated } from 'app/redux/products-slice';
 import CategoryList from 'components/molecules/category-list';
 import ProductCard from 'components/molecules/product-card';
 import Sorting from 'components/molecules/sorting';
-import { ProductsWithVariants } from 'lib/products';
+import { Products } from 'lib/products';
 import { useEffect } from 'react';
 import styled from 'styled-components';
 import { up } from 'styles/mixins';
@@ -60,7 +60,7 @@ const ProductList = styled.ul`
 //#endregion
 
 interface ProductsViewProps {
-  initialProducts?: ProductsWithVariants;
+  initialProducts?: Products;
 }
 
 const ProductsView = ({ initialProducts }: ProductsViewProps) => {
@@ -81,9 +81,9 @@ const ProductsView = ({ initialProducts }: ProductsViewProps) => {
         />
       </ViewOptions>
       <ProductList>
-        {Object.values(products).map(([product, variants]) => (
-          <li key={product.id}>
-            <ProductCard product={product} variants={variants} />
+        {Object.entries(products).map(([id, product]) => (
+          <li key={id}>
+            <ProductCard productId={id} product={product} />
           </li>
         ))}
       </ProductList>

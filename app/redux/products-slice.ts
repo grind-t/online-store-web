@@ -1,20 +1,21 @@
 import { AppState } from './store';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ProductsWithVariants } from 'lib/products';
+import { Products } from 'lib/products';
 
 const productsSlice = createSlice({
   name: 'products',
-  initialState: {} as ProductsWithVariants,
+  initialState: {} as Products,
   reducers: {
-    productsUpdated: (state, action: PayloadAction<ProductsWithVariants>) => {
-      for (const [id, product] of Object.entries(action.payload)) {
+    productsUpdated: (state, action: PayloadAction<Products>) => {
+      const products = action.payload;
+      for (const [id, product] of Object.entries(products)) {
         state[id] = product;
       }
     },
   },
 });
 
-function selectProducts(state: AppState): ProductsWithVariants {
+function selectProducts(state: AppState): Products {
   return state.products;
 }
 

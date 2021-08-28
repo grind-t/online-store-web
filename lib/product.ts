@@ -1,10 +1,3 @@
-import {
-  DocumentReference,
-  getDocs,
-  path,
-  collection,
-} from 'app/firebase/firestore';
-
 export interface ProductImage {
   url: string;
   alt?: string;
@@ -20,28 +13,25 @@ export interface ProductOption {
   values: string[];
 }
 
+export type SelectedOptions = Record<string, string>;
+
 export interface ProductVariant {
-  id: string;
   options: Record<string, string>;
   image?: ProductImage;
   price?: ProductPrice;
   quantity: number;
 }
 
+export type ProductVariants = Record<string, ProductVariant>;
+
 export interface Product {
-  id: string;
   name: string;
   description: string;
   image: ProductImage;
   price: ProductPrice;
   options?: ProductOption[];
+  variants: ProductVariants;
 }
-
-export type ProductVariants = Record<string, ProductVariant>;
-
-export type ProductWithVariants = [Product, ProductVariants];
-
-export type SelectedOptions = Record<string, string>;
 
 export function selectInitialOptions(
   options?: ProductOption[]
@@ -53,21 +43,13 @@ export function selectInitialOptions(
 }
 
 export function getVariant(
-  variants: ProductVariant[],
-  selectedOptions?: Record<string, string>
-): ProductVariant {
-  if (!selectedOptions) return variants[0];
-  const keys = Object.keys(selectedOptions);
-  return variants.find((variant) =>
-    keys.every((key) => selectedOptions[key] === variant.options[key])
+  variants: ProductVariants,
+  selectedOptions?: SelectedOptions
+): [string, ProductVariant] {
+  const entries = Object.entries(variants);
+  if (!selectedOptions) return entries[0];
+  const names = Object.keys(selectedOptions);
+  return entries.find(([id, variant]) =>
+    names.every((name) => selectedOptions[name] === variant.options[name])
   );
-}
-
-export async function getVariantsFromFirestore(
-  productDocRef: DocumentReference
-): Promise<ProductVariants> {
-  const snap = await getDocs(collection(productDocRef, path.variants));
-  const variants = {};
-  snap.forEach((doc) => (variants[doc.id] = { id: doc.id, ...doc.data() }));
-  return variants;
 }

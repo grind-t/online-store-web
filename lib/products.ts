@@ -1,4 +1,4 @@
-import { ProductWithVariants, getVariantsFromFirestore } from './product';
+import { Product } from './product';
 import {
   collection,
   getAppFirestore,
@@ -6,15 +6,11 @@ import {
   path,
 } from 'app/firebase/firestore';
 
-export type ProductsWithVariants = Record<string, ProductWithVariants>;
+export type Products = Record<string, Product>;
 
-export async function getProductsWithVariantsFromFirestore(): Promise<ProductsWithVariants> {
+export async function getProductsFromFirestore(): Promise<Products> {
   const snap = await getDocs(collection(getAppFirestore(), path.products));
-  const productsWithVariants = {};
-  for (const doc of snap.docs) {
-    const product = { id: doc.id, ...doc.data() };
-    const variants = await getVariantsFromFirestore(doc.ref);
-    productsWithVariants[product.id] = [product, variants];
-  }
-  return productsWithVariants;
+  const products = {};
+  snap.forEach((doc) => (products[doc.id] = doc.data()));
+  return products;
 }
