@@ -17,14 +17,14 @@ const Main = styled.main`
   margin: 0 auto;
   padding: 20px 5px 60px;
 
-  & > ${ProductList} {
+  ${ProductList} {
     max-width: calc(100vw - ${pageMargin * 2}px - 10px);
   }
 
   @media ${up(breakpoints.sm)} {
     padding: 20px 20px 60px;
 
-    & > ${ProductList} {
+    ${ProductList} {
       max-width: calc(100vw - ${pageMargin * 2}px - 40px);
     }
   }
@@ -32,7 +32,7 @@ const Main = styled.main`
   @media ${up(breakpoints.md)} {
     padding: 40px 40px 60px;
 
-    & > ${ProductList} {
+    ${ProductList} {
       max-width: calc(100vw - ${pageMargin * 2}px - 80px);
     }
   }
