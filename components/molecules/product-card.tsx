@@ -3,7 +3,7 @@ import { useAppSelector } from 'app/redux/hooks';
 import AddToCartButton from 'components/atoms/buttons/add-to-cart-button';
 import CustomInput from 'components/atoms/utils/custom-input';
 import { dinero } from 'dinero.js';
-import { defaultCurrency, formatPrice } from 'lib/checkout';
+import { defaultCurrency, formatPrice } from 'lib/money';
 import { Product, getVariant, selectInitialOptions } from 'lib/product';
 import Image from 'next/image';
 import { ChangeEvent, useMemo, useState } from 'react';

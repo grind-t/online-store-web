@@ -4,7 +4,7 @@ import { useAppSelector } from 'app/redux/hooks';
 import { selectProducts } from 'app/redux/products-slice';
 import CartIcon from 'components/atoms/icons/cart-icon';
 import VisuallyHidden from 'components/atoms/utils/visually-hidden';
-import { formatPrice, getCartPrice } from 'lib/checkout';
+import { formatPrice, getCartPrice } from 'lib/money';
 import Link from 'next/link';
 import { useMemo } from 'react';
 import styled from 'styled-components';
