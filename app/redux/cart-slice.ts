@@ -1,6 +1,6 @@
 import { AppState, AppThunk } from './store';
 import { createSlice, PayloadAction, Selector } from '@reduxjs/toolkit';
-import { Cart, getEmptyCart, LineItem, LineItems, setCart } from 'lib/cart';
+import { Cart, getEmptyCart, LineItem, LineItems, setAppCart } from 'lib/cart';
 import { Entity } from 'lib/utils';
 
 const cartSlice = createSlice({
@@ -19,7 +19,7 @@ const cartSlice = createSlice({
 function lineItemChanged(id: string, item: LineItem): AppThunk {
   return (dispatch, getState) => {
     dispatch(cartSlice.actions.lineItemChanged([id, item]));
-    setCart(getState().cart);
+    setAppCart(getState().cart);
   };
 }
 

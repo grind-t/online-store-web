@@ -3,7 +3,7 @@ import productsReducer from './products-slice';
 import { configureStore, Action, ThunkAction } from '@reduxjs/toolkit';
 import { isClient } from 'app/env';
 import { getAppAuth, onAuthStateChanged } from 'app/firebase/auth';
-import { getCart } from 'lib/cart';
+import { getAppCart } from 'lib/cart';
 
 const store = configureStore({
   reducer: {
@@ -18,7 +18,7 @@ if (isClient && !init) {
   onAuthStateChanged(
     getAppAuth(),
     () =>
-      getCart()
+      getAppCart()
         .then((cart) => store.dispatch(cartChanged(cart)))
         .catch(console.error),
     console.error

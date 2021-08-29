@@ -6,6 +6,7 @@ import {
   getAppFirestore,
   path,
   getDoc,
+  Firestore,
 } from 'app/firebase/firestore';
 
 export interface LineItem {
@@ -33,43 +34,47 @@ export function getLocalCart(): Cart {
   return cartJSON ? JSON.parse(cartJSON) : getEmptyCart();
 }
 
-export async function getFirestoreCart(userId: string): Promise<Cart> {
-  const snap = await getDoc(doc(getAppFirestore(), path.carts, userId));
+export async function getFirestoreCart(
+  userId: string,
+  db: Firestore
+): Promise<Cart> {
+  const snap = await getDoc(doc(db, path.carts, userId));
   const cart = snap.exists() ? snap.data() : getEmptyCart();
   return cart as Cart;
 }
 
-export async function getCart(): Promise<Cart> {
+export async function getAppCart(): Promise<Cart> {
   const user = getAppAuth().currentUser;
-  if (!user) return Promise.resolve(getLocalCart());
-  await mergeLocalCartWithFirestore(user.uid)
-    .then(clearLocalCart)
-    .catch(console.error);
-  return getFirestoreCart(user.uid);
+  const localCart = getLocalCart();
+  if (!user) return Promise.resolve(localCart);
+  const db = getAppFirestore();
+  if (!isCartEmpty(localCart)) {
+    await setDoc(doc(db, path.carts, user.uid), localCart, { merge: true })
+      .then(clearLocalCart)
+      .catch(console.error);
+  }
+  return getFirestoreCart(user.uid, db);
 }
 
 export function setLocalCart(cart: Cart): void {
   window.localStorage.setItem('cart', JSON.stringify(cart));
 }
 
-export function setFirestoreCart(cart: Cart, userId: string): Promise<void> {
-  return setDoc(doc(getAppFirestore(), path.carts, userId), cart);
+export function setFirestoreCart(
+  cart: Cart,
+  userId: string,
+  db: Firestore
+): Promise<void> {
+  return setDoc(doc(db, path.carts, userId), cart);
 }
 
-export function setCart(cart: Cart): Promise<void> {
+export function setAppCart(cart: Cart): Promise<void> {
   const user = getAppAuth().currentUser;
   return user
-    ? setFirestoreCart(cart, user.uid)
+    ? setFirestoreCart(cart, user.uid, getAppFirestore())
     : Promise.resolve(setLocalCart(cart));
 }
 
 export function clearLocalCart() {
   window.localStorage.removeItem('cart');
-}
-
-function mergeLocalCartWithFirestore(userId: string): Promise<void> {
-  const localCart = getLocalCart();
-  if (isCartEmpty(localCart)) return Promise.resolve();
-  const db = getAppFirestore();
-  return setDoc(doc(db, path.carts, userId), localCart, { merge: true });
 }
