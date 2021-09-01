@@ -18,9 +18,17 @@ const Button = styled.button.attrs({ type: 'button' })`
 `;
 //#endregion
 
-const GoBackButton = () => {
+interface GoBackButtonProps {
+  className?: string;
+}
+
+const GoBackButton = ({ className }: GoBackButtonProps) => {
   const router = useRouter();
-  return <Button onClick={() => router.back()}>Вернуться назад</Button>;
+  return (
+    <Button className={className} onClick={() => router.back()}>
+      Вернуться назад
+    </Button>
+  );
 };
 
 export default GoBackButton;
