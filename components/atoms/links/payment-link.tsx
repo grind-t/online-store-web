@@ -16,9 +16,13 @@ const Anchor = styled.a`
 `;
 //#endregion
 
-const PaymentLink = () => (
+interface PaymentLinkProps {
+  className?: string;
+}
+
+const PaymentLink = ({ className }: PaymentLinkProps) => (
   <Link href="#" passHref>
-    <Anchor>Оплатить сейчас</Anchor>
+    <Anchor className={className}>Оплатить сейчас</Anchor>
   </Link>
 );
 
