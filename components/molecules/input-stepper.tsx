@@ -1,33 +1,32 @@
 import StandaloneMinusIcon from 'components/atoms/icons/minus-icon';
 import StandalonePlusIcon from 'components/atoms/icons/plus-icon';
 import VisuallyHidden from 'components/atoms/utils/visually-hidden';
-import styled from 'styled-components';
-import { up } from 'styles/mixins';
-import { breakpoints } from 'styles/varibles';
+import styled, { css } from 'styled-components';
 
 //#region styled
 const xsFontSize = 14;
 const xlFontSize = 22;
 
-const MinusIcon = styled(StandaloneMinusIcon)`
+const icon = css`
   width: 0.43em;
-  height: 0.09em;
+  height: 100%;
+`;
+
+const MinusIcon = styled(StandaloneMinusIcon)`
+  ${icon}
 `;
 
 const PlusIcon = styled(StandalonePlusIcon)`
-  width: 0.43em;
-  height: 0.43em;
+  ${icon}
 `;
 
 const Button = styled.button.attrs({ type: 'button' })`
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
   width: 1.45em;
   height: 1.45em;
   background: white;
   border: 1.5px solid #fe5f1e;
   border-radius: 50%;
+  text-align: center;
 `;
 
 const Value = styled.span`
@@ -40,15 +39,6 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: ${xsFontSize}px;
-
-  @media ${up(breakpoints.md)} {
-    font-size: ${(xlFontSize + xsFontSize) / 2}px;
-  }
-
-  @media ${up(breakpoints.xl)} {
-    font-size: ${xlFontSize}px;
-  }
 `;
 //#endregion
 
@@ -56,15 +46,17 @@ interface InputStepperProps {
   value?: number | string;
   onDecrement?: () => void;
   onIncrement?: () => void;
+  className?: string;
 }
 
 const InputStepper = ({
   value,
   onDecrement,
   onIncrement,
+  className,
 }: InputStepperProps) => {
   return (
-    <Container>
+    <Container className={className}>
       <Button onClick={onDecrement}>
         <VisuallyHidden>Меньше</VisuallyHidden>
         <MinusIcon />
