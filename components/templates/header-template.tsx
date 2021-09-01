@@ -14,7 +14,7 @@ const HeaderTemplate = styled.header`
   min-height: ${minHeight};
   padding-left: ${lerpByFontSize(7, 22)};
   padding-right: ${lerpByFontSize(7, 42)};
-  border-bottom: 1px solid #e5e5e5;
+  border-bottom: 1px solid #f7f7f7;
   font-size: ${xsFontSize}px;
 
   @media ${up(breakpoints.md)} {
