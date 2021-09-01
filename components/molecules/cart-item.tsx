@@ -141,7 +141,7 @@ const ControlsContainer = styled.div`
   }
 `;
 
-const Container = styled.li`
+const Container = styled.div`
   display: flex;
   align-items: flex-start;
   padding-top: 11px;
@@ -155,13 +155,14 @@ const Container = styled.li`
 //#endregion
 
 interface CartItemProps {
+  container?: 'li' | 'div';
   className?: string;
 }
 
-const CartItem = ({ className }: CartItemProps) => {
+const CartItem = ({ container, className }: CartItemProps) => {
   const upMD = useMediaQuery(up(breakpoints.md));
   return (
-    <Container className={className}>
+    <Container as={container} className={className}>
       <ImageContainer>
         <Image
           src="/images/cart-item-placeholder.png"
