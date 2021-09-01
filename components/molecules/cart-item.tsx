@@ -13,7 +13,7 @@ const ImageContainer = styled.div`
   width: 36px;
   height: 36px;
   margin: 5px 3px 0 0;
-  border-radius: 10px;
+  border-radius: 5px;
   box-shadow: 0 15px 20px rgba(0, 0, 0, 0.05);
   line-height: 0;
   overflow: hidden;
@@ -28,6 +28,7 @@ const ImageContainer = styled.div`
     width: 80px;
     height: 80px;
     margin: 0 7px 0 0;
+    border-radius: 10px;
   }
 `;
 
@@ -145,7 +146,7 @@ const Container = styled.div`
   display: flex;
   align-items: flex-start;
   padding-top: 11px;
-  border-bottom: 1px solid #e5e5e5;
+  border-bottom: 1px solid #f4f4f4;
 
   @media ${up(breakpoints.md)} {
     min-height: 140px;
