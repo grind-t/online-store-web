@@ -1,5 +1,6 @@
 import { useMediaQuery } from '@react-hookz/web';
-import { cartState, lineItemState } from 'app/recoil/cart';
+import { cartState, lineItemState, totalCartItemsState } from 'app/recoil/cart';
+import { totalCartPriceState } from 'app/recoil/money';
 import StandaloneGoBackButton from 'components/atoms/buttons/go-back-button';
 import StandaloneCartIcon from 'components/atoms/icons/cart-icon';
 import StandaloneTrashIcon from 'components/atoms/icons/trash-icon';
@@ -7,8 +8,9 @@ import StandalonePaymentLink from 'components/atoms/links/payment-link';
 import CartItem from 'components/molecules/cart-item';
 import { getEmptyCart, isCartEmpty } from 'lib/cart';
 import { LineItem } from 'lib/cart';
+import { formatPrice } from 'lib/money';
 import { HeadingLevel } from 'lib/utils';
-import { useRecoilCallback, useRecoilState } from 'recoil';
+import { useRecoilCallback, useRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import { up } from 'styles/mixins';
 import { breakpoints } from 'styles/varibles';
@@ -141,6 +143,8 @@ interface CartViewProps {
 const CartView = ({ container, headingLevel, className }: CartViewProps) => {
   const upMD = useMediaQuery(up(breakpoints.md));
   const [cart, setCart] = useRecoilState(cartState);
+  const totalItems = useRecoilValue(totalCartItemsState);
+  const totalPrice = useRecoilValue(totalCartPriceState);
   const setLineItem = useRecoilCallback(
     ({ set }) =>
       (item: LineItem) => {
@@ -175,9 +179,10 @@ const CartView = ({ container, headingLevel, className }: CartViewProps) => {
           />
         ))}
       </ItemList>
-      <TotalItems>Всего товаров 2 шт.</TotalItems>
+      <TotalItems>Всего товаров {totalItems} шт.</TotalItems>
       <TotalPrice>
-        Сумма заказа: <TotalPriceValue>1110 Р</TotalPriceValue>
+        Сумма заказа:{' '}
+        <TotalPriceValue>{formatPrice(totalPrice)}</TotalPriceValue>
       </TotalPrice>
       {upMD && <GoBackButton />}
       <PaymentLink />
