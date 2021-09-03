@@ -3,6 +3,7 @@ import { AuthProvider } from 'hooks/useAuth';
 import { AppProps } from 'next/app';
 import { Provider } from 'react-redux';
 import { UIDReset } from 'react-uid';
+import { RecoilRoot } from 'recoil';
 import { createGlobalStyle } from 'styled-components';
 import { miniReset, nunitoFont } from 'styles/mixins';
 
@@ -28,7 +29,9 @@ const App = ({ Component, pageProps }: AppProps) => {
       <UIDReset>
         <AuthProvider>
           <Provider store={store}>
-            <Component {...pageProps} />
+            <RecoilRoot>
+              <Component {...pageProps} />
+            </RecoilRoot>
           </Provider>
         </AuthProvider>
       </UIDReset>
