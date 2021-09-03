@@ -50,7 +50,7 @@ const guestNav: NavigationItem[] = [
 ];
 
 const userNav: NavigationItem[] = [
-  { href: '/user', icon: <PersonIcon />, text: 'Личный кабинет' },
+  { href: '/profile', icon: <PersonIcon />, text: 'Профиль' },
   { href: '/orders', icon: <OrdersIcon />, text: 'Заказы' },
   {
     text: 'Выйти',
