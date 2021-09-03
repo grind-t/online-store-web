@@ -1,4 +1,6 @@
 import { Entity, Entities } from './utils';
+import { doc, Firestore, getDoc } from '@firebase/firestore';
+import { path } from 'app/firebase/firestore';
 
 export interface ProductImage {
   url: string;
@@ -49,4 +51,12 @@ export function getVariant(
   return entries.find(([id, variant]) =>
     names.every((name) => selectedOptions[name] === variant.options[name])
   );
+}
+
+export async function getProductFromFirestore(
+  id: string,
+  db: Firestore
+): Promise<Product | null> {
+  const snap = await getDoc(doc(db, path.products, id));
+  return snap.exists() ? (snap.data() as Product) : null;
 }
