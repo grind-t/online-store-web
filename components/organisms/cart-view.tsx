@@ -1,10 +1,14 @@
 import { useMediaQuery } from '@react-hookz/web';
+import { cartState, lineItemState } from 'app/recoil/cart';
 import StandaloneGoBackButton from 'components/atoms/buttons/go-back-button';
 import StandaloneCartIcon from 'components/atoms/icons/cart-icon';
 import StandaloneTrashIcon from 'components/atoms/icons/trash-icon';
 import StandalonePaymentLink from 'components/atoms/links/payment-link';
 import CartItem from 'components/molecules/cart-item';
+import { getEmptyCart, isCartEmpty } from 'lib/cart';
+import { LineItem } from 'lib/cart';
 import { HeadingLevel } from 'lib/utils';
+import { useRecoilCallback, useRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { up } from 'styles/mixins';
 import { breakpoints } from 'styles/varibles';
@@ -136,19 +140,40 @@ interface CartViewProps {
 
 const CartView = ({ container, headingLevel, className }: CartViewProps) => {
   const upMD = useMediaQuery(up(breakpoints.md));
+  const [cart, setCart] = useRecoilState(cartState);
+  const setLineItem = useRecoilCallback(
+    ({ set }) =>
+      (item: LineItem) => {
+        const id = `${item.productId}_${item.variantId}`;
+        set(lineItemState(id), item);
+      },
+    []
+  );
+
+  if (!cart) return null;
+
+  if (isCartEmpty(cart))
+    return <div style={{ textAlign: 'center' }}>Корзина пустая</div>;
+
   return (
     <Container as={container} className={className}>
       <TopBar>
         <CartIcon />
         <Heading as={headingLevel}>Корзина</Heading>
-        <ClearCartButton>
+        <ClearCartButton onClick={() => setCart(getEmptyCart())}>
           <TrashIcon />
           Очистить корзину
         </ClearCartButton>
       </TopBar>
       <ItemList>
-        <CartItem container="li" />
-        <CartItem container="li" />
+        {Object.entries(cart.items).map(([id, item]) => (
+          <CartItem
+            key={id}
+            container="li"
+            item={item}
+            onChange={setLineItem}
+          />
+        ))}
       </ItemList>
       <TotalItems>Всего товаров 2 шт.</TotalItems>
       <TotalPrice>
