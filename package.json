@@ -12,7 +12,6 @@
   "dependencies": {
     "@dinero.js/currencies": "^2.0.0-alpha.8",
     "@react-hookz/web": "^7.0.0",
-    "@reduxjs/toolkit": "^1.6.1",
     "dinero.js": "^2.0.0-alpha.8",
     "downshift": "^6.1.7",
     "firebase": "^9.0.0",

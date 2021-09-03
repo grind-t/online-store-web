@@ -1,10 +1,10 @@
-import { useAppDispatch } from 'app/redux/hooks';
-import { productsUpdated } from 'app/redux/products-slice';
+import { productsState } from 'app/recoil/products';
 import CategoryList from 'components/molecules/category-list';
 import ProductCard from 'components/molecules/product-card';
 import Sorting from 'components/molecules/sorting';
 import { Products } from 'lib/products';
 import { useEffect } from 'react';
+import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { up } from 'styles/mixins';
 import { breakpoints } from 'styles/varibles';
@@ -64,12 +64,11 @@ interface ProductsViewProps {
 }
 
 const ProductsView = ({ initialProducts }: ProductsViewProps) => {
-  const products = initialProducts;
-  const dispatch = useAppDispatch();
+  const [products, setProducts] = useRecoilState(productsState);
 
   useEffect(() => {
-    dispatch(productsUpdated(initialProducts));
-  }, [initialProducts, dispatch]);
+    setProducts(initialProducts);
+  }, [initialProducts, setProducts]);
 
   return (
     <>
@@ -81,7 +80,7 @@ const ProductsView = ({ initialProducts }: ProductsViewProps) => {
         />
       </ViewOptions>
       <ProductList>
-        {Object.entries(products).map(([id, product]) => (
+        {Object.entries(products || initialProducts).map(([id, product]) => (
           <li key={id}>
             <ProductCard productId={id} product={product} />
           </li>

@@ -1,12 +1,11 @@
 import { useMediaQuery } from '@react-hookz/web';
-import { selectCart } from 'app/redux/cart-slice';
-import { useAppSelector } from 'app/redux/hooks';
-import { selectProducts } from 'app/redux/products-slice';
+import { totalCartItemsState } from 'app/recoil/cart';
+import { totalCartPriceState } from 'app/recoil/money';
 import CartIcon from 'components/atoms/icons/cart-icon';
 import VisuallyHidden from 'components/atoms/utils/visually-hidden';
-import { formatPrice, getCartPrice } from 'lib/money';
+import { formatPrice } from 'lib/money';
 import Link from 'next/link';
-import { useMemo } from 'react';
+import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import { up } from 'styles/mixins';
 import { breakpoints } from 'styles/varibles';
@@ -47,20 +46,11 @@ const Icon = styled(CartIcon)<{ detailedStyle?: boolean }>`
 const CompactContent = () => <Icon />;
 
 const DetailedContent = () => {
-  const cart = useAppSelector(selectCart);
-  const products = useAppSelector(selectProducts);
-  const totalItems = useMemo(
-    () =>
-      Object.values(cart.items).reduce((acc, item) => acc + item.quantity, 0),
-    [cart.items]
-  );
-  const totalPrice = useMemo(
-    () => formatPrice(getCartPrice(cart, products)),
-    [cart, products]
-  );
+  const totalItems = useRecoilValue(totalCartItemsState);
+  const totalPrice = useRecoilValue(totalCartPriceState);
   return (
     <>
-      <VisuallyHidden>Сумма</VisuallyHidden> {totalPrice}
+      <VisuallyHidden>Сумма</VisuallyHidden> {formatPrice(totalPrice)}
       <Icon />
       <VisuallyHidden>Количество товаров</VisuallyHidden> {totalItems}
     </>

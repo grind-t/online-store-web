@@ -1,7 +1,5 @@
-import store from 'app/redux/store';
 import { AuthProvider } from 'hooks/useAuth';
 import { AppProps } from 'next/app';
-import { Provider } from 'react-redux';
 import { UIDReset } from 'react-uid';
 import { RecoilRoot } from 'recoil';
 import { createGlobalStyle } from 'styled-components';
@@ -28,11 +26,9 @@ const App = ({ Component, pageProps }: AppProps) => {
       <GlobalStyle />
       <UIDReset>
         <AuthProvider>
-          <Provider store={store}>
-            <RecoilRoot>
-              <Component {...pageProps} />
-            </RecoilRoot>
-          </Provider>
+          <RecoilRoot>
+            <Component {...pageProps} />
+          </RecoilRoot>
         </AuthProvider>
       </UIDReset>
     </>
