@@ -12,6 +12,8 @@ if (!admin.apps.length) {
 
 if (process.env.NODE_ENV === 'development') {
   const product = {
+    name: 'Playstation Plus',
+    description: 'Описание товара',
     image: {
       url: '/images/product-placeholder.png',
       alt: 'TODO',
