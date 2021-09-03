@@ -1,6 +1,6 @@
 import { isClient } from 'app/env';
 import { getAppAuth, onAuthStateChanged } from 'app/firebase/auth';
-import { Cart, getAppCart, getEmptyCart, LineItem, setAppCart } from 'lib/cart';
+import { Cart, getAppCart, LineItem, LineItems, setAppCart } from 'lib/cart';
 import { atom, selector, selectorFamily } from 'recoil';
 
 export const cartState = atom<Cart>({
@@ -37,12 +37,18 @@ export const lineItemState = selectorFamily<LineItem, string>({
       get(cartState)?.items[id],
   set:
     (id: string) =>
-    ({ set }, newValue) =>
-      set(cartState, (prev) => ({
-        ...prev,
-        items: {
-          ...prev?.items,
-          [id]: newValue as LineItem,
-        },
-      })),
+    ({ set }, newValue) => {
+      const item = newValue as LineItem;
+      set(cartState, (prev) => {
+        let items: LineItems;
+        if (item.quantity <= 0) {
+          const { [id]: omit, ...rest } = prev.items;
+          items = rest;
+        } else items = { ...prev?.items, [id]: item };
+        return {
+          ...prev,
+          items,
+        };
+      });
+    },
 });
