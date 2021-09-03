@@ -1,8 +1,17 @@
 import { useMediaQuery } from '@react-hookz/web';
+import { getAppFirestore } from 'app/firebase/firestore';
+import { productState } from 'app/recoil/products';
 import CrossIcon from 'components/atoms/icons/cross-icon';
 import VisuallyHidden from 'components/atoms/utils/visually-hidden';
 import InputStepper from 'components/molecules/input-stepper';
+import { dinero } from 'dinero.js';
+import { LineItem } from 'lib/cart';
+import { defaultCurrency, formatPrice } from 'lib/money';
+import { getProductFromFirestore, Product } from 'lib/product';
+import { HeadingLevel } from 'lib/utils';
 import Image from 'next/image';
+import { useEffect } from 'react';
+import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { up } from 'styles/mixins';
 import { breakpoints } from 'styles/varibles';
@@ -155,37 +164,106 @@ const Container = styled.div`
 `;
 //#endregion
 
-interface CartItemProps {
-  container?: 'li' | 'div';
-  className?: string;
+interface CartItemContentProps {
+  headingLevel?: HeadingLevel;
+  item: LineItem;
+  product: Product;
+  onChange?: (item: LineItem) => void;
 }
 
-const CartItem = ({ container, className }: CartItemProps) => {
+const CartItemContent = ({
+  headingLevel,
+  item,
+  product,
+  onChange,
+}: CartItemContentProps) => {
   const upMD = useMediaQuery(up(breakpoints.md));
+  const variant = product.variants[item.variantId];
+  const options = Object.values(variant.options).join(', ').toLowerCase();
+  const image = variant.image || product.image;
+  const heading = `${product.name}, ${options}`;
+  const price = (variant.price || product.price) * item.quantity;
+  const priceString = formatPrice(
+    dinero({ amount: price, currency: defaultCurrency })
+  );
+
+  const handleQuantityIncrement = () => {
+    if (!onChange) return;
+    onChange({ ...item, quantity: item.quantity + 1 });
+  };
+
+  const handleQuantityDecrement = () => {
+    if (!onChange) return;
+    onChange({ ...item, quantity: item.quantity - 1 });
+  };
+
+  const handleRemove = () => {
+    if (!onChange) return;
+    onChange({ ...item, quantity: 0 });
+  };
+
   return (
-    <Container as={container} className={className}>
+    <>
       <ImageContainer>
-        <Image
-          src="/images/cart-item-placeholder.png"
-          alt=""
-          width="80"
-          height="80"
-        />
+        <Image src={image.url} alt={image.alt} width="80" height="80" />
       </ImageContainer>
       <InfoContainer>
-        <Heading>Plystation plus</Heading>
-        <Description>Описание товара</Description>
+        <Heading as={headingLevel}>{heading}</Heading>
+        <Description>{product.description}</Description>
       </InfoContainer>
       <ControlsContainer>
-        <QuantityInput value={2} />
-        <Price>720р</Price>
+        <QuantityInput
+          value={item.quantity}
+          onIncrement={handleQuantityIncrement}
+          onDecrement={handleQuantityDecrement}
+        />
+        <Price>{priceString}</Price>
         {upMD && (
-          <RemoveItemButton>
+          <RemoveItemButton onClick={handleRemove}>
             <VisuallyHidden>Удалить</VisuallyHidden>
             <RemoveItemIcon />
           </RemoveItemButton>
         )}
       </ControlsContainer>
+    </>
+  );
+};
+
+interface CartItemProps {
+  container?: 'li' | 'div';
+  headingLevel?: HeadingLevel;
+  item: LineItem;
+  className?: string;
+  onChange?: (item: LineItem) => void;
+}
+
+const CartItem = ({
+  container,
+  headingLevel,
+  item,
+  className,
+  onChange,
+}: CartItemProps) => {
+  let [product, setProduct] = useRecoilState(productState(item.productId));
+
+  useEffect(() => {
+    if (product) return;
+    const db = getAppFirestore();
+    getProductFromFirestore(item.productId, db)
+      .then(setProduct)
+      .catch(console.error);
+  }, [product, setProduct, item.productId]);
+
+  return (
+    <Container as={container} className={className}>
+      {product && (
+        <CartItemContent
+          headingLevel={headingLevel}
+          item={item}
+          product={product}
+          onChange={onChange}
+        />
+      )}
     </Container>
   );
 };
