@@ -9,7 +9,7 @@ import CartItem from 'components/molecules/cart-item';
 import { getEmptyCart, isCartEmpty } from 'lib/cart';
 import { LineItem } from 'lib/cart';
 import { formatPrice } from 'lib/money';
-import { HeadingLevel } from 'lib/utils';
+import { HeadingLevel, nextHeadingLevel } from 'lib/utils';
 import { useRecoilCallback, useRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import { up } from 'styles/mixins';
@@ -174,6 +174,7 @@ const CartView = ({ container, headingLevel, className }: CartViewProps) => {
           <CartItem
             key={id}
             container="li"
+            headingLevel={nextHeadingLevel(headingLevel)}
             item={item}
             onChange={setLineItem}
           />
