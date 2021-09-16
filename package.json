@@ -3,8 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "predev": "npm --prefix functions run build",
-    "dev": "firebase emulators:exec --ui \"next dev\"",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "fmt": "prettier --write .",
