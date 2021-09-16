@@ -1,3 +1,4 @@
+/* eslint-disable-next-line */
 import Document, { DocumentContext } from 'next/document';
 import { ServerStyleSheet } from 'styled-components';
 
@@ -9,6 +10,7 @@ export default class MyDocument extends Document {
     try {
       ctx.renderPage = () =>
         originalRenderPage({
+          /* eslint-disable-next-line */
           enhanceApp: (App) => (props) =>
             sheet.collectStyles(<App {...props} />),
         });
