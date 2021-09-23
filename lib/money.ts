@@ -16,7 +16,7 @@ export function getLineItemPrice(
   if (!product) return zeroDinero;
   const variant = product.variants[item.variantId];
   if (!variant) return zeroDinero;
-  const price = variant.price || product.price;
+  const price = variant.price;
   const d = dinero({ amount: price, currency: defaultCurrency });
   return multiply(d, item.quantity);
 }
