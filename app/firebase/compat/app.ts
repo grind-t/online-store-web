@@ -15,8 +15,10 @@ if (!firebase.apps.length) {
   if (process.env.NODE_ENV === 'development') {
     require('firebase/compat/auth');
     require('firebase/compat/firestore');
+    require('firebase/compat/storage');
     firebase.auth().useEmulator('http://localhost:9099');
     firebase.firestore().useEmulator('localhost', 8080);
+    firebase.storage().useEmulator('localhost', 9199);
   }
 }
 

@@ -8,6 +8,7 @@ export const cartState = atom<Cart>({
   default: null,
   effects_UNSTABLE: [
     ({ setSelf, onSet }) => {
+      // TODO: Filter unavailable products.
       if (!isClient) return;
       onAuthStateChanged(getAppAuth(), () =>
         getAppCart().then(setSelf).catch(console.error)

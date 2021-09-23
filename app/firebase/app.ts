@@ -23,8 +23,10 @@ export function initializeDefaultApp() {
       getFirestore,
       connectFirestoreEmulator,
     } = require('firebase/firestore');
+    const { getStorage, connectStorageEmulator } = require('firebase/storage');
     connectAuthEmulator(getAuth(), 'http://localhost:9099');
     connectFirestoreEmulator(getFirestore(), 'localhost', 8080);
+    connectStorageEmulator(getStorage(), 'localhost', 9199);
   }
 }
 

@@ -3,9 +3,9 @@ import AddToCartButton from 'components/atoms/buttons/add-to-cart-button';
 import CustomInput from 'components/atoms/utils/custom-input';
 import { dinero } from 'dinero.js';
 import { defaultCurrency, formatPrice } from 'lib/money';
-import { Product, getVariant, selectInitialOptions } from 'lib/product';
+import { Product, getVariant, selectInitialProductOptions } from 'lib/product';
 import Image from 'next/image';
-import { ChangeEvent, useMemo, useState } from 'react';
+import { ChangeEvent, useMemo, useState, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { em } from 'styles/mixins';
@@ -63,7 +63,7 @@ interface ProductCardProps {
 
 const ProductCard = ({ productId, product }: ProductCardProps) => {
   const [selectedOptions, setSelectedOptions] = useState(() =>
-    selectInitialOptions(product.options)
+    selectInitialProductOptions(product.options)
   );
   const [variantId, variant] = useMemo(
     () => getVariant(product.variants, selectedOptions),
@@ -72,11 +72,11 @@ const ProductCard = ({ productId, product }: ProductCardProps) => {
   const lineItemId = `${productId}_${variantId}`;
   const [lineItem, setLineItem] = useRecoilState(lineItemState(lineItemId));
   const quantity = lineItem ? lineItem.quantity : 0;
-  const image = variant.image || product.image;
-  const price = variant.price || product.price;
-  const priceString = formatPrice(
-    dinero({ amount: price, currency: defaultCurrency })
-  );
+  const isAvailable = !!variant?.quantity;
+  const image = (isAvailable && variant.image) || product.image;
+  const priceString = isAvailable
+    ? formatPrice(dinero({ amount: variant.price, currency: defaultCurrency }))
+    : 'Нет в наличии';
 
   const handleOptionChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -96,8 +96,8 @@ const ProductCard = ({ productId, product }: ProductCardProps) => {
     <>
       <ImageContainer>
         <Image
-          src={image.url}
-          alt={image.alt}
+          src={image}
+          alt={product.name}
           width="360"
           height="313"
           quality={100}
@@ -123,8 +123,12 @@ const ProductCard = ({ productId, product }: ProductCardProps) => {
         </OptionsContainer>
       )}
       <PurchaseContainer>
-        <Price>от {priceString}</Price>
-        <AddToCartButton count={quantity} onClick={handleAddToCart} />
+        <Price>{priceString}</Price>
+        <AddToCartButton
+          count={quantity}
+          disabled={!isAvailable}
+          onClick={handleAddToCart}
+        />
       </PurchaseContainer>
     </>
   );

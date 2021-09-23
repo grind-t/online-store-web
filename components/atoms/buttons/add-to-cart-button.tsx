@@ -36,11 +36,16 @@ const Button = styled.button.attrs({ type: 'button' })`
 
 interface AddToCartButtonProps {
   count: number;
+  disabled: boolean;
   onClick: () => void;
 }
 
-const AddToCartButton = ({ count, onClick }: AddToCartButtonProps) => (
-  <Button onClick={onClick}>
+const AddToCartButton = ({
+  count,
+  disabled,
+  onClick,
+}: AddToCartButtonProps) => (
+  <Button disabled={disabled} onClick={onClick}>
     <Icon />
     Добавить
     <Count>{count}</Count>

@@ -182,7 +182,7 @@ const CartItemContent = ({
   const options = Object.values(variant.options).join(', ').toLowerCase();
   const image = variant.image || product.image;
   const heading = `${product.name}, ${options}`;
-  const price = (variant.price || product.price) * item.quantity;
+  const price = variant.price * item.quantity;
   const priceString = formatPrice(
     dinero({ amount: price, currency: defaultCurrency })
   );
@@ -205,7 +205,7 @@ const CartItemContent = ({
   return (
     <>
       <ImageContainer>
-        <Image src={image.url} alt={image.alt} width="80" height="80" />
+        <Image src={image} alt={product.name} width="80" height="80" />
       </ImageContainer>
       <InfoContainer>
         <Heading as={headingLevel}>{heading}</Heading>
