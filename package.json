@@ -11,10 +11,10 @@
   },
   "dependencies": {
     "@dinero.js/currencies": "^2.0.0-alpha.8",
-    "@react-hookz/web": "^7.0.0",
+    "@react-hookz/web": "^10.1.1",
     "dinero.js": "^2.0.0-alpha.8",
     "downshift": "^6.1.7",
-    "firebase": "^9.0.2",
+    "firebase": "^9.1.0",
     "firebase-admin": "^9.11.1",
     "next": "^11.1.2",
     "react": "^17.0.2",
@@ -26,8 +26,8 @@
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^2.0.4",
-    "@types/node": "^16.9.1",
-    "@types/react": "^17.0.21",
+    "@types/node": "^16.10.1",
+    "@types/react": "^17.0.24",
     "@types/styled-components": "^5.1.14",
     "babel-plugin-styled-components": "^1.13.2",
     "eslint": "^7.32.0",
