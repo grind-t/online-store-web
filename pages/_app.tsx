@@ -1,4 +1,5 @@
 import { AuthProvider } from 'hooks/useAuth';
+import { NextIntlProvider } from 'next-intl';
 import { AppProps } from 'next/app';
 import { UIDReset } from 'react-uid';
 import { RecoilRoot } from 'recoil';
@@ -25,11 +26,13 @@ const App = ({ Component, pageProps }: AppProps) => {
     <>
       <GlobalStyle />
       <UIDReset>
-        <AuthProvider>
-          <RecoilRoot>
-            <Component {...pageProps} />
-          </RecoilRoot>
-        </AuthProvider>
+        <NextIntlProvider messages={pageProps.messages}>
+          <AuthProvider>
+            <RecoilRoot>
+              <Component {...pageProps} />
+            </RecoilRoot>
+          </AuthProvider>
+        </NextIntlProvider>
       </UIDReset>
     </>
   );
