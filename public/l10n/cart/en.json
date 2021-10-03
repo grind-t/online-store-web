@@ -1,0 +1,22 @@
+{
+  "CartView": {
+    "isEmpty": "The cart is empty",
+    "heading": "Cart",
+    "clearCart": "Clear",
+    "totalItems": "{num} {num, plural, one {item} other {items}}",
+    "totalPrice": "Total price"
+  },
+  "CartItem": {
+    "remove": "Remove"
+  },
+  "InputStepper": {
+    "decrement": "Less",
+    "increment": "More"
+  },
+  "GoBackButton": {
+    "text": "Go back"
+  },
+  "PaymentLink": {
+    "text": "Pay now"
+  }
+}

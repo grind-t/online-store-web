@@ -1,0 +1,22 @@
+{
+  "CartView": {
+    "isEmpty": "Корзина пустая",
+    "heading": "Корзина",
+    "clearCart": "Очистить",
+    "totalItems": "Всего товаров {num} шт.",
+    "totalPrice": "Сумма заказа"
+  },
+  "CartItem": {
+    "remove": "Удалить"
+  },
+  "InputStepper": {
+    "decrement": "Меньше",
+    "increment": "Больше"
+  },
+  "GoBackButton": {
+    "text": "Вернуться назад"
+  },
+  "PaymentLink": {
+    "text": "Оплатить сейчас"
+  }
+}

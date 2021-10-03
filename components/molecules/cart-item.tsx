@@ -9,6 +9,7 @@ import { LineItem } from 'lib/cart';
 import { defaultCurrency, formatPrice } from 'lib/money';
 import { getProductFromFirestore, Product } from 'lib/product';
 import { HeadingLevel } from 'lib/utils';
+import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { useEffect } from 'react';
 import { useRecoilState } from 'recoil';
@@ -177,6 +178,7 @@ const CartItemContent = ({
   product,
   onChange,
 }: CartItemContentProps) => {
+  const t = useTranslations('CartItem');
   const upMD = useMediaQuery(up(breakpoints.md));
   const variant = product.variants[item.variantId];
   const options = Object.values(variant.options).join(', ').toLowerCase();
@@ -220,7 +222,7 @@ const CartItemContent = ({
         <Price>{priceString}</Price>
         {upMD && (
           <RemoveItemButton onClick={handleRemove}>
-            <VisuallyHidden>Удалить</VisuallyHidden>
+            <VisuallyHidden>{t('remove')}</VisuallyHidden>
             <RemoveItemIcon />
           </RemoveItemButton>
         )}

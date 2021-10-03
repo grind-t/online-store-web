@@ -4,6 +4,7 @@ import CustomInput from 'components/atoms/utils/custom-input';
 import { dinero } from 'dinero.js';
 import { defaultCurrency, formatPrice } from 'lib/money';
 import { Product, getVariant, selectInitialProductOptions } from 'lib/product';
+import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { ChangeEvent, useMemo, useState, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
@@ -62,6 +63,7 @@ interface ProductCardProps {
 }
 
 const ProductCard = ({ productId, product }: ProductCardProps) => {
+  const t = useTranslations('ProductCard');
   const [selectedOptions, setSelectedOptions] = useState(() =>
     selectInitialProductOptions(product.options)
   );
@@ -76,7 +78,7 @@ const ProductCard = ({ productId, product }: ProductCardProps) => {
   const image = (isAvailable && variant.image) || product.image;
   const priceString = isAvailable
     ? formatPrice(dinero({ amount: variant.price, currency: defaultCurrency }))
-    : 'Нет в наличии';
+    : t('outOfStock');
 
   const handleOptionChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;

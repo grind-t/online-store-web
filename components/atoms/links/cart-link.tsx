@@ -4,6 +4,7 @@ import { totalCartPriceState } from 'app/recoil/money';
 import CartIcon from 'components/atoms/icons/cart-icon';
 import VisuallyHidden from 'components/atoms/utils/visually-hidden';
 import { formatPrice } from 'lib/money';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
@@ -48,11 +49,13 @@ const CompactContent = () => <Icon />;
 const DetailedContent = () => {
   const totalItems = useRecoilValue(totalCartItemsState);
   const totalPrice = useRecoilValue(totalCartPriceState);
+  const t = useTranslations('CartLink');
+
   return (
     <>
-      <VisuallyHidden>Сумма</VisuallyHidden> {formatPrice(totalPrice)}
+      <VisuallyHidden>{t('sum')}</VisuallyHidden> {formatPrice(totalPrice)}
       <Icon />
-      <VisuallyHidden>Количество товаров</VisuallyHidden> {totalItems}
+      <VisuallyHidden>{t('numOfItems')}</VisuallyHidden> {totalItems}
     </>
   );
 };
@@ -63,11 +66,12 @@ interface CartLinkProps {
 
 const CartLink = ({ className }: CartLinkProps) => {
   const upMD = useMediaQuery(up(breakpoints.md));
+  const t = useTranslations('CartLink');
 
   return (
     <Link href="/cart" passHref>
       <Anchor className={className}>
-        <VisuallyHidden>Корзина</VisuallyHidden>
+        <VisuallyHidden>{t('title')}</VisuallyHidden>
         {upMD ? <DetailedContent /> : <CompactContent />}
       </Anchor>
     </Link>

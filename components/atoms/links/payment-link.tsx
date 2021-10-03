@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import styled from 'styled-components';
 
@@ -20,10 +21,14 @@ interface PaymentLinkProps {
   className?: string;
 }
 
-const PaymentLink = ({ className }: PaymentLinkProps) => (
-  <Link href="#" passHref>
-    <Anchor className={className}>Оплатить сейчас</Anchor>
-  </Link>
-);
+const PaymentLink = ({ className }: PaymentLinkProps) => {
+  const t = useTranslations('PaymentLink');
+
+  return (
+    <Link href="#" passHref>
+      <Anchor className={className}>{t('text')}</Anchor>
+    </Link>
+  );
+};
 
 export default PaymentLink;

@@ -1,0 +1,37 @@
+{
+  "StoreHeader": {
+    "heading": "Ebcommerce",
+    "guestNav": {
+      "signIn": "Sign in"
+    },
+    "userNav": {
+      "profile": "Profile",
+      "orders": "Orders",
+      "signOut": "Sign out"
+    }
+  },
+  "CartLink": {
+    "title": "Cart",
+    "sum": "Sum",
+    "numOfItems": "Number of items"
+  },
+  "Navigation": {
+    "closeMenu": "Close menu",
+    "openMenu": "Open menu"
+  },
+  "ProductsView": {
+    "allProductsCategory": "All",
+    "sortByPopularityOption": "popularity",
+    "sortByPriceOption": "price",
+    "sortByAlphabetOption": "alphabet"
+  },
+  "Sorting": {
+    "sortBy": "Sort by"
+  },
+  "ProductCard": {
+    "outOfStock": "Out of stock"
+  },
+  "AddToCartButton": {
+    "text": "Add"
+  }
+}

@@ -2,6 +2,7 @@ import { useMediaQuery } from '@react-hookz/web';
 import StandaloneBurgerMenuIcon from 'components/atoms/icons/burger-menu-icon';
 import CrossIcon from 'components/atoms/icons/cross-icon';
 import VisuallyHidden from 'components/atoms/utils/visually-hidden';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { ReactNode, useEffect, useState } from 'react';
 import styled from 'styled-components';
@@ -189,6 +190,7 @@ export interface NavigationProps {
 }
 
 const Navigation = ({ items, hiddenItems, className }: NavigationProps) => {
+  const t = useTranslations('Navigation');
   const isHoverNav = useMediaQuery(hoverNavQuery);
   const isBurgerNav = !isHoverNav;
   const isClient = isHoverNav !== undefined;
@@ -222,7 +224,7 @@ const Navigation = ({ items, hiddenItems, className }: NavigationProps) => {
       {isClient && isBurgerNav && (
         <BurgerMenu onClick={() => showBurgerNav((v) => !v)}>
           <VisuallyHidden>
-            {isBurgerOpen ? 'Закрыть меню' : 'Открыть меню'}
+            {isBurgerOpen ? t('closeMenu') : t('openMenu')}
           </VisuallyHidden>
           {isBurgerOpen ? <CloseIcon /> : <BurgerMenuIcon />}
         </BurgerMenu>

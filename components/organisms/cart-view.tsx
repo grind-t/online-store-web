@@ -10,6 +10,7 @@ import { getEmptyCart, isCartEmpty } from 'lib/cart';
 import { LineItem } from 'lib/cart';
 import { formatPrice } from 'lib/money';
 import { HeadingLevel, nextHeadingLevel } from 'lib/utils';
+import { useTranslations } from 'next-intl';
 import { useRecoilCallback, useRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import { up } from 'styles/mixins';
@@ -141,6 +142,7 @@ interface CartViewProps {
 }
 
 const CartView = ({ container, headingLevel, className }: CartViewProps) => {
+  const t = useTranslations('CartView');
   const upMD = useMediaQuery(up(breakpoints.md));
   const [cart, setCart] = useRecoilState(cartState);
   const totalItems = useRecoilValue(totalCartItemsState);
@@ -157,16 +159,16 @@ const CartView = ({ container, headingLevel, className }: CartViewProps) => {
   if (!cart) return null;
 
   if (isCartEmpty(cart))
-    return <div style={{ textAlign: 'center' }}>Корзина пустая</div>;
+    return <div style={{ textAlign: 'center' }}>{t('isEmpty')}</div>;
 
   return (
     <Container as={container} className={className}>
       <TopBar>
         <CartIcon />
-        <Heading as={headingLevel}>Корзина</Heading>
+        <Heading as={headingLevel}>{t('heading')}</Heading>
         <ClearCartButton onClick={() => setCart(getEmptyCart())}>
           <TrashIcon />
-          Очистить корзину
+          {t('clearCart')}
         </ClearCartButton>
       </TopBar>
       <ItemList>
@@ -180,9 +182,9 @@ const CartView = ({ container, headingLevel, className }: CartViewProps) => {
           />
         ))}
       </ItemList>
-      <TotalItems>Всего товаров {totalItems} шт.</TotalItems>
+      <TotalItems>{t('totalItems', { num: totalItems })}</TotalItems>
       <TotalPrice>
-        Сумма заказа:{' '}
+        {t('totalPrice') + ': '}
         <TotalPriceValue>{formatPrice(totalPrice)}</TotalPriceValue>
       </TotalPrice>
       {upMD && <GoBackButton />}

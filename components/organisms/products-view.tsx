@@ -1,13 +1,11 @@
-import { productsState } from 'app/recoil/products';
 import CategoryList from 'components/molecules/category-list';
 import ProductCard from 'components/molecules/product-card';
 import Sorting from 'components/molecules/sorting';
 import { Products } from 'lib/products';
-import { useEffect } from 'react';
-import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { up } from 'styles/mixins';
 import { breakpoints } from 'styles/varibles';
+import { useTranslations } from 'use-intl';
 
 //#region styled
 const ViewOptions = styled.div`
@@ -60,27 +58,26 @@ const ProductList = styled.ul`
 //#endregion
 
 interface ProductsViewProps {
-  initialProducts?: Products;
+  products: Products;
 }
 
-const ProductsView = ({ initialProducts }: ProductsViewProps) => {
-  const [products, setProducts] = useRecoilState(productsState);
-
-  useEffect(() => {
-    setProducts(initialProducts);
-  }, [initialProducts, setProducts]);
+const ProductsView = ({ products }: ProductsViewProps) => {
+  const t = useTranslations('ProductsView');
+  const categories = [t('allProductsCategory')];
+  const sortingOptions = [
+    t('sortByPopularityOption'),
+    t('sortByPriceOption'),
+    t('sortByAlphabetOption'),
+  ];
 
   return (
     <>
       <ViewOptions>
-        <CategoryList items={['Все', 'Playstation Plus']} />
-        <Sorting
-          options={['популярности', 'цене', 'алфавиту']}
-          by="популярности"
-        />
+        <CategoryList items={categories} />
+        <Sorting options={sortingOptions} by={sortingOptions[0]} />
       </ViewOptions>
       <ProductList>
-        {Object.entries(products || initialProducts).map(([id, product]) => (
+        {Object.entries(products).map(([id, product]) => (
           <li key={id}>
             <ProductCard productId={id} product={product} />
           </li>

@@ -1,0 +1,37 @@
+{
+  "StoreHeader": {
+    "heading": "Самый долгий магазин цифровых товаров",
+    "guestNav": {
+      "signIn": "Войти"
+    },
+    "userNav": {
+      "profile": "Профиль",
+      "orders": "Заказы",
+      "signOut": "Выйти"
+    }
+  },
+  "CartLink": {
+    "title": "Корзина",
+    "sum": "Сумма",
+    "numOfItems": "Количество товаров"
+  },
+  "Navigation": {
+    "closeMenu": "Закрыть меню",
+    "openMenu": "Открыть меню"
+  },
+  "ProductsView": {
+    "allProductsCategory": "Все",
+    "sortByPopularityOption": "популярности",
+    "sortByPriceOption": "цене",
+    "sortByAlphabetOption": "алфавиту"
+  },
+  "Sorting": {
+    "sortBy": "Сортировка по"
+  },
+  "ProductCard": {
+    "outOfStock": "Нет в наличии"
+  },
+  "AddToCartButton": {
+    "text": "Добавить"
+  }
+}

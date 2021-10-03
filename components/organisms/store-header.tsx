@@ -10,6 +10,8 @@ import HeaderTemplate, {
   lerpByFontSize,
 } from 'components/templates/header-template';
 import { useAuth } from 'hooks/useAuth';
+import { useTranslations } from 'next-intl';
+import { useMemo } from 'react';
 import styled from 'styled-components';
 import { em, up } from 'styles/mixins';
 import { breakpoints } from 'styles/varibles';
@@ -45,27 +47,32 @@ const Header = styled(HeaderTemplate)`
 `;
 //#endregion
 
-const guestNav: NavigationItem[] = [
-  { href: '/sign-in', icon: <PersonIcon />, text: 'Войти' },
-];
-
-const userNav: NavigationItem[] = [
-  { href: '/profile', icon: <PersonIcon />, text: 'Профиль' },
-  { href: '/orders', icon: <OrdersIcon />, text: 'Заказы' },
-  {
-    text: 'Выйти',
-    icon: <SignOutIcon />,
-    onClick: () => signOut(getAppAuth()),
-  },
-];
-
 const StoreHeader = () => {
   const user = useAuth();
+  const t = useTranslations('StoreHeader');
+  const guestNav = useMemo<NavigationItem[]>(
+    () => [
+      { href: '/sign-in', icon: <PersonIcon />, text: t('guestNav.signIn') },
+    ],
+    [t]
+  );
+  const userNav = useMemo<NavigationItem[]>(
+    () => [
+      { href: '/profile', icon: <PersonIcon />, text: t('userNav.profile') },
+      { href: '/orders', icon: <OrdersIcon />, text: t('userNav.orders') },
+      {
+        text: t('userNav.signOut'),
+        icon: <SignOutIcon />,
+        onClick: () => signOut(getAppAuth()),
+      },
+    ],
+    [t]
+  );
 
   return (
     <Header>
       <BearIcon />
-      <Heading>Самый долгий магазин цифровых товаров</Heading>
+      <Heading>{t('heading')}</Heading>
       <CartLink />
       <Navigation
         items={user ? userNav : guestNav}

@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
 
@@ -24,9 +25,11 @@ interface GoBackButtonProps {
 
 const GoBackButton = ({ className }: GoBackButtonProps) => {
   const router = useRouter();
+  const t = useTranslations('GoBackButton');
+
   return (
     <Button className={className} onClick={() => router.back()}>
-      Вернуться назад
+      {t('text')}
     </Button>
   );
 };

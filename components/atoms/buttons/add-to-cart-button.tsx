@@ -1,4 +1,5 @@
 import PlusIcon from 'components/atoms/icons/plus-icon';
+import { useTranslations } from 'next-intl';
 import styled from 'styled-components';
 
 //#region styled
@@ -44,12 +45,16 @@ const AddToCartButton = ({
   count,
   disabled,
   onClick,
-}: AddToCartButtonProps) => (
-  <Button disabled={disabled} onClick={onClick}>
-    <Icon />
-    Добавить
-    <Count>{count}</Count>
-  </Button>
-);
+}: AddToCartButtonProps) => {
+  const t = useTranslations('AddToCartButton');
+
+  return (
+    <Button disabled={disabled} onClick={onClick}>
+      <Icon />
+      {t('text')}
+      <Count>{count}</Count>
+    </Button>
+  );
+};
 
 export default AddToCartButton;

@@ -1,5 +1,6 @@
 import StandaloneArrowIcon from 'components/atoms/icons/arrow-icon';
 import { useSelect } from 'downshift';
+import { useTranslations } from 'next-intl';
 import { useUID } from 'react-uid';
 import styled from 'styled-components';
 import { em } from 'styles/mixins';
@@ -76,6 +77,7 @@ interface SortingProps {
 }
 
 const Sorting = ({ options, by, asc, className }: SortingProps) => {
+  const t = useTranslations('Sorting');
   const uid = useUID();
   const {
     isOpen,
@@ -92,7 +94,7 @@ const Sorting = ({ options, by, asc, className }: SortingProps) => {
       <OrderToggle>
         <ArrowIcon down={!asc} />
       </OrderToggle>
-      <OptionsLabel {...getLabelProps()}>Сортировка по:</OptionsLabel>
+      <OptionsLabel {...getLabelProps()}>{t('sortBy') + ':'}</OptionsLabel>
       <OptionsToggle {...getToggleButtonProps()}>{selectedItem}</OptionsToggle>
       <Options {...getMenuProps()}>
         {isOpen &&

@@ -1,6 +1,7 @@
 import StandaloneMinusIcon from 'components/atoms/icons/minus-icon';
 import StandalonePlusIcon from 'components/atoms/icons/plus-icon';
 import VisuallyHidden from 'components/atoms/utils/visually-hidden';
+import { useTranslations } from 'next-intl';
 import styled, { css } from 'styled-components';
 
 //#region styled
@@ -55,15 +56,17 @@ const InputStepper = ({
   onIncrement,
   className,
 }: InputStepperProps) => {
+  const t = useTranslations('InputStepper');
+
   return (
     <Container className={className}>
       <Button onClick={onDecrement}>
-        <VisuallyHidden>Меньше</VisuallyHidden>
+        <VisuallyHidden>{t('decrement')}</VisuallyHidden>
         <MinusIcon />
       </Button>
       <Value>{value}</Value>
       <Button onClick={onIncrement}>
-        <VisuallyHidden>Больше</VisuallyHidden>
+        <VisuallyHidden>{t('increment')}</VisuallyHidden>
         <PlusIcon />
       </Button>
     </Container>

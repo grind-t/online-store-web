@@ -2,10 +2,20 @@ import { useMediaQuery } from '@react-hookz/web';
 import StandaloneCartView from 'components/organisms/cart-view';
 import HeaderTemplate from 'components/templates/header-template';
 import PageTemplate from 'components/templates/page-template';
+import { GetStaticProps } from 'next';
 import Head from 'next/head';
 import styled from 'styled-components';
 import { up } from 'styles/mixins';
 import { breakpoints } from 'styles/varibles';
+
+export const getStaticProps: GetStaticProps = ({ locale }) => ({
+  props: {
+    messages: {
+      ...require(`/public/l10n/common/${locale}.json`),
+      ...require(`/public/l10n/cart/${locale}.json`),
+    },
+  },
+});
 
 //#region styled
 const CartView = styled(StandaloneCartView).attrs({
