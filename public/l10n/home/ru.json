@@ -33,5 +33,8 @@
   },
   "AddToCartButton": {
     "text": "Добавить"
+  },
+  "StoreFooter": {
+    "offer": "Оферта"
   }
 }

@@ -117,6 +117,7 @@ const Container = styled.section`
     'price'
     'pay';
   min-height: inherit;
+  width: 100%;
   margin: 0 auto;
   padding: 7px;
 

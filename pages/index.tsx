@@ -1,6 +1,7 @@
 import admin from 'app/firebase-admin';
 import { path } from 'app/firebase/firestore';
 import ProductsView, { ProductList } from 'components/organisms/products-view';
+import StoreFooter from 'components/organisms/store-footer';
 import StoreHeader from 'components/organisms/store-header';
 import PageTemplate, { pageMargin } from 'components/templates/page-template';
 import { Product } from 'lib/product';
@@ -73,6 +74,7 @@ const Home = ({ products }: HomeProps) => {
       <Main>
         <ProductsView products={products} />
       </Main>
+      <StoreFooter />
     </PageTemplate>
   );
 };
