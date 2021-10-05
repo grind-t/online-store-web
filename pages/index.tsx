@@ -72,7 +72,7 @@ const Home = ({ products }: HomeProps) => {
       </Head>
       <StoreHeader />
       <Main>
-        <ProductsView products={products} />
+        <ProductsView products={products} headingLevel="h2" />
       </Main>
       <StoreFooter />
     </PageTemplate>

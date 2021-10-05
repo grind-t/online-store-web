@@ -1,9 +1,11 @@
 import { lineItemState } from 'app/recoil/cart';
 import AddToCartButton from 'components/atoms/buttons/add-to-cart-button';
 import CustomInput from 'components/atoms/utils/custom-input';
+import ProductInfo from 'components/molecules/product-info';
 import { dinero } from 'dinero.js';
 import { defaultCurrency, formatPrice } from 'lib/money';
 import { Product, getVariant, selectInitialProductOptions } from 'lib/product';
+import { HeadingLevel } from 'lib/utils';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { ChangeEvent, useMemo, useState, useEffect } from 'react';
@@ -13,8 +15,11 @@ import { em } from 'styles/mixins';
 
 //#region styled
 // https://github.com/vercel/next.js/discussions/18312
-const ImageContainer = styled.div`
+const ImageContainer = styled.button`
+  display: block;
   margin-bottom: 5px;
+  background: none;
+  border: none;
   line-height: 0;
   box-shadow: 0 5px 35px rgba(0, 0, 0, 0.25);
 `;
@@ -60,10 +65,16 @@ const PurchaseContainer = styled.div`
 interface ProductCardProps {
   productId: string;
   product: Product;
+  headingLevel?: HeadingLevel;
 }
 
-const ProductCard = ({ productId, product }: ProductCardProps) => {
+const ProductCard = ({
+  productId,
+  product,
+  headingLevel,
+}: ProductCardProps) => {
   const t = useTranslations('ProductCard');
+  const [isInfoVisible, showInfo] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState(() =>
     selectInitialProductOptions(product.options)
   );
@@ -94,9 +105,13 @@ const ProductCard = ({ productId, product }: ProductCardProps) => {
     setLineItem(lineItem);
   };
 
+  useEffect(() => {
+    document.body.style.overflow = isInfoVisible ? 'hidden' : '';
+  }, [isInfoVisible]);
+
   return (
     <>
-      <ImageContainer>
+      <ImageContainer onClick={() => showInfo(true)}>
         <Image
           src={image}
           alt={product.name}
@@ -105,6 +120,13 @@ const ProductCard = ({ productId, product }: ProductCardProps) => {
           quality={100}
         />
       </ImageContainer>
+      <ProductInfo
+        name={product.name}
+        description={product.description}
+        isVisible={isInfoVisible}
+        headingLevel={headingLevel}
+        onClose={() => showInfo(false)}
+      />
       {product.options && (
         <OptionsContainer>
           {product.options.map(({ name, values }) => (

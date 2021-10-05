@@ -2,6 +2,7 @@ import CategoryList from 'components/molecules/category-list';
 import ProductCard from 'components/molecules/product-card';
 import Sorting from 'components/molecules/sorting';
 import { Products } from 'lib/products';
+import { HeadingLevel } from 'lib/utils';
 import styled from 'styled-components';
 import { up } from 'styles/mixins';
 import { breakpoints } from 'styles/varibles';
@@ -59,9 +60,10 @@ const ProductList = styled.ul`
 
 interface ProductsViewProps {
   products: Products;
+  headingLevel?: HeadingLevel;
 }
 
-const ProductsView = ({ products }: ProductsViewProps) => {
+const ProductsView = ({ products, headingLevel }: ProductsViewProps) => {
   const t = useTranslations('ProductsView');
   const categories = [t('allProductsCategory')];
   const sortingOptions = [
@@ -79,7 +81,11 @@ const ProductsView = ({ products }: ProductsViewProps) => {
       <ProductList>
         {Object.entries(products).map(([id, product]) => (
           <li key={id}>
-            <ProductCard productId={id} product={product} />
+            <ProductCard
+              productId={id}
+              product={product}
+              headingLevel={headingLevel}
+            />
           </li>
         ))}
       </ProductList>
