@@ -4,7 +4,7 @@ module.exports = {
     domains: ['localhost', 'firebasestorage.googleapis.com'],
   },
   i18n: {
-    locales: ['en', 'ru'],
-    defaultLocale: 'en',
+    locales: ['ru'],
+    defaultLocale: 'ru',
   },
 };
