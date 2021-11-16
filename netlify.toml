@@ -1,4 +1,5 @@
-[functions]
-  # Specifies `esbuild` for functions bundling
-  node_bundler = "esbuild"
-  external_node_modules = ["sharp"]
+[build]
+publish = ".next"
+
+[[plugins]]
+package = "@netlify/plugin-nextjs"
