@@ -1,80 +1,56 @@
-import { Entities } from './utils';
-import { getAppAuth } from 'app/firebase/auth';
-import {
-  doc,
-  setDoc,
-  getAppFirestore,
-  path,
-  getDoc,
-  Firestore,
-} from 'app/firebase/firestore';
+import { Entities } from './entities';
+import { defaultCurrency, zeroDinero } from './money';
+import { Cart, CartItem } from 'api/cart';
+import { Product } from 'api/products';
+import { add, Dinero, dinero, multiply } from 'dinero.js';
 
-export interface LineItem {
-  productId: string;
-  variantId: string;
-  quantity: number;
-}
-
-export type LineItems = Entities<LineItem>;
-
-export interface Cart {
-  items: LineItems;
+export function getEmptyCart(): Cart {
+  return { items: {} };
 }
 
 export function isCartEmpty(cart: Cart): boolean {
   return Object.keys(cart.items).length <= 0;
 }
 
-export function getEmptyCart(): Cart {
-  return { items: {} };
-}
-
 export function getLocalCart(): Cart {
-  const cartJSON = window.localStorage.getItem('cart');
-  return cartJSON ? JSON.parse(cartJSON) : getEmptyCart();
-}
-
-export async function getFirestoreCart(
-  userId: string,
-  db: Firestore
-): Promise<Cart> {
-  const snap = await getDoc(doc(db, path.carts, userId));
-  const cart = snap.exists() ? snap.data() : getEmptyCart();
-  return cart as Cart;
-}
-
-export async function getAppCart(): Promise<Cart> {
-  const user = getAppAuth().currentUser;
-  const localCart = getLocalCart();
-  if (!user) return Promise.resolve(localCart);
-  const db = getAppFirestore();
-  if (!isCartEmpty(localCart)) {
-    await setDoc(doc(db, path.carts, user.uid), localCart, { merge: true })
-      .then(clearLocalCart)
-      .catch(console.error);
-  }
-  return getFirestoreCart(user.uid, db);
+  const json = window.localStorage.getItem('cart');
+  return json ? JSON.parse(json) : getEmptyCart();
 }
 
 export function setLocalCart(cart: Cart): void {
   window.localStorage.setItem('cart', JSON.stringify(cart));
 }
 
-export function setFirestoreCart(
-  cart: Cart,
-  userId: string,
-  db: Firestore
-): Promise<void> {
-  return setDoc(doc(db, path.carts, userId), cart);
-}
-
-export function setAppCart(cart: Cart): Promise<void> {
-  const user = getAppAuth().currentUser;
-  return user
-    ? setFirestoreCart(cart, user.uid, getAppFirestore())
-    : Promise.resolve(setLocalCart(cart));
-}
-
 export function clearLocalCart() {
   window.localStorage.removeItem('cart');
+}
+
+export function mergeCarts(source: Cart, target: Cart): Cart {
+  return { items: { ...target.items, ...source.items } };
+}
+
+export function getTotalCartItems(cart: Cart): number {
+  return Object.values(cart.items).reduce(
+    (acc, item) => acc + item.quantity,
+    0
+  );
+}
+
+export function getCartItemPrice(
+  item: CartItem,
+  product: Product
+): Dinero<number> {
+  const variant = product.variants[item.variantId];
+  const d = dinero({ amount: variant.price, currency: defaultCurrency });
+  return multiply(d, item.quantity);
+}
+
+export function getTotalCartPrice(
+  cart: Cart,
+  products: Entities<Product>
+): Dinero<number> {
+  return Object.values(cart.items).reduce((acc, item) => {
+    const product = products[item.productId];
+    return product ? add(acc, getCartItemPrice(item, product)) : zeroDinero;
+  }, zeroDinero);
 }

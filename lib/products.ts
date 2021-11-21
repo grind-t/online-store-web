@@ -1,17 +1,27 @@
-import { Product } from './product';
-import { Entities } from './utils';
-import {
-  collection,
-  getAppFirestore,
-  getDocs,
-  path,
-} from 'app/firebase/firestore';
+import { Entities, Entity } from './entities';
+import { Product, ProductVariant } from 'api/products';
 
-export type Products = Entities<Product>;
+export function getProductOptions(product: Product): Record<string, string[]> {
+  const options: Record<string, string[]> = {};
+  const variants = Object.values(product.variants);
+  const keys = Object.keys(variants[0].characteristics);
+  for (const key of keys) {
+    const values = new Set<string>();
+    for (const variant of variants) {
+      values.add(variant.characteristics[key]);
+    }
+    options[key] = Array.from(values);
+  }
+  return options;
+}
 
-export async function getProductsFromFirestore(): Promise<Products> {
-  const snap = await getDocs(collection(getAppFirestore(), path.products));
-  const products = {};
-  snap.forEach((doc) => (products[doc.id] = doc.data()));
-  return products;
+export function getVariant(
+  variants: Entities<ProductVariant>,
+  characteristics: Record<string, string>
+): Entity<ProductVariant> | undefined {
+  const entries = Object.entries(variants);
+  const keys = Object.keys(characteristics);
+  return entries.find(([, varinat]) =>
+    keys.every((key) => characteristics[key] === varinat.characteristics[key])
+  );
 }
