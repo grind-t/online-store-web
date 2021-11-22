@@ -1,5 +1,4 @@
 import firebase from 'app/firebase/compat/app';
-import 'firebase/compat/auth';
 import Head from 'next/head';
 import Script from 'next/script';
 import { useEffect } from 'react';
@@ -48,7 +47,7 @@ const SignIn = () => {
   return (
     <Page>
       <Script
-        src="https://www.gstatic.com/firebasejs/ui/4.8.1/firebase-ui-auth__ru.js"
+        src="https://www.gstatic.com/firebasejs/ui/6.0.0/firebase-ui-auth__ru.js"
         onLoad={initUI}
       />
       <Head>
@@ -57,7 +56,7 @@ const SignIn = () => {
         <link
           type="text/css"
           rel="stylesheet"
-          href="https://www.gstatic.com/firebasejs/ui/4.8.1/firebase-ui-auth.css"
+          href="https://www.gstatic.com/firebasejs/ui/6.0.0/firebase-ui-auth.css"
         />
       </Head>
 
