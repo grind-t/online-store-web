@@ -12,35 +12,52 @@ import {
   getTotalCartItems,
   getTotalCartPrice,
 } from 'lib/cart';
-import { Entities, Entity } from 'lib/entities';
+import { Entities, ID } from 'lib/entities';
 import { atom, selector, selectorFamily } from 'recoil';
 import { productQuery } from 'state/products';
 
-export const cartState = atom<Cart>({
-  key: 'cart',
-  default: getEmptyCart(),
+interface LoadableCart {
+  cart: Cart;
+  isLoading: boolean;
+}
+
+const loadableCartState = atom<LoadableCart>({
+  key: 'loadableCart',
+  default: { cart: getEmptyCart(), isLoading: true },
   effects_UNSTABLE: [
     ({ setSelf, onSet }) => {
       if (!isClient) return;
-      onSet((cart) => {
+      onSet((state) => {
         const user = getAppAuth().currentUser;
-        if (!user) setLocalCart(cart);
-        else setCart(cart).catch(console.error);
+        if (!user) setLocalCart(state.cart);
+        else setCart(state.cart).catch(console.error);
       });
       return onAuthStateChanged(getAppAuth(), (user) => {
-        if (!user) setSelf(getLocalCart());
+        if (!user) setSelf({ cart: getLocalCart(), isLoading: false });
         else
           getCart()
             .then((cart) => {
               const localCart = getLocalCart();
               cart = cart ? mergeCarts(localCart, cart) : localCart;
-              setSelf(cart);
+              setSelf({ cart, isLoading: false });
               setCart(cart).then(clearLocalCart).catch(console.error);
             })
             .catch(console.error);
       });
     },
   ],
+});
+
+export const cartState = selector<Cart>({
+  key: 'cart',
+  get: ({ get }) => get(loadableCartState).cart,
+  set: ({ set }, newValue) =>
+    set(loadableCartState, (prev) => ({ ...prev, cart: newValue as Cart })),
+});
+
+export const cartLoadingState = selector<boolean>({
+  key: 'cartLoading',
+  get: ({ get }) => get(loadableCartState).isLoading,
 });
 
 export const cartProductsQuery = selector<Entities<Product>>({
@@ -50,7 +67,8 @@ export const cartProductsQuery = selector<Entities<Product>>({
     const products: Entities<Product> = {};
     for (const item of Object.values(cart.items)) {
       const productId = item.productId;
-      products[productId] = get(productQuery(productId)) as Product;
+      const product = get(productQuery(productId));
+      if (product) products[productId] = product;
     }
     return products;
   },
@@ -61,19 +79,19 @@ export const totalCartItemsState = selector<number>({
   get: ({ get }) => getTotalCartItems(get(cartState)),
 });
 
-export const totalCartPriceState = selector<Dinero<number>>({
+export const totalCartPriceQuery = selector<Dinero<number>>({
   key: 'totalCartPrice',
   get: ({ get }) => getTotalCartPrice(get(cartState), get(cartProductsQuery)),
 });
 
-export const cartItemState = selectorFamily<CartItem, string>({
+export const cartItemState = selectorFamily<CartItem, ID>({
   key: 'cartItem',
   get:
-    (id: string) =>
+    (id) =>
     ({ get }) =>
       get(cartState).items[id],
   set:
-    (id: string) =>
+    (id) =>
     ({ set }, newValue) => {
       const item = newValue as CartItem;
       set(cartState, (prev) => {
