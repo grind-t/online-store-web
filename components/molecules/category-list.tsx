@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+// @ts-ignore
 import ScrollBooster from 'scrollbooster';
 import styled from 'styled-components';
 import { em, lerpByEM, up } from 'styles/mixins';
