@@ -1,4 +1,3 @@
-import { AuthProvider } from 'hooks/useAuth';
 import { NextIntlProvider } from 'next-intl';
 import { AppProps } from 'next/app';
 import { UIDReset } from 'react-uid';
@@ -27,11 +26,9 @@ const App = ({ Component, pageProps }: AppProps) => {
       <GlobalStyle />
       <UIDReset>
         <NextIntlProvider messages={pageProps.messages}>
-          <AuthProvider>
-            <RecoilRoot>
-              <Component {...pageProps} />
-            </RecoilRoot>
-          </AuthProvider>
+          <RecoilRoot>
+            <Component {...pageProps} />
+          </RecoilRoot>
         </NextIntlProvider>
       </UIDReset>
     </>

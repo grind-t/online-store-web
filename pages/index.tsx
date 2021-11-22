@@ -1,13 +1,16 @@
+import { Product } from 'api/products';
 import admin from 'app/firebase-admin';
 import { path } from 'app/firebase/firestore';
 import ProductsView, { ProductList } from 'components/organisms/products-view';
 import StoreFooter from 'components/organisms/store-footer';
 import StoreHeader from 'components/organisms/store-header';
 import PageTemplate, { pageMargin } from 'components/templates/page-template';
-import { Product } from 'lib/product';
-import { Products } from 'lib/products';
+import { Entities } from 'lib/entities';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
+import { useEffect } from 'react';
+import { useSetRecoilState } from 'recoil';
+import { pageProductsState } from 'state/products';
 import styled from 'styled-components';
 import { up } from 'styles/mixins';
 import { breakpoints } from 'styles/varibles';
@@ -41,7 +44,7 @@ const Main = styled.main`
 //#endregion
 
 interface HomeProps {
-  products: Products;
+  products: Entities<Product>;
 }
 
 export const getServerSideProps: GetServerSideProps<HomeProps> = async ({
@@ -49,7 +52,7 @@ export const getServerSideProps: GetServerSideProps<HomeProps> = async ({
 }) => {
   const db = admin.firestore();
   const snap = await db.collection(path.products).get();
-  const products: Products = {};
+  const products: Entities<Product> = {};
   snap.forEach((doc) => (products[doc.id] = doc.data() as Product));
 
   return {
@@ -64,6 +67,10 @@ export const getServerSideProps: GetServerSideProps<HomeProps> = async ({
 };
 
 const Home = ({ products }: HomeProps) => {
+  const setProducts = useSetRecoilState(pageProductsState);
+
+  useEffect(() => setProducts(products), [products, setProducts]);
+
   return (
     <PageTemplate>
       <Head>

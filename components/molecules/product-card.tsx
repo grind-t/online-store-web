@@ -1,15 +1,17 @@
-import { lineItemState } from 'app/recoil/cart';
+import { Product } from 'api/products';
 import AddToCartButton from 'components/atoms/buttons/add-to-cart-button';
 import CustomInput from 'components/atoms/utils/custom-input';
 import ProductInfo from 'components/molecules/product-info';
 import { dinero } from 'dinero.js';
+import { ID } from 'lib/entities';
 import { defaultCurrency, formatPrice } from 'lib/money';
-import { Product, getVariant, selectInitialProductOptions } from 'lib/product';
+import { getProductOptions, getVariant } from 'lib/products';
 import { HeadingLevel } from 'lib/utils';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { ChangeEvent, useMemo, useState, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
+import { cartItemState } from 'state/cart';
 import styled from 'styled-components';
 import { em } from 'styles/mixins';
 
@@ -63,7 +65,7 @@ const PurchaseContainer = styled.div`
 //#endregion
 
 interface ProductCardProps {
-  productId: string;
+  productId: ID;
   product: Product;
   headingLevel?: HeadingLevel;
 }
@@ -73,21 +75,26 @@ const ProductCard = ({
   product,
   headingLevel,
 }: ProductCardProps) => {
-  const t = useTranslations('ProductCard');
+  const options = useMemo(() => getProductOptions(product), [product]);
+  const optionEntries = useMemo(() => Object.entries(options), [options]);
+  const [selectedOptions, setSelectedOptions] = useState(() => {
+    const selected: Record<string, string> = {};
+    for (const [option, values] of optionEntries) selected[option] = values[0];
+    return selected;
+  });
   const [isInfoVisible, showInfo] = useState(false);
-  const [selectedOptions, setSelectedOptions] = useState(() =>
-    selectInitialProductOptions(product.options)
-  );
+  const t = useTranslations('ProductCard');
+
+  const variants = product.variants;
   const [variantId, variant] = useMemo(
-    () => getVariant(product.variants, selectedOptions),
-    [product.variants, selectedOptions]
+    () => getVariant(variants, selectedOptions) || Object.entries(variants)[0],
+    [variants, selectedOptions]
   );
-  const lineItemId = `${productId}_${variantId}`;
-  const [lineItem, setLineItem] = useRecoilState(lineItemState(lineItemId));
-  const quantity = lineItem ? lineItem.quantity : 0;
-  const isAvailable = !!variant?.quantity;
-  const image = (isAvailable && variant.image) || product.image;
-  const priceString = isAvailable
+  const stock = variant.stock;
+  const cartItemId = `${productId}_${variantId}`;
+  const [cartItem, setCartItem] = useRecoilState(cartItemState(cartItemId));
+  const cartQuantity = cartItem ? cartItem.quantity : 0;
+  const priceString = stock
     ? formatPrice(dinero({ amount: variant.price, currency: defaultCurrency }))
     : t('outOfStock');
 
@@ -97,12 +104,11 @@ const ProductCard = ({
   };
 
   const handleAddToCart = () => {
-    const lineItem = {
+    setCartItem({
       productId,
       variantId,
-      quantity: quantity + 1,
-    };
-    setLineItem(lineItem);
+      quantity: cartQuantity + 1,
+    });
   };
 
   useEffect(() => {
@@ -113,11 +119,10 @@ const ProductCard = ({
     <>
       <ImageContainer onClick={() => showInfo(true)}>
         <Image
-          src={image}
+          src={product.image}
           alt={product.name}
           width="360"
           height="313"
-          quality={100}
         />
       </ImageContainer>
       <ProductInfo
@@ -127,16 +132,16 @@ const ProductCard = ({
         headingLevel={headingLevel}
         onClose={() => showInfo(false)}
       />
-      {product.options && (
+      {optionEntries.length && (
         <OptionsContainer>
-          {product.options.map(({ name, values }) => (
-            <OptionGroup key={name}>
+          {optionEntries.map(([option, values]) => (
+            <OptionGroup key={option}>
               {values.map((value) => (
                 <Option
                   key={value}
-                  name={name}
+                  name={option}
                   value={value}
-                  checked={selectedOptions[name] === value}
+                  checked={selectedOptions[option] === value}
                   onChange={handleOptionChange}
                 >
                   {value}
@@ -149,8 +154,8 @@ const ProductCard = ({
       <PurchaseContainer>
         <Price>{priceString}</Price>
         <AddToCartButton
-          count={quantity}
-          disabled={!isAvailable}
+          count={cartQuantity}
+          disabled={!stock}
           onClick={handleAddToCart}
         />
       </PurchaseContainer>

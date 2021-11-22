@@ -1,11 +1,9 @@
-import { productsState } from 'app/recoil/products';
+import { Product } from 'api/products';
 import CategoryList from 'components/molecules/category-list';
 import ProductCard from 'components/molecules/product-card';
 import Sorting from 'components/molecules/sorting';
-import { Products } from 'lib/products';
+import { Entities } from 'lib/entities';
 import { HeadingLevel } from 'lib/utils';
-import { useEffect } from 'react';
-import { useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { up } from 'styles/mixins';
 import { breakpoints } from 'styles/varibles';
@@ -62,23 +60,19 @@ const ProductList = styled.ul`
 //#endregion
 
 interface ProductsViewProps {
-  products: Products;
+  products: Entities<Product>;
   headingLevel?: HeadingLevel;
 }
 
 const ProductsView = ({ products, headingLevel }: ProductsViewProps) => {
   const t = useTranslations('ProductsView');
+
   const categories = [t('allProductsCategory')];
   const sortingOptions = [
     t('sortByPopularityOption'),
     t('sortByPriceOption'),
     t('sortByAlphabetOption'),
   ];
-  const setProducts = useSetRecoilState(productsState);
-
-  useEffect(() => {
-    setProducts(products);
-  }, [products, setProducts]);
 
   return (
     <>

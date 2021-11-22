@@ -1,17 +1,27 @@
 import { useMediaQuery } from '@react-hookz/web';
-import { cartState, lineItemState, totalCartItemsState } from 'app/recoil/cart';
-import { totalCartPriceState } from 'app/recoil/money';
+import { CartItem } from 'api/cart';
 import StandaloneGoBackButton from 'components/atoms/buttons/go-back-button';
 import StandaloneCartIcon from 'components/atoms/icons/cart-icon';
 import StandaloneTrashIcon from 'components/atoms/icons/trash-icon';
 import StandalonePaymentLink from 'components/atoms/links/payment-link';
-import CartItem from 'components/molecules/cart-item';
+import Item from 'components/molecules/cart-item';
 import { getEmptyCart, isCartEmpty } from 'lib/cart';
-import { LineItem } from 'lib/cart';
-import { formatPrice } from 'lib/money';
+import { formatPrice, zeroDinero } from 'lib/money';
 import { HeadingLevel, nextHeadingLevel } from 'lib/utils';
 import { useTranslations } from 'next-intl';
-import { useRecoilCallback, useRecoilState, useRecoilValue } from 'recoil';
+import {
+  useRecoilCallback,
+  useRecoilState,
+  useRecoilValue,
+  useRecoilValueLoadable,
+} from 'recoil';
+import {
+  cartItemState,
+  cartLoadingState,
+  cartState,
+  totalCartItemsState,
+  totalCartPriceQuery,
+} from 'state/cart';
 import styled from 'styled-components';
 import { up } from 'styles/mixins';
 import { breakpoints } from 'styles/varibles';
@@ -143,24 +153,31 @@ interface CartViewProps {
 }
 
 const CartView = ({ container, headingLevel, className }: CartViewProps) => {
-  const t = useTranslations('CartView');
-  const upMD = useMediaQuery(up(breakpoints.md));
   const [cart, setCart] = useRecoilState(cartState);
+  const isCartLoading = useRecoilValue(cartLoadingState);
   const totalItems = useRecoilValue(totalCartItemsState);
-  const totalPrice = useRecoilValue(totalCartPriceState);
-  const setLineItem = useRecoilCallback(
+  const loadableTotalPrice = useRecoilValueLoadable(totalCartPriceQuery);
+  const setCartItem = useRecoilCallback(
     ({ set }) =>
-      (item: LineItem) => {
+      (item: CartItem) => {
         const id = `${item.productId}_${item.variantId}`;
-        set(lineItemState(id), item);
+        set(cartItemState(id), item);
       },
     []
   );
+  const t = useTranslations('CartView');
+  const upMD = useMediaQuery(up(breakpoints.md));
 
-  if (!cart) return null;
+  if (isCartLoading) return null;
 
   if (isCartEmpty(cart))
     return <div style={{ textAlign: 'center' }}>{t('isEmpty')}</div>;
+
+  const totalPrice =
+    loadableTotalPrice.state === 'hasValue'
+      ? loadableTotalPrice.contents
+      : zeroDinero;
+  const totalPriceString = formatPrice(totalPrice);
 
   return (
     <Container as={container} className={className}>
@@ -174,19 +191,19 @@ const CartView = ({ container, headingLevel, className }: CartViewProps) => {
       </TopBar>
       <ItemList>
         {Object.entries(cart.items).map(([id, item]) => (
-          <CartItem
+          <Item
             key={id}
             container="li"
-            headingLevel={nextHeadingLevel(headingLevel)}
+            headingLevel={headingLevel && nextHeadingLevel(headingLevel)}
             item={item}
-            onChange={setLineItem}
+            onChange={setCartItem}
           />
         ))}
       </ItemList>
       <TotalItems>{t('totalItems', { num: totalItems })}</TotalItems>
       <TotalPrice>
         {t('totalPrice') + ': '}
-        <TotalPriceValue>{formatPrice(totalPrice)}</TotalPriceValue>
+        <TotalPriceValue>{totalPriceString}</TotalPriceValue>
       </TotalPrice>
       {upMD && <GoBackButton />}
       <PaymentLink />

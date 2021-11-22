@@ -9,9 +9,10 @@ import HeaderTemplate, {
   xsFontSize,
   lerpByFontSize,
 } from 'components/templates/header-template';
-import { useAuth } from 'hooks/useAuth';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
+import { useRecoilValue } from 'recoil';
+import { authState } from 'state/auth';
 import styled from 'styled-components';
 import { em, up } from 'styles/mixins';
 import { breakpoints } from 'styles/varibles';
@@ -48,14 +49,16 @@ const Header = styled(HeaderTemplate)`
 //#endregion
 
 const StoreHeader = () => {
-  const user = useAuth();
+  const user = useRecoilValue(authState);
   const t = useTranslations('StoreHeader');
+
   const guestNav = useMemo<NavigationItem[]>(
     () => [
       { href: '/sign-in', icon: <PersonIcon />, text: t('guestNav.signIn') },
     ],
     [t]
   );
+
   const userNav = useMemo<NavigationItem[]>(
     () => [
       { href: '/profile', icon: <PersonIcon />, text: t('userNav.profile') },

@@ -1,18 +1,16 @@
 import { useMediaQuery } from '@react-hookz/web';
-import { getAppFirestore } from 'app/firebase/firestore';
-import { productState } from 'app/recoil/products';
+import { CartItem } from 'api/cart';
+import { Product } from 'api/products';
 import CrossIcon from 'components/atoms/icons/cross-icon';
 import VisuallyHidden from 'components/atoms/utils/visually-hidden';
 import InputStepper from 'components/molecules/input-stepper';
 import { dinero } from 'dinero.js';
-import { LineItem } from 'lib/cart';
 import { defaultCurrency, formatPrice } from 'lib/money';
-import { getProductFromFirestore, Product } from 'lib/product';
 import { HeadingLevel } from 'lib/utils';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
-import { useEffect } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilValueLoadable } from 'recoil';
+import { productQuery } from 'state/products';
 import styled from 'styled-components';
 import { up } from 'styles/mixins';
 import { breakpoints } from 'styles/varibles';
@@ -165,24 +163,33 @@ const Container = styled.div`
 `;
 //#endregion
 
-interface CartItemContentProps {
+interface ItemProps {
+  container?: 'li' | 'div';
   headingLevel?: HeadingLevel;
-  item: LineItem;
-  product: Product;
-  onChange?: (item: LineItem) => void;
+  item: CartItem;
+  className?: string;
+  onChange?: (item: CartItem) => void;
 }
 
-const CartItemContent = ({
+const Item = ({
+  container,
   headingLevel,
   item,
-  product,
+  className,
   onChange,
-}: CartItemContentProps) => {
+}: ItemProps) => {
+  const loadableProduct = useRecoilValueLoadable(productQuery(item.productId));
   const t = useTranslations('CartItem');
   const upMD = useMediaQuery(up(breakpoints.md));
+
+  if (loadableProduct.state !== 'hasValue') return null;
+
+  const product = loadableProduct.contents as Product;
   const variant = product.variants[item.variantId];
-  const options = Object.values(variant.options).join(', ').toLowerCase();
-  const image = variant.image || product.image;
+  const options = Object.values(variant.characteristics)
+    .join(', ')
+    .toLowerCase();
+  const image = product.image;
   const heading = `${product.name}, ${options}`;
   const price = variant.price * item.quantity;
   const priceString = formatPrice(
@@ -205,7 +212,7 @@ const CartItemContent = ({
   };
 
   return (
-    <>
+    <Container as={container} className={className}>
       <ImageContainer>
         <Image src={image} alt={product.name} width="80" height="80" />
       </ImageContainer>
@@ -227,47 +234,8 @@ const CartItemContent = ({
           </RemoveItemButton>
         )}
       </ControlsContainer>
-    </>
-  );
-};
-
-interface CartItemProps {
-  container?: 'li' | 'div';
-  headingLevel?: HeadingLevel;
-  item: LineItem;
-  className?: string;
-  onChange?: (item: LineItem) => void;
-}
-
-const CartItem = ({
-  container,
-  headingLevel,
-  item,
-  className,
-  onChange,
-}: CartItemProps) => {
-  let [product, setProduct] = useRecoilState(productState(item.productId));
-
-  useEffect(() => {
-    if (product) return;
-    const db = getAppFirestore();
-    getProductFromFirestore(item.productId, db)
-      .then(setProduct)
-      .catch(console.error);
-  }, [product, setProduct, item.productId]);
-
-  return (
-    <Container as={container} className={className}>
-      {product && (
-        <CartItemContent
-          headingLevel={headingLevel}
-          item={item}
-          product={product}
-          onChange={onChange}
-        />
-      )}
     </Container>
   );
 };
 
-export default CartItem;
+export default Item;
