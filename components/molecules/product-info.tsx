@@ -28,14 +28,13 @@ const CloseButton = styled.button.attrs({ type: 'button' })`
 
 const Heading = styled.h3`
   font-size: 1em;
-  font-weight: normal;
+  font-weight: bold;
   text-align: center;
 `;
 
 const Paragraph = styled.p`
   margin-top: 10px;
   font-size: 1em;
-  font-weight: bold;
   white-space: pre-line;
 `;
 
