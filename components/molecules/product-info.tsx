@@ -35,6 +35,7 @@ const Heading = styled.h3`
 const Paragraph = styled.p`
   margin-top: 10px;
   font-size: 1em;
+  font-weight: bold;
   white-space: pre-line;
 `;
 
