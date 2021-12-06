@@ -9,6 +9,7 @@ import {
 import { Entities, ID } from 'lib/entities';
 
 export interface ProductVariant {
+  order: number;
   stock: number;
   price: number;
   characteristics: Record<string, string>;

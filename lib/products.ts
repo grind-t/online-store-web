@@ -4,13 +4,14 @@ import { Product, ProductVariant } from 'api/products';
 export function getProductOptions(product: Product): Record<string, string[]> {
   const options: Record<string, string[]> = {};
   const variants = Object.values(product.variants);
+  variants.sort((a, b) => a.order - b.order);
   const keys = Object.keys(variants[0].characteristics);
   for (const key of keys) {
     const values = new Set<string>();
     for (const variant of variants) {
       values.add(variant.characteristics[key]);
     }
-    options[key] = Array.from(values).sort();
+    options[key] = Array.from(values);
   }
   return options;
 }
