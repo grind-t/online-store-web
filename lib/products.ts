@@ -10,7 +10,7 @@ export function getProductOptions(product: Product): Record<string, string[]> {
     for (const variant of variants) {
       values.add(variant.characteristics[key]);
     }
-    options[key] = Array.from(values);
+    options[key] = Array.from(values).sort();
   }
   return options;
 }
