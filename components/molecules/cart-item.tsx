@@ -218,7 +218,7 @@ const Item = ({
       </ImageContainer>
       <InfoContainer>
         <Heading as={headingLevel}>{heading}</Heading>
-        <Description>{product.description}</Description>
+        {/*<Description>{product.description}</Description>*/}
       </InfoContainer>
       <ControlsContainer>
         <QuantityInput
