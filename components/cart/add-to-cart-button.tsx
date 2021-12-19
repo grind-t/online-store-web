@@ -1,4 +1,4 @@
-import PlusIcon from 'components/atoms/icons/plus-icon';
+import PlusIcon from 'components/common/icons/plus-icon';
 import { useTranslations } from 'next-intl';
 import styled from 'styled-components';
 

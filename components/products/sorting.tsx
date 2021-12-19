@@ -1,4 +1,4 @@
-import StandaloneArrowIcon from 'components/atoms/icons/arrow-icon';
+import StandaloneArrowIcon from 'components/common/icons/arrow-icon';
 import { useSelect } from 'downshift';
 import { useTranslations } from 'next-intl';
 import { useUID } from 'react-uid';

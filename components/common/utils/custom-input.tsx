@@ -1,4 +1,4 @@
-import VisuallyHidden from 'components/atoms/utils/visually-hidden';
+import VisuallyHidden from 'components/common/utils/visually-hidden';
 import { InputHTMLAttributes } from 'react';
 import { useUID } from 'react-uid';
 import styled from 'styled-components';

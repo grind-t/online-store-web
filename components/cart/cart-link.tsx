@@ -1,6 +1,6 @@
 import { useMediaQuery } from '@react-hookz/web';
-import CartIcon from 'components/atoms/icons/cart-icon';
-import VisuallyHidden from 'components/atoms/utils/visually-hidden';
+import CartIcon from 'components/common/icons/cart-icon';
+import VisuallyHidden from 'components/common/utils/visually-hidden';
 import { formatPrice, zeroDinero } from 'lib/money';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';

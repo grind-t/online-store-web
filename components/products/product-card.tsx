@@ -1,7 +1,7 @@
 import { Product } from 'api/products';
-import AddToCartButton from 'components/atoms/buttons/add-to-cart-button';
-import CustomInput from 'components/atoms/utils/custom-input';
-import ProductInfo from 'components/molecules/product-info';
+import AddToCartButton from 'components/cart/add-to-cart-button';
+import CustomInput from 'components/common/utils/custom-input';
+import ProductInfo from 'components/products/product-info';
 import { dinero } from 'dinero.js';
 import { ID } from 'lib/entities';
 import { defaultCurrency, formatPrice } from 'lib/money';

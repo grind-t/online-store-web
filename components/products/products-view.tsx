@@ -1,7 +1,7 @@
 import { Product } from 'api/products';
-import CategoryList from 'components/molecules/category-list';
-import ProductCard from 'components/molecules/product-card';
-import Sorting from 'components/molecules/sorting';
+import CategoryList from 'components/products/category-list';
+import ProductCard from 'components/products/product-card';
+import Sorting from 'components/products/sorting';
 import { Entities } from 'lib/entities';
 import { HeadingLevel } from 'lib/utils';
 import styled from 'styled-components';

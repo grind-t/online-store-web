@@ -1,14 +1,14 @@
 import { getAppAuth, signOut } from 'app/firebase/auth';
-import StandaloneBearIcon from 'components/atoms/icons/bear-icon';
-import OrdersIcon from 'components/atoms/icons/orders-icon';
-import PersonIcon from 'components/atoms/icons/person-icon';
-import SignOutIcon from 'components/atoms/icons/sign-out-icon';
-import StandaloneCartLink from 'components/atoms/links/cart-link';
-import Navigation, { NavigationItem } from 'components/organisms/navigation';
+import StandaloneCartLink from 'components/cart/cart-link';
 import HeaderTemplate, {
   xsFontSize,
   lerpByFontSize,
-} from 'components/templates/header-template';
+} from 'components/common/header-template';
+import StandaloneBearIcon from 'components/common/icons/bear-icon';
+import OrdersIcon from 'components/common/icons/orders-icon';
+import PersonIcon from 'components/common/icons/person-icon';
+import SignOutIcon from 'components/common/icons/sign-out-icon';
+import Navigation, { NavigationItem } from 'components/common/navigation';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 import { useRecoilValue } from 'recoil';

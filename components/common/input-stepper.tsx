@@ -1,6 +1,6 @@
-import StandaloneMinusIcon from 'components/atoms/icons/minus-icon';
-import StandalonePlusIcon from 'components/atoms/icons/plus-icon';
-import VisuallyHidden from 'components/atoms/utils/visually-hidden';
+import StandaloneMinusIcon from 'components/common/icons/minus-icon';
+import StandalonePlusIcon from 'components/common/icons/plus-icon';
+import VisuallyHidden from 'components/common/utils/visually-hidden';
 import { useTranslations } from 'next-intl';
 import styled, { css } from 'styled-components';
 

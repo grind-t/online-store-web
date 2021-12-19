@@ -1,9 +1,9 @@
 import { useMediaQuery } from '@react-hookz/web';
 import { CartItem } from 'api/cart';
 import { Product } from 'api/products';
-import CrossIcon from 'components/atoms/icons/cross-icon';
-import VisuallyHidden from 'components/atoms/utils/visually-hidden';
-import InputStepper from 'components/molecules/input-stepper';
+import CrossIcon from 'components/common/icons/cross-icon';
+import InputStepper from 'components/common/input-stepper';
+import VisuallyHidden from 'components/common/utils/visually-hidden';
 import { dinero } from 'dinero.js';
 import { defaultCurrency, formatPrice } from 'lib/money';
 import { HeadingLevel } from 'lib/utils';

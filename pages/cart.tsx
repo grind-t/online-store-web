@@ -1,7 +1,7 @@
 import { useMediaQuery } from '@react-hookz/web';
-import StandaloneCartView from 'components/organisms/cart-view';
-import HeaderTemplate from 'components/templates/header-template';
-import PageTemplate from 'components/templates/page-template';
+import StandaloneCartView from 'components/cart/cart-view';
+import HeaderTemplate from 'components/common/header-template';
+import PageTemplate from 'components/common/page-template';
 import { GetStaticProps } from 'next';
 import Head from 'next/head';
 import styled from 'styled-components';

@@ -1,5 +1,5 @@
-import CrossIcon from 'components/atoms/icons/cross-icon';
-import VisuallyHidden from 'components/atoms/utils/visually-hidden';
+import CrossIcon from 'components/common/icons/cross-icon';
+import VisuallyHidden from 'components/common/utils/visually-hidden';
 import { HeadingLevel } from 'lib/utils';
 import { useTranslations } from 'next-intl';
 import styled from 'styled-components';

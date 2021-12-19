@@ -1,7 +1,7 @@
 import { useMediaQuery } from '@react-hookz/web';
-import StandaloneBurgerMenuIcon from 'components/atoms/icons/burger-menu-icon';
-import CrossIcon from 'components/atoms/icons/cross-icon';
-import VisuallyHidden from 'components/atoms/utils/visually-hidden';
+import StandaloneBurgerMenuIcon from 'components/common/icons/burger-menu-icon';
+import CrossIcon from 'components/common/icons/cross-icon';
+import VisuallyHidden from 'components/common/utils/visually-hidden';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { ReactNode, useEffect, useState } from 'react';

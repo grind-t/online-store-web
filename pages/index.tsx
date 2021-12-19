@@ -1,10 +1,10 @@
 import { Product } from 'api/products';
 import admin from 'app/firebase-admin';
 import { path } from 'app/firebase/firestore';
-import ProductsView, { ProductList } from 'components/organisms/products-view';
-import StoreFooter from 'components/organisms/store-footer';
-import StoreHeader from 'components/organisms/store-header';
-import PageTemplate, { pageMargin } from 'components/templates/page-template';
+import PageTemplate, { pageMargin } from 'components/common/page-template';
+import StoreFooter from 'components/common/store-footer';
+import StoreHeader from 'components/common/store-header';
+import ProductsView, { ProductList } from 'components/products/products-view';
 import { Entities } from 'lib/entities';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
