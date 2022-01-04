@@ -1,5 +1,6 @@
 import { Product, getProduct } from 'api/products';
 import { Entities, ID } from 'lib/entities';
+import { Nullish } from 'lib/utils';
 import { atom, selectorFamily } from 'recoil';
 
 export const pageProductsState = atom<Entities<Product>>({
@@ -7,7 +8,7 @@ export const pageProductsState = atom<Entities<Product>>({
   default: {},
 });
 
-export const pageProductState = selectorFamily<Product | undefined, ID>({
+export const pageProductState = selectorFamily<Product | Nullish, ID>({
   key: 'pageProduct',
   get:
     (id) =>
@@ -15,7 +16,7 @@ export const pageProductState = selectorFamily<Product | undefined, ID>({
       get(pageProductsState)[id],
 });
 
-export const productQuery = selectorFamily<Product | undefined, ID>({
+export const productQuery = selectorFamily<Product | Nullish, ID>({
   key: 'product',
   get:
     (id) =>
