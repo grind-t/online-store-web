@@ -26,7 +26,6 @@
     "styled-components": "^5.3.1"
   },
   "devDependencies": {
-    "@netlify/plugin-nextjs": "^4.0.0-beta.6",
     "@trivago/prettier-plugin-sort-imports": "^3.1.1",
     "@types/node": "^16.10.1",
     "@types/react": "^17.0.24",
