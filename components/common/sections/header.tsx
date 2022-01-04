@@ -1,4 +1,4 @@
-import { getAppAuth, signOut } from 'app/firebase/auth';
+import { supabase } from 'app/supabase-client';
 import StandaloneCartLink from 'components/cart/cart-link';
 import StandaloneBearIcon from 'components/common/icons/bear-icon';
 import OrdersIcon from 'components/common/icons/orders-icon';
@@ -56,7 +56,11 @@ const StoreHeader = () => {
 
   const guestNav = useMemo<NavigationItem[]>(
     () => [
-      { href: '/sign-in', icon: <PersonIcon />, text: t('guestNav.signIn') },
+      {
+        href: '/auth#sign-in',
+        icon: <PersonIcon />,
+        text: t('guestNav.signIn'),
+      },
     ],
     [t]
   );
@@ -68,7 +72,7 @@ const StoreHeader = () => {
       {
         text: t('userNav.signOut'),
         icon: <SignOutIcon />,
-        onClick: () => signOut(getAppAuth()),
+        onClick: () => supabase.auth.signOut(),
       },
     ],
     [t]

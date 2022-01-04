@@ -1,21 +1,16 @@
-import {
-  getDoc,
-  doc,
-  getDocs,
-  collection,
-  getAppFirestore,
-  path,
-} from 'app/firebase/firestore';
-import { Entities, ID } from 'lib/entities';
+import { supabase } from 'app/supabase-client';
+import { ID, Entities } from 'lib/entities';
+import { Nullish, Modify } from 'lib/utils';
 
 export interface ProductVariant {
-  order: number;
+  id: ID;
   stock: number;
   price: number;
   characteristics: Record<string, string>;
 }
 
 export interface Product {
+  id: ID;
   image: string;
   name: string;
   description: string;
@@ -23,16 +18,33 @@ export interface Product {
   variants: Entities<ProductVariant>;
 }
 
-export async function getProduct(id: ID): Promise<Product | undefined> {
-  const db = getAppFirestore();
-  const snap = await getDoc(doc(db, path.products, <string>id));
-  return <Product | undefined>snap.data();
+type ApiProduct = Modify<Product, { variants: ProductVariant[] }>;
+
+function productFromApi(product: ApiProduct): Product {
+  return {
+    ...product,
+    variants: product.variants.reduce((variants, variant) => {
+      variants[variant.id] = variant;
+      return variants;
+    }, {} as Entities<ProductVariant>),
+  };
+}
+
+function productsFromApi(products: ApiProduct[]): Entities<Product> {
+  return products.reduce((products, product) => {
+    products[product.id] = productFromApi(product);
+    return products;
+  }, {} as Entities<Product>);
+}
+
+export async function getProduct(id: ID): Promise<Product | Nullish> {
+  const { data, error } = await supabase.rpc('get_product', { id }).single();
+  if (error) throw new Error(error.message);
+  return data && productFromApi(data);
 }
 
 export async function getProducts(): Promise<Entities<Product>> {
-  const db = getAppFirestore();
-  const snap = await getDocs(collection(db, path.products));
-  const products: Entities<Product> = {};
-  snap.forEach((doc) => (products[doc.id] = <Product>doc.data()));
-  return products;
+  const { data, error } = await supabase.rpc('get_products');
+  if (error) throw new Error(error.message);
+  return (data && productsFromApi(data)) || {};
 }

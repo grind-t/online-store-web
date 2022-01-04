@@ -1,6 +1,6 @@
 module.exports = {
   images: {
-    domains: ['localhost', 'firebasestorage.googleapis.com'],
+    domains: ['localhost', 'igomfvlbailflqrocfpv.supabase.in'],
   },
   i18n: {
     locales: ['ru'],

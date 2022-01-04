@@ -1,30 +1,20 @@
+import { onAuthStateChanged } from 'api/auth';
 import { isClient } from 'app/env';
-import { getAppAuth, onAuthStateChanged } from 'app/firebase/auth';
+import { Nullish } from 'lib/utils';
 import { atom } from 'recoil';
 
 export interface User {
   uid: string;
-  displayName: string | null;
-  email: string | null;
-  phoneNumber: string | null;
+  email?: string;
 }
 
-export const authState = atom<User | null>({
-  key: 'aut',
+export const authState = atom<User | Nullish>({
+  key: 'auth',
   default: null,
   effects_UNSTABLE: [
     ({ setSelf }) => {
       if (!isClient) return;
-      return onAuthStateChanged(getAppAuth(), (user) => {
-        if (!user) setSelf(null);
-        else
-          setSelf({
-            uid: user.uid,
-            displayName: user.displayName,
-            email: user.email,
-            phoneNumber: user.phoneNumber,
-          });
-      });
+      return onAuthStateChanged(setSelf);
     },
   ],
 });

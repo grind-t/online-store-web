@@ -1,8 +1,8 @@
 import { Dinero } from '@dinero.js/core';
+import { getUser, onAuthStateChanged } from 'api/auth';
 import { Cart, CartItem, getCart, setCart } from 'api/cart';
 import { Product } from 'api/products';
 import { isClient } from 'app/env';
-import { getAppAuth, onAuthStateChanged } from 'app/firebase/auth';
 import {
   getLocalCart,
   setLocalCart,
@@ -28,11 +28,11 @@ const loadableCartState = atom<LoadableCart>({
     ({ setSelf, onSet }) => {
       if (!isClient) return;
       onSet((state) => {
-        const user = getAppAuth().currentUser;
+        const user = getUser();
         if (!user) setLocalCart(state.cart);
         else setCart(state.cart).catch(console.error);
       });
-      return onAuthStateChanged(getAppAuth(), (user) => {
+      return onAuthStateChanged((user) => {
         if (!user) setSelf({ cart: getLocalCart(), isLoading: false });
         else
           getCart()

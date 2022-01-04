@@ -1,6 +1,4 @@
-import { Product } from 'api/products';
-import admin from 'app/firebase-admin';
-import { path } from 'app/firebase/firestore';
+import { Product, getProducts } from 'api/products';
 import StoreFooter from 'components/common/sections/footer';
 import StoreHeader from 'components/common/sections/header';
 import PageTemplate, {
@@ -52,14 +50,9 @@ interface HomeProps {
 export const getServerSideProps: GetServerSideProps<HomeProps> = async ({
   locale,
 }) => {
-  const db = admin.firestore();
-  const snap = await db.collection(path.products).get();
-  const products: Entities<Product> = {};
-  snap.forEach((doc) => (products[doc.id] = doc.data() as Product));
-
   return {
     props: {
-      products,
+      products: await getProducts(),
       messages: {
         ...require(`/public/l10n/common/${locale}.json`),
         ...require(`/public/l10n/home/${locale}.json`),

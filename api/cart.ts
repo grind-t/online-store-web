@@ -1,12 +1,6 @@
-import { getAppAuth } from 'app/firebase/auth';
-import {
-  getAppFirestore,
-  getDoc,
-  setDoc,
-  doc,
-  path,
-} from 'app/firebase/firestore';
-import { Entities, ID } from 'lib/entities';
+import { supabase } from 'app/supabase-client';
+import { ID, Entities } from 'lib/entities';
+import { Nullish, Modify } from 'lib/utils';
 
 export interface CartItem {
   productId: ID;
@@ -18,17 +12,32 @@ export interface Cart {
   items: Entities<CartItem>;
 }
 
-export async function getCart(): Promise<Cart | undefined> {
-  const db = getAppFirestore();
-  const user = getAppAuth().currentUser;
-  if (!user) return undefined;
-  const snap = await getDoc(doc(db, path.carts, user.uid));
-  return <Cart | undefined>snap.data();
+type ApiCart = Modify<Cart, { items: CartItem[] }>;
+
+function cartFromApi(cart: ApiCart): Cart {
+  return {
+    ...cart,
+    items: cart.items.reduce((items, item) => {
+      items[`${item.productId}_${item.variantId}`] = item;
+      return items;
+    }, {} as Entities<CartItem>),
+  };
 }
 
-export function setCart(cart: Cart): Promise<void> {
-  const db = getAppFirestore();
-  const user = getAppAuth().currentUser;
-  if (!user) return Promise.reject('unauthorized');
-  return setDoc(doc(db, path.carts, user.uid), cart);
+function cartToApi(cart: Cart): ApiCart {
+  return { ...cart, items: Object.values(cart.items) };
+}
+
+export async function getCart(): Promise<Cart | Nullish> {
+  const { data, error } = await supabase.rpc('get_cart').single();
+  if (error) throw new Error(error.message);
+  return data && cartFromApi(data);
+}
+
+export async function setCart(cart: Cart): Promise<Cart | Nullish> {
+  const { data, error } = await supabase
+    .rpc('set_cart', { cart: cartToApi(cart) })
+    .single();
+  if (error) throw new Error(error.message);
+  return data;
 }

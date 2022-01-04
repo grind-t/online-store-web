@@ -1,3 +1,7 @@
+export type Nullish = null | undefined;
+
+export type Modify<T, R> = Omit<T, keyof R> & R;
+
 export type HeadingLevel = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 
 export function nextHeadingLevel(level: HeadingLevel): HeadingLevel {

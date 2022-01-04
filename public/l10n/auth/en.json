@@ -1,0 +1,18 @@
+{
+  "AuthForm": {
+    "signInHeading": "Sign in",
+    "signUpHeading": "Sign up",
+    "emailPlaceholder": "Email",
+    "passwordPlaceholder": "Password",
+    "signInButton": "Sign in",
+    "signUpButton": "Sign up",
+    "haveNoAccountLink": "Don't have an account?",
+    "goBackLink": "Go back",
+    "emailRequired": "Please enter your email address.",
+    "passwordRequired": "Please enter your password.",
+    "minPasswordLength": "The password must contain at least 6 characters",
+    "checkEmail": "📩 Check your email",
+    "signInError": "🤨 {message}",
+    "signUpError": "😓 {message}"
+  }
+}
