@@ -1,6 +1,6 @@
 import CrossIcon from 'components/common/icons/cross-icon';
 import VisuallyHidden from 'components/common/utils/visually-hidden';
-import { HeadingLevel } from 'lib/utils';
+import { HeadingLevel } from 'lib/accessibility';
 import { useTranslations } from 'next-intl';
 import styled from 'styled-components';
 import { up } from 'styles/mixins';

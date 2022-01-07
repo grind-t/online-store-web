@@ -5,9 +5,9 @@ import StandaloneGoBackButton from 'components/cart/go-back-button';
 import StandalonePaymentLink from 'components/cart/payment-link';
 import StandaloneCartIcon from 'components/common/icons/cart-icon';
 import StandaloneTrashIcon from 'components/common/icons/trash-icon';
+import { HeadingLevel, nextHeadingLevel } from 'lib/accessibility';
 import { getEmptyCart, isCartEmpty } from 'lib/cart';
 import { formatPrice, zeroDinero } from 'lib/money';
-import { HeadingLevel, nextHeadingLevel } from 'lib/utils';
 import { useTranslations } from 'next-intl';
 import {
   useRecoilCallback,

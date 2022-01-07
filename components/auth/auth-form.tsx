@@ -1,5 +1,5 @@
 import { supabase } from 'app/supabase-client';
-import { HeadingLevel } from 'lib/utils';
+import { HeadingLevel } from 'lib/accessibility';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
