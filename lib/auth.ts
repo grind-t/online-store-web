@@ -20,6 +20,7 @@ export function getUser(): User | undefined {
 }
 
 export function onAuthStateChanged(cb: AuthStateChangedCallback): Unsubscribe {
+  cb(getUser());
   return (
     supabase.auth.onAuthStateChange((_event, session) =>
       cb(fromSB(session?.user))
@@ -27,27 +28,13 @@ export function onAuthStateChanged(cb: AuthStateChangedCallback): Unsubscribe {
   );
 }
 
-export async function signIn(
-  email: string,
-  password: string,
-  redirectTo: string
-): Promise<void> {
-  const { error } = await supabase.auth.signIn(
-    { email, password },
-    { redirectTo }
-  );
+export async function signIn(email: string, password: string): Promise<void> {
+  const { error } = await supabase.auth.signIn({ email, password });
   if (error) throw new Error(error.message);
 }
 
-export async function signUp(
-  email: string,
-  password: string,
-  redirectTo: string
-): Promise<void> {
-  const { error } = await supabase.auth.signUp(
-    { email, password },
-    { redirectTo }
-  );
+export async function signUp(email: string, password: string): Promise<void> {
+  const { error } = await supabase.auth.signUp({ email, password });
   if (error) throw new Error(error.message);
 }
 

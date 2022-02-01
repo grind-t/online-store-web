@@ -93,13 +93,15 @@ const AuthForm = ({ headingLevel }: AuthFormProps) => {
   const t = useTranslations('AuthForm');
 
   const handleSignIn: SubmitHandler<AuthFormData> = async (data) => {
-    signIn(data.email, data.password, window.location.origin).catch(
-      (error: Error) => setMessage(t('signInError', { message: error.message }))
-    );
+    signIn(data.email, data.password)
+      .then(() => router.push('/'))
+      .catch((error: Error) =>
+        setMessage(t('signInError', { message: error.message }))
+      );
   };
 
   const handleSignUp: SubmitHandler<AuthFormData> = async (data) => {
-    signUp(data.email, data.password, window.location.origin)
+    signUp(data.email, data.password)
       .then(() => setMessage(t('checkEmail')))
       .catch((error: Error) =>
         setMessage(t('signUpError', { message: error.message }))

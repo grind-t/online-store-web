@@ -14,7 +14,7 @@ export interface AuthProviderProps {
 }
 
 const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [user, setUser] = useState(getUser());
+  const [user, setUser] = useState<User>();
   useEffect(() => onAuthStateChanged(setUser), []);
   return <AuthContext.Provider value={user}>{children}</AuthContext.Provider>;
 };
