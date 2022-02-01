@@ -23,7 +23,8 @@
     "react-uid": "^2.3.1",
     "recoil": "^0.5.2",
     "scrollbooster": "^3.0.2",
-    "styled-components": "^5.3.1"
+    "styled-components": "^5.3.1",
+    "swr": "^1.2.0"
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^3.1.1",

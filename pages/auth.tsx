@@ -1,4 +1,5 @@
 import AuthForm from 'components/auth/auth-form';
+import AuthProvider from 'components/auth/auth-provider';
 import PageTemplate from 'components/common/templates/page-template';
 import { GetStaticProps } from 'next';
 import Head from 'next/head';
@@ -23,15 +24,17 @@ export const getStaticProps: GetStaticProps = ({ locale }) => ({
 
 const SignIn = () => {
   return (
-    <Page>
-      <Head>
-        <title>TODO</title>
-        <link rel="icon" href="/images/favicon.ico" />
-      </Head>
-      <main>
-        <AuthForm headingLevel="h1" />
-      </main>
-    </Page>
+    <AuthProvider>
+      <Page>
+        <Head>
+          <title>TODO</title>
+          <link rel="icon" href="/images/favicon.ico" />
+        </Head>
+        <main>
+          <AuthForm headingLevel="h1" />
+        </main>
+      </Page>
+    </AuthProvider>
   );
 };
 

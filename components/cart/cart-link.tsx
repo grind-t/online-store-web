@@ -1,11 +1,12 @@
+import { useCartQuery } from './cart-provider';
 import { useMediaQuery } from '@react-hookz/web';
 import CartIcon from 'components/common/icons/cart-icon';
 import VisuallyHidden from 'components/common/utils/visually-hidden';
+import { getTotalCartItems, getTotalCartPrice } from 'lib/cart';
 import { formatPrice, zeroDinero } from 'lib/money';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { useRecoilValue, useRecoilValueLoadable } from 'recoil';
-import { totalCartItemsState, totalCartPriceQuery } from 'state/cart';
+import { useMemo } from 'react';
 import styled from 'styled-components';
 import { up } from 'styles/mixins';
 import { breakpoints } from 'styles/varibles';
@@ -46,19 +47,20 @@ const Icon = styled(CartIcon)<{ detailedStyle?: boolean }>`
 const CompactContent = () => <Icon />;
 
 const DetailedContent = () => {
-  const totalItems = useRecoilValue(totalCartItemsState);
-  const loadableTotalPrice = useRecoilValueLoadable(totalCartPriceQuery);
+  const cart = useCartQuery();
+  const totalItems = useMemo(
+    () => (cart ? getTotalCartItems(cart) : 0),
+    [cart]
+  );
+  const totalPrice = useMemo(
+    () => (cart ? getTotalCartPrice(cart) : zeroDinero),
+    [cart]
+  );
   const t = useTranslations('CartLink');
-
-  const totalPrice =
-    loadableTotalPrice.state === 'hasValue'
-      ? loadableTotalPrice.contents
-      : zeroDinero;
-  const totalPriceString = formatPrice(totalPrice);
 
   return (
     <>
-      <VisuallyHidden>{t('sum')}</VisuallyHidden> {totalPriceString}
+      <VisuallyHidden>{t('sum')}</VisuallyHidden> {formatPrice(totalPrice)}
       <Icon />
       <VisuallyHidden>{t('numOfItems')}</VisuallyHidden> {totalItems}
     </>

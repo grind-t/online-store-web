@@ -1,4 +1,6 @@
 import { useMediaQuery } from '@react-hookz/web';
+import AuthProvider from 'components/auth/auth-provider';
+import CartProvider from 'components/cart/cart-provider';
 import StandaloneCartView from 'components/cart/cart-view';
 import HeaderTemplate from 'components/common/templates/header-template';
 import PageTemplate from 'components/common/templates/page-template';
@@ -35,14 +37,18 @@ const CartView = styled(StandaloneCartView).attrs({
 const Cart = () => {
   const upMD = useMediaQuery(up(breakpoints.md));
   return (
-    <PageTemplate>
-      <Head>
-        <title>TODO</title>
-        <link rel="icon" href="/images/favicon.ico" />
-      </Head>
-      {upMD && <HeaderTemplate />}
-      <CartView />
-    </PageTemplate>
+    <AuthProvider>
+      <CartProvider>
+        <PageTemplate>
+          <Head>
+            <title>TODO</title>
+            <link rel="icon" href="/images/favicon.ico" />
+          </Head>
+          {upMD && <HeaderTemplate />}
+          <CartView />
+        </PageTemplate>
+      </CartProvider>
+    </AuthProvider>
   );
 };
 

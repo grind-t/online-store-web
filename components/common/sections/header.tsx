@@ -1,4 +1,4 @@
-import { supabase } from 'app/supabase-client';
+import { useAuth } from 'components/auth/auth-provider';
 import StandaloneCartLink from 'components/cart/cart-link';
 import StandaloneBearIcon from 'components/common/icons/bear-icon';
 import OrdersIcon from 'components/common/icons/orders-icon';
@@ -11,10 +11,9 @@ import HeaderTemplate, {
   xsFontSize,
   lerpByFontSize,
 } from 'components/common/templates/header-template';
+import { signOut } from 'lib/auth';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
-import { useRecoilValue } from 'recoil';
-import { authState } from 'state/auth';
 import styled from 'styled-components';
 import { em, up } from 'styles/mixins';
 import { breakpoints } from 'styles/varibles';
@@ -51,7 +50,7 @@ const Header = styled(HeaderTemplate)`
 //#endregion
 
 const StoreHeader = () => {
-  const user = useRecoilValue(authState);
+  const user = useAuth();
   const t = useTranslations('StoreHeader');
 
   const guestNav = useMemo<NavigationItem[]>(
@@ -72,7 +71,7 @@ const StoreHeader = () => {
       {
         text: t('userNav.signOut'),
         icon: <SignOutIcon />,
-        onClick: () => supabase.auth.signOut(),
+        onClick: signOut,
       },
     ],
     [t]

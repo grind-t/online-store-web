@@ -1,16 +1,14 @@
-import { Product, getProducts } from 'api/products';
+import AuthProvider from 'components/auth/auth-provider';
+import CartProvider from 'components/cart/cart-provider';
 import StoreFooter from 'components/common/sections/footer';
 import StoreHeader from 'components/common/sections/header';
 import PageTemplate, {
   pageMargin,
 } from 'components/common/templates/page-template';
 import ProductsView, { ProductList } from 'components/products/products-view';
-import { Entities } from 'lib/entities';
+import { Product, getProducts } from 'lib/products';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
-import { useEffect } from 'react';
-import { useSetRecoilState } from 'recoil';
-import { pageProductsState } from 'state/products';
 import styled from 'styled-components';
 import { up } from 'styles/mixins';
 import { breakpoints } from 'styles/varibles';
@@ -44,7 +42,7 @@ const Main = styled.main`
 //#endregion
 
 interface HomeProps {
-  products: Entities<Product>;
+  products: Product[];
 }
 
 export const getServerSideProps: GetServerSideProps<HomeProps> = async ({
@@ -62,22 +60,22 @@ export const getServerSideProps: GetServerSideProps<HomeProps> = async ({
 };
 
 const Home = ({ products }: HomeProps) => {
-  const setProducts = useSetRecoilState(pageProductsState);
-
-  useEffect(() => setProducts(products), [products, setProducts]);
-
   return (
-    <PageTemplate>
-      <Head>
-        <title>TODO</title>
-        <link rel="icon" href="/images/favicon.ico" />
-      </Head>
-      <StoreHeader />
-      <Main>
-        <ProductsView products={products} headingLevel="h2" />
-      </Main>
-      <StoreFooter />
-    </PageTemplate>
+    <AuthProvider>
+      <CartProvider>
+        <PageTemplate>
+          <Head>
+            <title>TODO</title>
+            <link rel="icon" href="/images/favicon.ico" />
+          </Head>
+          <StoreHeader />
+          <Main>
+            <ProductsView products={products} headingLevel="h2" />
+          </Main>
+          <StoreFooter />
+        </PageTemplate>
+      </CartProvider>
+    </AuthProvider>
   );
 };
 

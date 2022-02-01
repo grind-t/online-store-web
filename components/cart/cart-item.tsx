@@ -1,16 +1,13 @@
 import { useMediaQuery } from '@react-hookz/web';
-import { CartItem } from 'api/cart';
-import { Product } from 'api/products';
 import InputStepper from 'components/common/controls/input-stepper';
 import CrossIcon from 'components/common/icons/cross-icon';
 import VisuallyHidden from 'components/common/utils/visually-hidden';
-import { dinero } from 'dinero.js';
+import { dinero, multiply } from 'dinero.js';
 import { HeadingLevel } from 'lib/accessibility';
+import { CartItem, CartProductVariant } from 'lib/cart';
 import { defaultCurrency, formatPrice } from 'lib/money';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
-import { useRecoilValueLoadable } from 'recoil';
-import { productQuery } from 'state/products';
 import styled from 'styled-components';
 import { up } from 'styles/mixins';
 import { breakpoints } from 'styles/varibles';
@@ -168,7 +165,8 @@ interface ItemProps {
   headingLevel?: HeadingLevel;
   item: CartItem;
   className?: string;
-  onChange?: (item: CartItem) => void;
+  onAdd?: (variant: CartProductVariant, quantity?: number) => void;
+  onRemove?: (variantId: number, quantity?: number) => void;
 }
 
 const Item = ({
@@ -176,40 +174,23 @@ const Item = ({
   headingLevel,
   item,
   className,
-  onChange,
+  onAdd,
+  onRemove,
 }: ItemProps) => {
-  const loadableProduct = useRecoilValueLoadable(productQuery(item.productId));
   const t = useTranslations('CartItem');
   const upMD = useMediaQuery(up(breakpoints.md));
 
-  if (loadableProduct.state !== 'hasValue') return null;
-
-  const product = loadableProduct.contents as Product;
-  const variant = product.variants[item.variantId];
-  const options = Object.values(variant.characteristics)
+  const variant = item.variant;
+  const product = variant.product;
+  const selectedOptions = Object.values(item.variant.characteristics)
     .join(', ')
     .toLowerCase();
   const image = product.image;
-  const heading = `${product.name}, ${options}`;
-  const price = variant.price * item.quantity;
-  const priceString = formatPrice(
-    dinero({ amount: price, currency: defaultCurrency })
+  const heading = `${product.name}, ${selectedOptions}`;
+  const price = multiply(
+    dinero({ amount: variant.price, currency: defaultCurrency }),
+    item.quantity
   );
-
-  const handleQuantityIncrement = () => {
-    if (!onChange) return;
-    onChange({ ...item, quantity: item.quantity + 1 });
-  };
-
-  const handleQuantityDecrement = () => {
-    if (!onChange) return;
-    onChange({ ...item, quantity: item.quantity - 1 });
-  };
-
-  const handleRemove = () => {
-    if (!onChange) return;
-    onChange({ ...item, quantity: 0 });
-  };
 
   return (
     <Container as={container} className={className}>
@@ -223,12 +204,14 @@ const Item = ({
       <ControlsContainer>
         <QuantityInput
           value={item.quantity}
-          onIncrement={handleQuantityIncrement}
-          onDecrement={handleQuantityDecrement}
+          onIncrement={onAdd && (() => onAdd(variant))}
+          onDecrement={onRemove && (() => onRemove(variant.id))}
         />
-        <Price>{priceString}</Price>
+        <Price>{formatPrice(price)}</Price>
         {upMD && (
-          <RemoveItemButton onClick={handleRemove}>
+          <RemoveItemButton
+            onClick={onRemove && (() => onRemove(variant.id, item.quantity))}
+          >
             <VisuallyHidden>{t('remove')}</VisuallyHidden>
             <RemoveItemIcon />
           </RemoveItemButton>

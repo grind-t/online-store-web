@@ -1,7 +1,6 @@
 import { NextIntlProvider } from 'next-intl';
 import { AppProps } from 'next/app';
 import { UIDReset } from 'react-uid';
-import { RecoilRoot } from 'recoil';
 import { createGlobalStyle } from 'styled-components';
 import { miniReset, nunitoFont } from 'styles/mixins';
 
@@ -26,9 +25,7 @@ const App = ({ Component, pageProps }: AppProps) => {
       <GlobalStyle />
       <UIDReset>
         <NextIntlProvider messages={pageProps.messages}>
-          <RecoilRoot>
-            <Component {...pageProps} />
-          </RecoilRoot>
+          <Component {...pageProps} />
         </NextIntlProvider>
       </UIDReset>
     </>

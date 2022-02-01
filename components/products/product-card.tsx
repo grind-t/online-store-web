@@ -1,17 +1,17 @@
-import { Product } from 'api/products';
 import AddToCartButton from 'components/cart/add-to-cart-button';
+import {
+  useCartItemQuery,
+  useCartMutation,
+} from 'components/cart/cart-provider';
 import CustomInput from 'components/common/utils/custom-input';
 import ProductInfo from 'components/products/product-info';
 import { dinero } from 'dinero.js';
 import { HeadingLevel } from 'lib/accessibility';
-import { ID } from 'lib/entities';
 import { defaultCurrency, formatPrice } from 'lib/money';
-import { getProductOptions, getVariant } from 'lib/products';
+import { Product, getProductOptions, findVariant } from 'lib/products';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { ChangeEvent, useMemo, useState, useEffect } from 'react';
-import { useRecoilState } from 'recoil';
-import { cartItemState } from 'state/cart';
 import styled from 'styled-components';
 import { em } from 'styles/mixins';
 
@@ -65,34 +65,31 @@ const PurchaseContainer = styled.div`
 //#endregion
 
 interface ProductCardProps {
-  productId: ID;
   product: Product;
   headingLevel?: HeadingLevel;
 }
 
-const ProductCard = ({
-  productId,
-  product,
-  headingLevel,
-}: ProductCardProps) => {
-  const options = useMemo(() => getProductOptions(product), [product]);
-  const optionEntries = useMemo(() => Object.entries(options), [options]);
-  const [selectedOptions, setSelectedOptions] = useState(() => {
-    const selected: Record<string, string> = {};
-    for (const [option, values] of optionEntries) selected[option] = values[0];
-    return selected;
-  });
+const ProductCard = ({ product, headingLevel }: ProductCardProps) => {
+  const options = useMemo(
+    () => Object.entries(getProductOptions(product)),
+    [product]
+  );
+  const [selectedOptions, setSelectedOptions] = useState(() =>
+    options.reduce((selected, [option, values]) => {
+      selected[option] = values[0];
+      return selected;
+    }, {} as Record<string, string>)
+  );
+  const variant = useMemo(
+    () => findVariant(product.variants, selectedOptions) || product.variants[0],
+    [product, selectedOptions]
+  );
+  const cartItem = useCartItemQuery(variant.id);
+  const { add } = useCartMutation();
   const [isInfoVisible, showInfo] = useState(false);
   const t = useTranslations('ProductCard');
 
-  const variants = product.variants;
-  const [variantId, variant] = useMemo(
-    () => getVariant(variants, selectedOptions) || Object.entries(variants)[0],
-    [variants, selectedOptions]
-  );
   const stock = variant.stock;
-  const cartItemId = `${productId}_${variantId}`;
-  const [cartItem, setCartItem] = useRecoilState(cartItemState(cartItemId));
   const cartQuantity = cartItem ? cartItem.quantity : 0;
   const priceString = stock
     ? formatPrice(dinero({ amount: variant.price, currency: defaultCurrency }))
@@ -104,11 +101,7 @@ const ProductCard = ({
   };
 
   const handleAddToCart = () => {
-    setCartItem({
-      productId,
-      variantId,
-      quantity: cartQuantity + 1,
-    });
+    add({ ...variant, product: product });
   };
 
   useEffect(() => {
@@ -132,9 +125,9 @@ const ProductCard = ({
         headingLevel={headingLevel}
         onClose={() => showInfo(false)}
       />
-      {optionEntries.length && (
+      {options.length && (
         <OptionsContainer>
-          {optionEntries.map(([option, values]) => (
+          {options.map(([option, values]) => (
             <OptionGroup key={option}>
               {values.map((value) => (
                 <Option

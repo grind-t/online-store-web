@@ -1,56 +1,193 @@
-import { Entities } from './entities';
-import { defaultCurrency, zeroDinero } from './money';
-import { Cart, CartItem } from 'api/cart';
-import { Product } from 'api/products';
-import { add, Dinero, dinero, multiply } from 'dinero.js';
+import { Dinero, dinero, add, multiply } from 'dinero.js';
+import { User } from 'lib/auth';
+import { zeroDinero, defaultCurrency } from 'lib/money';
+import { productTable, productVariantTable } from 'lib/products';
+import { supabase } from 'lib/supabase';
+
+export interface CartProduct {
+  id: number;
+  image: string;
+  name: string;
+}
+
+export interface CartProductVariant {
+  id: number;
+  stock: number;
+  price: number;
+  characteristics: Record<string, string>;
+  product: CartProduct;
+}
+
+export interface CartItem {
+  variant: CartProductVariant;
+  quantity: number;
+}
+
+export interface Cart {
+  items: CartItem[];
+}
+
+export interface CartItemEntity {
+  variantId: number;
+  quantity: number;
+}
+
+interface LocalCart {
+  items: Record<string, CartItemEntity>;
+}
+
+const cartItemTable = 'cart_items';
+const cartTable = 'carts';
+const localCartKey = 'cart';
+
+const cartProductQuery = `
+  id,
+  image,
+  name
+`;
+
+const cartProductVariantQuery = `
+  id,
+  stock,
+  price,
+  characteristics,
+  product:${productTable}(${cartProductQuery})
+`;
+
+const cartItemQuery = `
+  variant:${productVariantTable}(${cartProductVariantQuery}),
+  quantity
+`;
+
+const cartQuery = `
+  items:${cartItemTable}(${cartItemQuery})
+`;
 
 export function getEmptyCart(): Cart {
-  return { items: {} };
+  return { items: [] };
 }
 
-export function isCartEmpty(cart: Cart): boolean {
-  return Object.keys(cart.items).length <= 0;
+function getLocalCart(): LocalCart {
+  const json = localStorage.getItem(localCartKey);
+  return json ? JSON.parse(json) : { items: {} };
 }
 
-export function getLocalCart(): Cart {
-  const json = window.localStorage.getItem('cart');
-  return json ? JSON.parse(json) : getEmptyCart();
+function setLocalCart(cart: LocalCart) {
+  localStorage.setItem(localCartKey, JSON.stringify(cart));
 }
 
-export function setLocalCart(cart: Cart): void {
-  window.localStorage.setItem('cart', JSON.stringify(cart));
+function clearLocalCart(): void {
+  localStorage.removeItem(localCartKey);
 }
 
-export function clearLocalCart() {
-  window.localStorage.removeItem('cart');
+async function getCartFromLocalStorage(): Promise<Cart> {
+  const items = getLocalCart().items;
+  const ids = Object.values(items).map((v) => v.variantId);
+  const { data, error } = await supabase
+    .from<CartProductVariant>(productVariantTable)
+    .select(cartProductVariantQuery)
+    .in('id', ids);
+  if (error) throw new Error(error.message);
+  if (!data) return getEmptyCart();
+  return {
+    items: data.map((variant) => ({
+      variant,
+      quantity: items[variant.id].quantity,
+    })),
+  };
 }
 
-export function mergeCarts(source: Cart, target: Cart): Cart {
-  return { items: { ...target.items, ...source.items } };
+async function getCartFromDatabase(): Promise<Cart> {
+  const localCart = getLocalCart();
+  const { data, error } = await supabase
+    .rpc<Cart>('merge_cart', {
+      cart_input: {
+        ...localCart,
+        items: Object.values(localCart.items),
+      },
+    })
+    .select(cartQuery);
+  if (error) throw new Error(error.message);
+  clearLocalCart();
+  return data ? data[0] : getEmptyCart();
+}
+
+export async function getCart(user?: User): Promise<Cart> {
+  return user ? getCartFromDatabase() : getCartFromLocalStorage();
+}
+
+export async function setCartItem(
+  item: CartItem | CartItemEntity,
+  user?: User
+): Promise<void> {
+  if ('variant' in item) {
+    item = { variantId: item.variant.id, quantity: item.quantity };
+  }
+  if (user) {
+    const { error } = await supabase.from(cartItemTable).upsert(
+      {
+        user_id: user.id,
+        variant_id: item.variantId,
+        quantity: item.quantity,
+      },
+      { returning: 'minimal' }
+    );
+    if (error) throw new Error(error.message);
+  } else {
+    const localCart = getLocalCart();
+    setLocalCart({
+      ...localCart,
+      items: {
+        ...localCart.items,
+        [item.variantId]: item,
+      },
+    });
+  }
+}
+
+export async function removeCartItem(
+  variantId: number,
+  user?: User
+): Promise<void> {
+  if (user) {
+    const { error } = await supabase
+      .from(cartItemTable)
+      .delete({ returning: 'minimal' })
+      .match({ variant_id: variantId });
+    if (error) throw new Error(error.message);
+  } else {
+    const localCart = getLocalCart();
+    const { [variantId]: omit, ...rest } = localCart.items;
+    setLocalCart({
+      ...localCart,
+      items: rest,
+    });
+  }
+}
+
+export async function clearCart(user?: User): Promise<void> {
+  if (user) {
+    const { error } = await supabase
+      .from(cartTable)
+      .delete()
+      .match({ user_id: user.id });
+    if (error) throw new Error(error.message);
+  } else {
+    clearLocalCart();
+  }
 }
 
 export function getTotalCartItems(cart: Cart): number {
-  return Object.values(cart.items).reduce(
-    (acc, item) => acc + item.quantity,
-    0
-  );
+  return cart.items.reduce((total, item) => total + item.quantity, 0);
 }
 
-export function getCartItemPrice(
-  item: CartItem,
-  product: Product
-): Dinero<number> {
-  const variant = product.variants[item.variantId];
-  const d = dinero({ amount: variant.price, currency: defaultCurrency });
-  return multiply(d, item.quantity);
-}
-
-export function getTotalCartPrice(
-  cart: Cart,
-  products: Entities<Product>
-): Dinero<number> {
-  return Object.values(cart.items).reduce((acc, item) => {
-    const product = products[item.productId];
-    return product ? add(acc, getCartItemPrice(item, product)) : zeroDinero;
+export function getTotalCartPrice(cart: Cart): Dinero<number> {
+  return cart.items.reduce((total, item) => {
+    const variantPrice = dinero({
+      amount: item.variant.price,
+      currency: defaultCurrency,
+    });
+    const itemPrice = multiply(variantPrice, item.quantity);
+    return add(total, itemPrice);
   }, zeroDinero);
 }

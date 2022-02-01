@@ -1,5 +1,5 @@
-import { supabase } from 'app/supabase-client';
 import { HeadingLevel } from 'lib/accessibility';
+import { signIn, signUp } from 'lib/auth';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -93,23 +93,17 @@ const AuthForm = ({ headingLevel }: AuthFormProps) => {
   const t = useTranslations('AuthForm');
 
   const handleSignIn: SubmitHandler<AuthFormData> = async (data) => {
-    const { error } = await supabase.auth.signIn(
-      {
-        email: data.email,
-        password: data.password,
-      },
-      { redirectTo: window.location.origin }
+    signIn(data.email, data.password, window.location.origin).catch(
+      (error: Error) => setMessage(t('signInError', { message: error.message }))
     );
-    if (error) setMessage(t('signInError', { message: error.message }));
   };
 
   const handleSignUp: SubmitHandler<AuthFormData> = async (data) => {
-    const { error } = await supabase.auth.signUp({
-      email: data.email,
-      password: data.password,
-    });
-    if (error) setMessage(t('signUpError', { message: error.message }));
-    else setMessage(t('checkEmail'));
+    signUp(data.email, data.password, window.location.origin)
+      .then(() => setMessage(t('checkEmail')))
+      .catch((error: Error) =>
+        setMessage(t('signUpError', { message: error.message }))
+      );
   };
 
   const EmailInput = () => (

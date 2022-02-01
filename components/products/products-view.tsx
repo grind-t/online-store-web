@@ -1,13 +1,12 @@
-import { Product } from 'api/products';
 import CategoryList from 'components/products/category-list';
 import ProductCard from 'components/products/product-card';
 import Sorting from 'components/products/sorting';
 import { HeadingLevel } from 'lib/accessibility';
-import { Entities } from 'lib/entities';
+import { Product } from 'lib/products';
+import { useTranslations } from 'next-intl';
 import styled from 'styled-components';
 import { up } from 'styles/mixins';
 import { breakpoints } from 'styles/varibles';
-import { useTranslations } from 'use-intl';
 
 //#region styled
 const ViewOptions = styled.div`
@@ -60,7 +59,7 @@ const ProductList = styled.ul`
 //#endregion
 
 interface ProductsViewProps {
-  products: Entities<Product>;
+  products: Product[];
   headingLevel?: HeadingLevel;
 }
 
@@ -81,13 +80,9 @@ const ProductsView = ({ products, headingLevel }: ProductsViewProps) => {
         <Sorting options={sortingOptions} by={sortingOptions[0]} />
       </ViewOptions>
       <ProductList>
-        {Object.entries(products).map(([id, product]) => (
-          <li key={id}>
-            <ProductCard
-              productId={id}
-              product={product}
-              headingLevel={headingLevel}
-            />
+        {products.map((product) => (
+          <li key={product.id}>
+            <ProductCard product={product} headingLevel={headingLevel} />
           </li>
         ))}
       </ProductList>

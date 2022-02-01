@@ -1,27 +1,15 @@
+import { useCartMutation, useCartQuery } from './cart-provider';
 import { useMediaQuery } from '@react-hookz/web';
-import { CartItem } from 'api/cart';
 import Item from 'components/cart/cart-item';
 import StandaloneGoBackButton from 'components/cart/go-back-button';
 import StandalonePaymentLink from 'components/cart/payment-link';
 import StandaloneCartIcon from 'components/common/icons/cart-icon';
 import StandaloneTrashIcon from 'components/common/icons/trash-icon';
 import { HeadingLevel, nextHeadingLevel } from 'lib/accessibility';
-import { getEmptyCart, isCartEmpty } from 'lib/cart';
+import { getTotalCartItems, getTotalCartPrice } from 'lib/cart';
 import { formatPrice, zeroDinero } from 'lib/money';
 import { useTranslations } from 'next-intl';
-import {
-  useRecoilCallback,
-  useRecoilState,
-  useRecoilValue,
-  useRecoilValueLoadable,
-} from 'recoil';
-import {
-  cartItemState,
-  cartLoadingState,
-  cartState,
-  totalCartItemsState,
-  totalCartPriceQuery,
-} from 'state/cart';
+import { useMemo } from 'react';
 import styled from 'styled-components';
 import { up } from 'styles/mixins';
 import { breakpoints } from 'styles/varibles';
@@ -153,38 +141,30 @@ interface CartViewProps {
 }
 
 const CartView = ({ container, headingLevel, className }: CartViewProps) => {
-  const [cart, setCart] = useRecoilState(cartState);
-  const isCartLoading = useRecoilValue(cartLoadingState);
-  const totalItems = useRecoilValue(totalCartItemsState);
-  const loadableTotalPrice = useRecoilValueLoadable(totalCartPriceQuery);
-  const setCartItem = useRecoilCallback(
-    ({ set }) =>
-      (item: CartItem) => {
-        const id = `${item.productId}_${item.variantId}`;
-        set(cartItemState(id), item);
-      },
-    []
+  const cart = useCartQuery();
+  const { add, remove, clear } = useCartMutation();
+  const totalItems = useMemo(
+    () => (cart ? getTotalCartItems(cart) : 0),
+    [cart]
   );
-  const t = useTranslations('CartView');
+  const totalPrice = useMemo(
+    () => (cart ? getTotalCartPrice(cart) : zeroDinero),
+    [cart]
+  );
   const upMD = useMediaQuery(up(breakpoints.md));
+  const t = useTranslations('CartView');
 
-  if (isCartLoading) return null;
+  if (!cart) return null;
 
-  if (isCartEmpty(cart))
+  if (!cart.items.length)
     return <div style={{ textAlign: 'center' }}>{t('isEmpty')}</div>;
-
-  const totalPrice =
-    loadableTotalPrice.state === 'hasValue'
-      ? loadableTotalPrice.contents
-      : zeroDinero;
-  const totalPriceString = formatPrice(totalPrice);
 
   return (
     <Container as={container} className={className}>
       <TopBar>
         <CartIcon />
         <Heading as={headingLevel}>{t('heading')}</Heading>
-        <ClearCartButton onClick={() => setCart(getEmptyCart())}>
+        <ClearCartButton onClick={clear}>
           <TrashIcon />
           {t('clearCart')}
         </ClearCartButton>
@@ -196,14 +176,15 @@ const CartView = ({ container, headingLevel, className }: CartViewProps) => {
             container="li"
             headingLevel={headingLevel && nextHeadingLevel(headingLevel)}
             item={item}
-            onChange={setCartItem}
+            onAdd={add}
+            onRemove={remove}
           />
         ))}
       </ItemList>
       <TotalItems>{t('totalItems', { num: totalItems })}</TotalItems>
       <TotalPrice>
         {t('totalPrice') + ': '}
-        <TotalPriceValue>{totalPriceString}</TotalPriceValue>
+        <TotalPriceValue>{formatPrice(totalPrice)}</TotalPriceValue>
       </TotalPrice>
       {upMD && <GoBackButton />}
       <PaymentLink />
