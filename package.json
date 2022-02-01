@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "fmt": "prettier --write .",
+    "format": "prettier --write {pages,components,lib,styles,public}/**/*.{js,jsx,ts,tsx,json}",
     "lint": "next lint"
   },
   "dependencies": {
