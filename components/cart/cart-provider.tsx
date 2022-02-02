@@ -42,24 +42,11 @@ export interface CartProviderProps {
 export const CartProvider = ({ children }: CartProviderProps) => {
   const user = useAuth();
   const { data } = useSWR([user, 'cart'], getState);
-  const { cache, mutate } = useSWRConfig();
+  const { cache } = useSWRConfig();
   useEffect(() => {
-    if (!user) return;
-    // Omtimistic merge of local cart and remote cart.
-    const localKey = [undefined, 'cart'];
-    const remoteKey = [user, 'cart'];
-    const localState: State = cache.get(unstable_serialize(localKey));
-    const remoteState: State = cache.get(unstable_serialize(remoteKey));
-    const nextItemsIndex = {
-      ...remoteState?.itemsIndex,
-      ...localState?.itemsIndex,
-    };
-    const nexState: State = {
-      cart: { items: Object.values(nextItemsIndex) },
-      itemsIndex: nextItemsIndex,
-    };
-    mutate(remoteKey, nexState, true);
-  }, [user, cache, mutate]);
+    const key = [user, 'cart'];
+    return () => cache.delete(unstable_serialize(key));
+  }, [user, cache]);
   return <CartContext.Provider value={data}>{children}</CartContext.Provider>;
 };
 
