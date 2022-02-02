@@ -6,6 +6,7 @@ import HeaderTemplate from 'components/common/templates/header-template';
 import PageTemplate from 'components/common/templates/page-template';
 import { GetStaticProps } from 'next';
 import Head from 'next/head';
+import { ReactElement } from 'react';
 import styled from 'styled-components';
 import { up } from 'styles/mixins';
 import { breakpoints } from 'styles/varibles';
@@ -37,17 +38,21 @@ const CartView = styled(StandaloneCartView).attrs({
 const Cart = () => {
   const upMD = useMediaQuery(up(breakpoints.md));
   return (
+    <PageTemplate>
+      <Head>
+        <title>TODO</title>
+        <link rel="icon" href="/images/favicon.ico" />
+      </Head>
+      {upMD && <HeaderTemplate />}
+      <CartView />
+    </PageTemplate>
+  );
+};
+
+Cart.getLayout = function getLayout(page: ReactElement) {
+  return (
     <AuthProvider>
-      <CartProvider>
-        <PageTemplate>
-          <Head>
-            <title>TODO</title>
-            <link rel="icon" href="/images/favicon.ico" />
-          </Head>
-          {upMD && <HeaderTemplate />}
-          <CartView />
-        </PageTemplate>
-      </CartProvider>
+      <CartProvider>{page}</CartProvider>
     </AuthProvider>
   );
 };

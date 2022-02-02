@@ -9,6 +9,7 @@ import ProductsView, { ProductList } from 'components/products/products-view';
 import { Product, getProducts } from 'lib/products';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
+import { ReactElement } from 'react';
 import styled from 'styled-components';
 import { up } from 'styles/mixins';
 import { breakpoints } from 'styles/varibles';
@@ -61,20 +62,24 @@ export const getServerSideProps: GetServerSideProps<HomeProps> = async ({
 
 const Home = ({ products }: HomeProps) => {
   return (
+    <PageTemplate>
+      <Head>
+        <title>TODO</title>
+        <link rel="icon" href="/images/favicon.ico" />
+      </Head>
+      <StoreHeader />
+      <Main>
+        <ProductsView products={products} headingLevel="h2" />
+      </Main>
+      <StoreFooter />
+    </PageTemplate>
+  );
+};
+
+Home.getLayout = function getLayout(page: ReactElement) {
+  return (
     <AuthProvider>
-      <CartProvider>
-        <PageTemplate>
-          <Head>
-            <title>TODO</title>
-            <link rel="icon" href="/images/favicon.ico" />
-          </Head>
-          <StoreHeader />
-          <Main>
-            <ProductsView products={products} headingLevel="h2" />
-          </Main>
-          <StoreFooter />
-        </PageTemplate>
-      </CartProvider>
+      <CartProvider>{page}</CartProvider>
     </AuthProvider>
   );
 };

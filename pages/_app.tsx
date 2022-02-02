@@ -1,8 +1,18 @@
+import type { NextPage } from 'next';
 import { NextIntlProvider } from 'next-intl';
 import { AppProps } from 'next/app';
+import type { ReactElement, ReactNode } from 'react';
 import { UIDReset } from 'react-uid';
 import { createGlobalStyle } from 'styled-components';
 import { miniReset, nunitoFont } from 'styles/mixins';
+
+type NextPageWithLayout = NextPage & {
+  getLayout?: (page: ReactElement) => ReactNode;
+};
+
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout;
+};
 
 const GlobalStyle = createGlobalStyle`
   ${nunitoFont()}
@@ -19,13 +29,14 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-const App = ({ Component, pageProps }: AppProps) => {
+const App = ({ Component, pageProps }: AppPropsWithLayout) => {
+  const pageLayout = Component.getLayout || ((page) => page);
   return (
     <>
       <GlobalStyle />
       <UIDReset>
         <NextIntlProvider messages={pageProps.messages}>
-          <Component {...pageProps} />
+          {pageLayout(<Component {...pageProps} />)}
         </NextIntlProvider>
       </UIDReset>
     </>
