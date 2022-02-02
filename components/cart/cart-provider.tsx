@@ -1,5 +1,6 @@
+import { useUpdateEffect } from '@react-hookz/web';
 import { useAuth } from 'components/auth/auth-provider';
-import { getUser, User } from 'lib/auth';
+import { getUser } from 'lib/auth';
 import {
   CartItem,
   clearCart,
@@ -8,21 +9,16 @@ import {
   setCartItem,
 } from 'lib/cart';
 import { Cart, CartProductVariant, getCart } from 'lib/cart';
-import {
-  createContext,
-  ReactNode,
-  useContext,
-  useCallback,
-  useEffect,
-} from 'react';
-import useSWR, { useSWRConfig, unstable_serialize } from 'swr';
+import { createContext, ReactNode, useContext, useCallback } from 'react';
+import useSWR, { useSWRConfig } from 'swr';
 
 interface State {
   cart: Cart;
   itemsIndex: Record<string, CartItem>;
 }
 
-async function getState(user?: User): Promise<State> {
+async function getState(): Promise<State> {
+  const user = getUser();
   const cart = await getCart(user);
   return {
     cart,
@@ -33,6 +29,7 @@ async function getState(user?: User): Promise<State> {
   };
 }
 
+const cartKey = 'cart';
 const CartContext = createContext<State | undefined>(undefined);
 
 export interface CartProviderProps {
@@ -41,12 +38,10 @@ export interface CartProviderProps {
 
 export const CartProvider = ({ children }: CartProviderProps) => {
   const user = useAuth();
-  const { data } = useSWR([user, 'cart'], getState);
-  const { cache } = useSWRConfig();
-  useEffect(() => {
-    const key = [user, 'cart'];
-    return () => cache.delete(unstable_serialize(key));
-  }, [user, cache]);
+  const { data, mutate } = useSWR(cartKey, getState);
+  useUpdateEffect(() => {
+    mutate();
+  }, [user, mutate]);
   return <CartContext.Provider value={data}>{children}</CartContext.Provider>;
 };
 
@@ -60,8 +55,7 @@ export const useCartMutation = () => {
   const add = useCallback(
     async (variant: CartProductVariant, quantity: number = 1) => {
       const user = getUser();
-      const key = [user, 'cart'];
-      const state = cache.get(unstable_serialize(key)) as State | undefined;
+      const state = cache.get(cartKey) as State | undefined;
       if (!state) return;
       const item = state.itemsIndex[variant.id];
       const nextItem: CartItem = item
@@ -75,17 +69,16 @@ export const useCartMutation = () => {
         cart: { ...state.cart, items: Object.values(nextItemsIndex) },
         itemsIndex: nextItemsIndex,
       };
-      mutate(key, nextState, false);
+      mutate(cartKey, nextState, false);
       await setCartItem(nextItem, user);
-      mutate(key);
+      mutate(cartKey);
     },
     [cache, mutate]
   );
   const remove = useCallback(
     async (variantId: number, quantity: number = 1) => {
       const user = getUser();
-      const key = [user, 'cart'];
-      const state = cache.get(unstable_serialize(key)) as State | undefined;
+      const state = cache.get(cartKey) as State | undefined;
       if (!state) return;
       const item = state.itemsIndex[variantId];
       if (!item) return;
@@ -104,25 +97,24 @@ export const useCartMutation = () => {
         cart: { ...state.cart, items: Object.values(nextItemsIndex) },
         itemsIndex: nextItemsIndex,
       };
-      mutate(key, nextState, false);
+      mutate(cartKey, nextState, false);
       if (nextQuantity > 0) await setCartItem(nextItemsIndex[variantId], user);
       else await removeCartItem(variantId, user);
-      mutate(key);
+      mutate(cartKey);
     },
     [cache, mutate]
   );
   const clear = useCallback(async () => {
     const user = getUser();
-    const key = [user, 'cart'];
-    const state = cache.get(unstable_serialize(key)) as State | undefined;
+    const state = cache.get(cartKey) as State | undefined;
     if (!state) return;
     const nextState: State = {
       cart: getEmptyCart(),
       itemsIndex: {},
     };
-    mutate(key, nextState, false);
+    mutate(cartKey, nextState, false);
     await clearCart(user);
-    mutate(key);
+    mutate(cartKey);
   }, [cache, mutate]);
   return { add, remove, clear };
 };
