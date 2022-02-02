@@ -80,6 +80,18 @@ function clearLocalCart(): void {
   localStorage.removeItem(localCartKey);
 }
 
+async function mergeLocalCart(): Promise<void> {
+  const localCart = getLocalCart();
+  const { error } = await supabase.rpc<Cart>('merge_cart', {
+    cart_input: {
+      ...localCart,
+      items: Object.values(localCart.items),
+    },
+  });
+  if (error) throw new Error(error.message);
+  clearLocalCart();
+}
+
 async function getCartFromLocalStorage(): Promise<Cart> {
   const items = getLocalCart().items;
   const ids = Object.values(items).map((v) => v.variantId);
@@ -98,21 +110,15 @@ async function getCartFromLocalStorage(): Promise<Cart> {
 }
 
 async function getCartFromDatabase(): Promise<Cart> {
-  const localCart = getLocalCart();
   const { data, error } = await supabase
-    .rpc<Cart>('merge_cart', {
-      cart_input: {
-        ...localCart,
-        items: Object.values(localCart.items),
-      },
-    })
+    .from<Cart>(cartTable)
     .select(cartQuery);
   if (error) throw new Error(error.message);
-  clearLocalCart();
   return data ? data[0] : getEmptyCart();
 }
 
 export async function getCart(user?: User): Promise<Cart> {
+  if (user) await mergeLocalCart();
   return user ? getCartFromDatabase() : getCartFromLocalStorage();
 }
 
