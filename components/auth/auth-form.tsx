@@ -6,11 +6,10 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import styled from 'styled-components';
-import { em } from 'styles/mixins';
 
 //#region styled
 const Heading = styled.h1`
-  font-size: 2em;
+  font-size: 2rem;
   font-weight: normal;
   letter-spacing: 0.01em;
   text-align: center;
@@ -19,12 +18,12 @@ const Heading = styled.h1`
 const Input = styled.input`
   display: block;
   width: 100%;
-  min-height: 50px;
-  padding: 0 15px;
-  margin: 25px 0;
+  min-height: 3rem;
+  padding: 0 1rem;
+  margin: 1.5rem 0;
   border: 1px solid black;
-  border-radius: 10px;
-  font-size: ${em(24)};
+  border-radius: 0.5rem;
+  font-size: 1.5rem;
 
   :focus {
     outline: none;
@@ -43,22 +42,22 @@ const Input = styled.input`
 const SubmitButton = styled.button`
   display: block;
   width: 100%;
-  min-height: 50px;
-  padding: 0 15px;
+  min-height: 3rem;
+  padding: 0 1rem;
   background: #fe5f1e;
   border: none;
-  border-radius: 30px;
-  font-size: ${em(24)};
+  border-radius: 2rem;
+  font-size: 1.5rem;
   color: white;
   cursor: pointer;
 `;
 
 const Anchor = styled.a`
   display: block;
-  margin: 15px auto 0;
+  margin: 1rem auto 0;
   width: fit-content;
   border-bottom: 1px dotted #fe5f1e;
-  font-size: ${em(14)};
+  font-size: 0.875rem;
   letter-spacing: 0.01em;
   text-align: center;
   color: #fe5f1e;
@@ -66,12 +65,13 @@ const Anchor = styled.a`
 
 const Message = styled.strong`
   display: block;
-  margin-top: 20px;
+  margin-top: 1.25rem;
   text-align: center;
 `;
 
 const Form = styled.form`
-  max-width: 310px;
+  max-width: 20rem;
+  padding: 1rem;
 `;
 //#endregion
 
