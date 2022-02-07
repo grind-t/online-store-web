@@ -134,7 +134,7 @@ const AuthForm = ({ headingLevel }: AuthFormProps) => {
         <EmailInput />
         <PasswordInput />
         <SubmitButton>{t('signUpButton')}</SubmitButton>
-        <Link href="" shallow passHref>
+        <Link href="#sign-in" shallow passHref>
           <Anchor>{t('goBackLink')}</Anchor>
         </Link>
         <Message>{message}</Message>
