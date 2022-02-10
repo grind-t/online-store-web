@@ -14,46 +14,46 @@ const ViewOptions = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 0.625rem;
 
   & > * + * {
-    margin: 15px 0 0 0;
+    margin: 1rem 0 0 0;
   }
 
   @media ${up(breakpoints.md)} {
     flex-direction: row;
-    margin-bottom: 20px;
+    margin-bottom: 1.25rem;
 
     & > * + * {
-      margin: 0 0 0 15px;
+      margin: 0 0 0 1rem;
     }
   }
 
   @media ${up(breakpoints.xl)} {
-    margin-bottom: 30px;
+    margin-bottom: 1.75rem;
   }
 `;
 
 const ProductList = styled.ul`
   display: grid;
-  grid-gap: 10px;
-  gap: 10px;
+  grid-gap: 0.625rem;
+  gap: 0.625rem;
   list-style: none;
 
   @media ${up(breakpoints.sm)} {
     grid-template-columns: repeat(auto-fill, minmax(290px, auto));
-    grid-gap: 20px;
-    gap: 20px;
+    grid-gap: 1.25rem;
+    gap: 1.25rem;
   }
 
   @media ${up(breakpoints.md)} {
-    grid-gap: 25px;
-    gap: 25px;
+    grid-gap: 1.5rem;
+    gap: 1.5rem;
   }
 
   @media ${up(breakpoints.xl)} {
-    grid-gap: 30px;
-    gap: 30px;
+    grid-gap: 1.75rem;
+    gap: 1.75rem;
   }
 `;
 //#endregion
