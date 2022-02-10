@@ -23,7 +23,7 @@ const ImageContainer = styled.div`
   line-height: 0;
   overflow: hidden;
 
-  @media ${up(breakpoints.sm)} {
+  @media ${up(breakpoints.xs)} {
     width: 58px;
     height: 58px;
     margin: 0 5px 0 0;
@@ -42,7 +42,7 @@ const Heading = styled.h2`
   font-weight: inherit;
   letter-spacing: 0.01em;
 
-  @media ${up(breakpoints.sm)} {
+  @media ${up(breakpoints.xs)} {
     font-size: 20px;
   }
 
@@ -56,7 +56,7 @@ const Description = styled.p`
   font-size: 15px;
   letter-spacing: 0.01em;
 
-  @media ${up(breakpoints.sm)} {
+  @media ${up(breakpoints.xs)} {
     font-size: 16px;
   }
 
@@ -68,7 +68,7 @@ const Description = styled.p`
 const InfoContainer = styled.div`
   max-width: 152px;
 
-  @media ${up(breakpoints.sm)} {
+  @media ${up(breakpoints.xs)} {
     max-width: 187px;
     margin-top: 7px;
   }
@@ -83,7 +83,7 @@ const InfoContainer = styled.div`
 const QuantityInput = styled(InputStepper)`
   font-size: 14px;
 
-  @media ${up(breakpoints.sm)} {
+  @media ${up(breakpoints.xs)} {
     font-size: 18px;
   }
 
@@ -98,7 +98,7 @@ const Price = styled.strong`
   font-size: 17px;
   letter-spacing: 0.01em;
 
-  @media ${up(breakpoints.sm)} {
+  @media ${up(breakpoints.xs)} {
     font-size: 20px;
   }
 
@@ -123,7 +123,7 @@ const RemoveItemButton = styled.button.attrs({ type: 'button' })`
   text-align: center;
   font-size: 14px;
 
-  @media ${up(breakpoints.sm)} {
+  @media ${up(breakpoints.xs)} {
     font-size: 18px;
   }
 

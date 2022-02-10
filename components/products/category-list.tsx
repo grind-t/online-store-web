@@ -35,7 +35,7 @@ const List = styled.ul`
     margin-left: ${em(5)};
   }
 
-  @media ${up(breakpoints.sm)} {
+  @media ${up(breakpoints.xs)} {
     font-size: ${em((maxFontSize + minFontSize) / 2)};
   }
 

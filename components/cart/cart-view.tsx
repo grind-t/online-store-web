@@ -60,7 +60,7 @@ const TotalItems = styled.strong`
   font-size: 18px;
   letter-spacing: 0.01em;
 
-  @media ${up(breakpoints.sm)} {
+  @media ${up(breakpoints.xs)} {
     font-size: 20px;
   }
 

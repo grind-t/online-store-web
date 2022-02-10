@@ -24,7 +24,7 @@ const Main = styled.main`
     max-width: calc(100vw - ${pageMargin * 2}px - 10px);
   }
 
-  @media ${up(breakpoints.sm)} {
+  @media ${up(breakpoints.xs)} {
     padding: 20px 20px 60px;
 
     ${ProductList} {

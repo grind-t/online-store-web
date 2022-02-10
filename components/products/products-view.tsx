@@ -40,7 +40,7 @@ const ProductList = styled.ul`
   gap: 0.625rem;
   list-style: none;
 
-  @media ${up(breakpoints.sm)} {
+  @media ${up(breakpoints.xs)} {
     grid-template-columns: repeat(auto-fill, minmax(290px, auto));
     grid-gap: 1.25rem;
     gap: 1.25rem;

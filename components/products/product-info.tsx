@@ -21,7 +21,7 @@ const CloseButton = styled.button.attrs({ type: 'button' })`
   background: none;
   border: none;
 
-  @media ${up(breakpoints.sm)} {
+  @media ${up(breakpoints.xs)} {
     right: calc(-1em - 10px);
   }
 `;
@@ -56,7 +56,7 @@ const Container = styled.div`
   background: white;
   border-radius: 30px;
 
-  @media ${up(breakpoints.sm)} {
+  @media ${up(breakpoints.xs)} {
     width: 75vw;
     max-width: initial;
     font-size: 1.125em;
