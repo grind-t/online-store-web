@@ -7,11 +7,11 @@ const Button = styled.button.attrs({ type: 'button' })`
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  width: 210px;
-  min-height: 55px;
+  width: 13rem;
+  min-height: 3.5rem;
   background: white;
   border: 1px solid #d3d3d3;
-  border-radius: 30px;
+  border-radius: 2rem;
   color: #cacaca;
   font-size: 1rem;
   text-align: center;
