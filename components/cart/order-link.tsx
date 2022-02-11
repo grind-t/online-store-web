@@ -7,22 +7,22 @@ const Anchor = styled.a`
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  width: 210px;
-  min-height: 55px;
+  width: 13rem;
+  min-height: 3.5rem;
   background: #fe5f1e;
-  border-radius: 30px;
+  border-radius: 2rem;
   color: white;
   font-size: 1rem;
   text-align: center;
 `;
 //#endregion
 
-interface PaymentLinkProps {
+interface OrderLinkProps {
   className?: string;
 }
 
-const PaymentLink = ({ className }: PaymentLinkProps) => {
-  const t = useTranslations('PaymentLink');
+const OrderLink = ({ className }: OrderLinkProps) => {
+  const t = useTranslations('OrderLink');
 
   return (
     <Link href="#" passHref>
@@ -31,4 +31,4 @@ const PaymentLink = ({ className }: PaymentLinkProps) => {
   );
 };
 
-export default PaymentLink;
+export default OrderLink;

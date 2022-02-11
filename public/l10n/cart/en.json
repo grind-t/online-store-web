@@ -16,7 +16,7 @@
   "GoBackButton": {
     "text": "Go back"
   },
-  "PaymentLink": {
-    "text": "Pay now"
+  "OrderLink": {
+    "text": "Order now"
   }
 }
