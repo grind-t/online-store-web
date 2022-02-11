@@ -5,10 +5,17 @@ import { HeadingLevel } from 'lib/accessibility';
 import { Product } from 'lib/products';
 import { useTranslations } from 'next-intl';
 import styled from 'styled-components';
-import { up } from 'styles/mixins';
+import { up, rem } from 'styles/mixins';
 import { breakpoints } from 'styles/varibles';
 
 //#region styled
+const minColumnWidth = 290;
+const maxColumnWidth = 360;
+const smGap = 20;
+const mdGap = 24;
+const lgGap = 28;
+const xlGap = 32;
+
 const ViewOptions = styled.div`
   display: flex;
   flex-direction: column;
@@ -29,31 +36,69 @@ const ViewOptions = styled.div`
     }
   }
 
-  @media ${up(breakpoints.xl)} {
+  @media ${up(breakpoints.xxl)} {
     margin-bottom: 1.75rem;
   }
 `;
 
 const ProductList = styled.ul`
   display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
   grid-gap: 0.625rem;
   gap: 0.625rem;
+  max-width: inherit;
   list-style: none;
 
-  @media ${up(breakpoints.xs)} {
-    grid-template-columns: repeat(auto-fill, minmax(290px, auto));
-    grid-gap: 1.25rem;
-    gap: 1.25rem;
+  @media ${up(breakpoints.sm)} {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-gap: ${rem(smGap)};
+    gap: ${rem(smGap)};
   }
 
   @media ${up(breakpoints.md)} {
-    grid-gap: 1.5rem;
-    gap: 1.5rem;
+    grid-gap: ${rem(mdGap)};
+    gap: ${rem(mdGap)};
+  }
+
+  @media ${up(breakpoints.lg)} {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-gap: ${rem(lgGap)};
+    gap: ${rem(lgGap)};
   }
 
   @media ${up(breakpoints.xl)} {
-    grid-gap: 1.75rem;
-    gap: 1.75rem;
+    grid-gap: ${rem(xlGap)};
+    gap: ${rem(xlGap)};
+  }
+
+  @media ${up(breakpoints.xxl)} {
+    grid-template-columns: repeat(auto-fill, minmax(${minColumnWidth}px, 1fr));
+  }
+`;
+
+const Container = styled.div`
+  max-width: ${maxColumnWidth}px;
+  margin: 0 auto;
+
+  @media ${up(breakpoints.sm)} {
+    max-width: calc(${maxColumnWidth}px * 2 + ${rem(smGap)} * 1);
+  }
+
+  @media ${up(breakpoints.md)} {
+    max-width: calc(${maxColumnWidth}px * 2 + ${rem(mdGap)} * 1);
+  }
+
+  @media ${up(breakpoints.lg)} {
+    max-width: calc(${maxColumnWidth}px * 3 + ${rem(lgGap)} * 2);
+  }
+
+  @media ${up(breakpoints.xl)} {
+    max-width: calc(${maxColumnWidth}px * 3 + ${rem(xlGap)} * 2);
+  }
+
+  @media ${up(breakpoints.xxl)} {
+    max-width: initial;
+    margin: initial;
   }
 `;
 //#endregion
@@ -61,9 +106,14 @@ const ProductList = styled.ul`
 interface ProductsViewProps {
   products: Product[];
   headingLevel?: HeadingLevel;
+  className?: string;
 }
 
-const ProductsView = ({ products, headingLevel }: ProductsViewProps) => {
+const ProductsView = ({
+  products,
+  headingLevel,
+  className,
+}: ProductsViewProps) => {
   const t = useTranslations('ProductsView');
 
   const categories = [t('allProductsCategory')];
@@ -74,7 +124,7 @@ const ProductsView = ({ products, headingLevel }: ProductsViewProps) => {
   ];
 
   return (
-    <>
+    <Container className={className}>
       <ViewOptions>
         <CategoryList items={categories} />
         <Sorting options={sortingOptions} by={sortingOptions[0]} />
@@ -86,7 +136,7 @@ const ProductsView = ({ products, headingLevel }: ProductsViewProps) => {
           </li>
         ))}
       </ProductList>
-    </>
+    </Container>
   );
 };
 

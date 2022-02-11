@@ -2,10 +2,8 @@ import AuthProvider from 'components/auth/auth-provider';
 import CartProvider from 'components/cart/cart-provider';
 import StoreFooter from 'components/common/sections/footer';
 import StoreHeader from 'components/common/sections/header';
-import PageTemplate, {
-  pageMargin,
-} from 'components/common/templates/page-template';
-import ProductsView, { ProductList } from 'components/products/products-view';
+import PageTemplate from 'components/common/templates/page-template';
+import ProductsView from 'components/products/products-view';
 import { Product, getProducts } from 'lib/products';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
@@ -16,28 +14,22 @@ import { breakpoints } from 'styles/varibles';
 
 //#region styled
 const Main = styled.main`
-  width: fit-content;
-  margin: 0 auto;
-  padding: 20px 5px 60px;
+  padding: 1.25rem 0.25rem;
 
-  ${ProductList} {
-    max-width: calc(100vw - ${pageMargin * 2}px - 10px);
-  }
-
-  @media ${up(breakpoints.xs)} {
-    padding: 20px 20px 60px;
-
-    ${ProductList} {
-      max-width: calc(100vw - ${pageMargin * 2}px - 40px);
-    }
+  @media ${up(breakpoints.sm)} {
+    padding: 1.5rem 0.625rem;
   }
 
   @media ${up(breakpoints.md)} {
-    padding: 40px 40px 60px;
+    padding: 2.25rem;
+  }
 
-    ${ProductList} {
-      max-width: calc(100vw - ${pageMargin * 2}px - 80px);
-    }
+  @media ${up(breakpoints.xl)} {
+    padding: 3rem 4rem;
+  }
+
+  @media ${up(breakpoints.xxl)} {
+    padding: 4rem 5rem;
   }
 `;
 //#endregion

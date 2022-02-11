@@ -2,6 +2,10 @@ import { css } from 'styled-components';
 
 const precision = 4;
 
+function rem(value: number, base = 16): string {
+  return (value / base).toFixed(precision) + 'rem';
+}
+
 function em(value: number, base = 16): string {
   return (value / base).toFixed(precision) + 'em';
 }
@@ -129,4 +133,4 @@ function nunitoFont() {
   `;
 }
 
-export { em, lerpByEM, lerpByVW, up, hideVisually, miniReset, nunitoFont };
+export { rem, em, lerpByEM, lerpByVW, up, hideVisually, miniReset, nunitoFont };
