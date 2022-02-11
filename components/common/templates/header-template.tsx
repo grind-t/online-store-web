@@ -21,7 +21,7 @@ const HeaderTemplate = styled.header`
     font-size: ${(xlFontSize + xsFontSize) / 2}px;
   }
 
-  @media ${up(breakpoints.xl)} {
+  @media ${up(breakpoints.xxl)} {
     font-size: ${xlFontSize}px;
   }
 `;

@@ -39,7 +39,7 @@ const List = styled.ul`
     font-size: ${em((maxFontSize + minFontSize) / 2)};
   }
 
-  @media ${up(breakpoints.xl)} {
+  @media ${up(breakpoints.xxl)} {
     font-size: ${em(maxFontSize)};
   }
 `;

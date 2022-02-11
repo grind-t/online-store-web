@@ -29,7 +29,7 @@ const CartView = styled(StandaloneCartView).attrs({
     margin-top: 10px;
   }
 
-  @media ${up(breakpoints.xl)} {
+  @media ${up(breakpoints.xxl)} {
     margin-top: 100px;
   }
 `;

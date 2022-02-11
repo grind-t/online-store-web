@@ -18,7 +18,7 @@ const Footer = styled.footer`
     padding: 20px 20px 15px;
   }
 
-  @media ${up(breakpoints.xl)} {
+  @media ${up(breakpoints.xxl)} {
     padding: 25px 30px 20px;
   }
 `;
@@ -33,7 +33,7 @@ const OfferLink = styled.a`
     font-weight: bold;
   }
 
-  @media ${up(breakpoints.xl)} {
+  @media ${up(breakpoints.xxl)} {
     font-size: 1.375em;
   }
 `;
@@ -48,7 +48,7 @@ const Taxpayer = styled.p`
     text-align: center;
   }
 
-  @media ${up(breakpoints.xl)} {
+  @media ${up(breakpoints.xxl)} {
     font-size: 1.25em;
   }
 `;

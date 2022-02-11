@@ -66,7 +66,7 @@ const Container = styled.div`
     font-size: 1.25em;
   }
 
-  @media ${up(breakpoints.xl)} {
+  @media ${up(breakpoints.xxl)} {
     font-size: 1.375em;
   }
 `;
