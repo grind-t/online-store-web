@@ -15,96 +15,96 @@ import { breakpoints } from 'styles/varibles';
 //#region styled
 
 const ImageContainer = styled.div`
-  width: 36px;
-  height: 36px;
-  margin: 5px 3px 0 0;
-  border-radius: 5px;
-  box-shadow: 0 15px 20px rgba(0, 0, 0, 0.05);
+  width: 2.25rem;
+  height: 2.25rem;
+  margin: 0.3125rem 0.25rem 0 0;
+  border-radius: 0.25rem;
+  box-shadow: 0 1rem 1.25rem rgba(0, 0, 0, 0.05);
   line-height: 0;
   overflow: hidden;
 
   @media ${up(breakpoints.xs)} {
-    width: 58px;
-    height: 58px;
-    margin: 0 5px 0 0;
+    width: 3.625rem;
+    height: 3.625rem;
+    margin: 0 0.375rem 0 0;
   }
 
   @media ${up(breakpoints.md)} {
     width: 80px;
     height: 80px;
-    margin: 0 7px 0 0;
-    border-radius: 10px;
+    margin: 0 0.5rem 0 0;
+    border-radius: 0.625rem;
   }
 `;
 
 const Heading = styled.h2`
-  font-size: 17px;
+  font-size: 1.125rem;
   font-weight: inherit;
   letter-spacing: 0.01em;
 
   @media ${up(breakpoints.xs)} {
-    font-size: 20px;
+    font-size: 1.25rem;
   }
 
   @media ${up(breakpoints.md)} {
-    font-size: 22px;
+    font-size: 1.375rem;
   }
 `;
 
 const Description = styled.p`
   color: #8d8d8d;
-  font-size: 15px;
+  font-size: 0.875rem;
   letter-spacing: 0.01em;
 
   @media ${up(breakpoints.xs)} {
-    font-size: 16px;
+    font-size: 1rem;
   }
 
   @media ${up(breakpoints.md)} {
-    font-size: 18px;
+    font-size: 1.125rem;
   }
 `;
 
 const InfoContainer = styled.div`
-  max-width: 152px;
+  max-width: 9.5rem;
 
   @media ${up(breakpoints.xs)} {
-    max-width: 187px;
+    max-width: 11.5rem;
     margin-top: 7px;
   }
 
   @media ${up(breakpoints.md)} {
-    max-width: 222px;
-    margin-top: 14px;
+    max-width: 14rem;
+    margin-top: 0.875rem;
     font-weight: bold;
   }
 `;
 
 const QuantityInput = styled(InputStepper)`
-  font-size: 14px;
+  font-size: 0.875rem;
 
   @media ${up(breakpoints.xs)} {
-    font-size: 18px;
+    font-size: 1.125rem;
   }
 
   @media ${up(breakpoints.md)} {
-    font-size: 22px;
+    font-size: 1.375rem;
   }
 `;
 
 const Price = styled.strong`
   display: block;
-  margin-top: 8px;
-  font-size: 17px;
+  margin-top: 0.5rem;
+  font-size: 1.125rem;
   letter-spacing: 0.01em;
 
   @media ${up(breakpoints.xs)} {
-    font-size: 20px;
+    font-size: 1.25rem;
   }
 
   @media ${up(breakpoints.md)} {
     margin-top: 0;
-    font-size: 22px;
+    font-size: 1.375rem;
   }
 `;
 
@@ -121,21 +121,21 @@ const RemoveItemButton = styled.button.attrs({ type: 'button' })`
   border: 1.5px solid #d7d7d7;
   border-radius: 50%;
   text-align: center;
-  font-size: 14px;
+  font-size: 0.875rem;
 
   @media ${up(breakpoints.xs)} {
-    font-size: 18px;
+    font-size: 1.125rem;
   }
 
   @media ${up(breakpoints.md)} {
-    font-size: 22px;
+    font-size: 1.375rem;
   }
 `;
 
 const ControlsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 10px;
+  margin-top: 0.625rem;
   margin-left: auto;
 
   @media ${up(breakpoints.md)} {
@@ -143,19 +143,19 @@ const ControlsContainer = styled.div`
     justify-content: space-between;
     align-items: center;
     width: 43.5%;
-    margin-top: 23px;
+    margin-top: 1.5rem;
   }
 `;
 
 const Container = styled.div`
   display: flex;
   align-items: flex-start;
-  padding-top: 11px;
+  padding-top: 0.625rem;
   border-bottom: 1px solid #f4f4f4;
 
   @media ${up(breakpoints.md)} {
-    min-height: 140px;
-    padding-top: 31px;
+    min-height: 8.75rem;
+    padding-top: 1.875rem;
   }
 `;
 //#endregion
