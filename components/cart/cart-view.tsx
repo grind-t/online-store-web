@@ -2,7 +2,7 @@ import { useCartMutation, useCartQuery } from './cart-provider';
 import { useMediaQuery } from '@react-hookz/web';
 import Item from 'components/cart/cart-item';
 import StandaloneGoBackButton from 'components/cart/go-back-button';
-import StandalonePaymentLink from 'components/cart/payment-link';
+import StandaloneOrderLink from 'components/cart/order-link';
 import StandaloneCartIcon from 'components/common/icons/cart-icon';
 import StandaloneTrashIcon from 'components/common/icons/trash-icon';
 import { HeadingLevel, nextHeadingLevel } from 'lib/accessibility';
@@ -16,23 +16,23 @@ import { breakpoints } from 'styles/varibles';
 
 //#region styled
 const CartIcon = styled(StandaloneCartIcon)`
-  width: 29px;
+  width: 1.75rem;
   height: 100%;
-  margin-right: 10px;
+  margin-right: 0.625rem;
   stroke: black;
   stroke-width: 2.5px;
 `;
 
 const Heading = styled.h2`
-  font-size: 2em;
+  font-size: 2rem;
   font-weight: normal;
   letter-spacing: 0.01em;
 `;
 
 const TrashIcon = styled(StandaloneTrashIcon)`
-  width: 20px;
+  width: 1.25rem;
   height: 100%;
-  margin: 0 10px -2px 0;
+  margin: 0 0.625rem -0.125rem 0;
 `;
 
 const ClearCartButton = styled.button.attrs({ type: 'button' })`
@@ -49,7 +49,7 @@ const TopBar = styled.div`
     grid-area: bar;
     display: flex;
     align-items: center;
-    padding-bottom: 25px;
+    padding-bottom: 1.5rem;
     border-bottom: 1px solid #f4f4f4;
   }
 `;
@@ -57,27 +57,27 @@ const TopBar = styled.div`
 const TotalItems = styled.strong`
   grid-area: quantity;
   justify-self: start;
-  font-size: 18px;
+  font-size: 1.125rem;
   letter-spacing: 0.01em;
 
   @media ${up(breakpoints.xs)} {
-    font-size: 20px;
+    font-size: 1.25rem;
   }
 
   @media ${up(breakpoints.md)} {
-    margin: 40px 0;
-    font-size: 22px;
+    margin: 2.5rem 0;
+    font-size: 1.375rem;
   }
 `;
 
 const TotalPrice = styled.span`
   grid-area: price;
   justify-self: center;
-  font-size: 22px;
+  font-size: 1.375rem;
   letter-spacing: 0.01em;
 
   @media ${up(breakpoints.md)} {
-    margin: 40px 0;
+    margin: 2.5rem 0;
     justify-self: end;
   }
 `;
@@ -97,8 +97,8 @@ const GoBackButton = styled(StandaloneGoBackButton)`
   justify-self: start;
 `;
 
-const PaymentLink = styled(StandalonePaymentLink)`
-  grid-area: pay;
+const OrderLink = styled(StandaloneOrderLink)`
+  grid-area: order;
   justify-self: center;
 
   @media ${up(breakpoints.md)} {
@@ -113,11 +113,11 @@ const Container = styled.section`
     'quantity'
     'items'
     'price'
-    'pay';
+    'order';
   min-height: inherit;
   width: 100%;
   margin: 0 auto;
-  padding: 7px;
+  padding: 0.5rem;
 
   @media ${up(breakpoints.md)} {
     grid-template-columns: 1fr 1fr;
@@ -125,10 +125,10 @@ const Container = styled.section`
       'bar bar'
       'items items'
       'quantity price'
-      'back pay';
+      'back order';
     min-height: initial;
-    max-width: 848px;
-    padding: 14px;
+    max-width: 53rem;
+    padding: 0.875rem;
   }
 `;
 
@@ -187,7 +187,7 @@ const CartView = ({ container, headingLevel, className }: CartViewProps) => {
         <TotalPriceValue>{formatPrice(totalPrice)}</TotalPriceValue>
       </TotalPrice>
       {upMD && <GoBackButton />}
-      <PaymentLink />
+      <OrderLink />
     </Container>
   );
 };
