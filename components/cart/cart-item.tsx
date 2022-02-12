@@ -30,8 +30,8 @@ const ImageContainer = styled.div`
   }
 
   @media ${up(breakpoints.md)} {
-    width: 80px;
-    height: 80px;
+    width: 5rem;
+    height: 5rem;
     margin: 0 0.5rem 0 0;
     border-radius: 0.625rem;
   }
@@ -70,7 +70,7 @@ const InfoContainer = styled.div`
 
   @media ${up(breakpoints.xs)} {
     max-width: 11.5rem;
-    margin-top: 7px;
+    margin-top: 0.4375rem;
   }
 
   @media ${up(breakpoints.md)} {
