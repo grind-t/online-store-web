@@ -16,17 +16,17 @@ const Anchor = styled.a<{ detailedStyle?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 52px;
-  min-height: 52px;
+  min-width: 3.25rem;
+  min-height: 3.25rem;
   background: #fe5f1e;
   border-radius: 50%;
   color: white;
   font-weight: bold;
 
   @media ${up(breakpoints.md)} {
-    min-width: 152px;
-    min-height: 52px;
-    border-radius: 30px;
+    min-width: 9.5rem;
+    min-height: 3.25rem;
+    border-radius: 1.875rem;
   }
 `;
 
@@ -34,10 +34,10 @@ const Icon = styled(CartIcon)<{ detailedStyle?: boolean }>`
   stroke: white;
 
   @media ${up(breakpoints.md)} {
-    width: 26px;
-    height: 26px;
-    padding: 0 0 2px 10px;
-    margin: 0 8px 0 13px;
+    width: 1.625rem;
+    height: 1.625rem;
+    padding: 0 0 0.125rem 0.625rem;
+    margin: 0 0.5rem 0 0.8125rem;
     border-left: 1px solid rgba(255, 255, 255, 0.25);
     stroke-width: 3.5;
   }
