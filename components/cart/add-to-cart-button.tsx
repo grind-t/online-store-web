@@ -4,31 +4,31 @@ import styled from 'styled-components';
 
 //#region styled
 const Icon = styled(PlusIcon)`
-  width: 12px;
-  margin-right: 7px;
+  width: 0.75rem;
+  margin-right: 0.4375rem;
 `;
 
 const Count = styled.span`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 22px;
-  min-height: 22px;
-  margin-left: 9px;
+  min-width: 1.375rem;
+  min-height: 1.375rem;
+  margin-left: 0.5625rem;
   background: #eb5a1e;
   border-radius: 50%;
   color: white;
-  font-size: 13px;
+  font-size: 0.8125rem;
 `;
 
 const Button = styled.button.attrs({ type: 'button' })`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 8px 16px;
+  padding: 0.5rem 1rem;
   background: white;
   border: 1px solid #eb5a1e;
-  border-radius: 30px;
+  border-radius: 1.875rem;
   color: #eb5a1e;
   font-weight: bold;
   line-height: 1;
