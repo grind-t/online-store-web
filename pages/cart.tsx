@@ -26,11 +26,11 @@ const CartView = styled(StandaloneCartView).attrs({
   headingLevel: 'h1',
 })`
   @media ${up(breakpoints.md)} {
-    margin-top: 10px;
+    margin-top: 0.625rem;
   }
 
   @media ${up(breakpoints.xxl)} {
-    margin-top: 100px;
+    margin-top: 6.25rem;
   }
 `;
 //#endregion
