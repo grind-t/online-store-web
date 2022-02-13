@@ -17,18 +17,18 @@ const Anchor = styled.a`
 `;
 //#endregion
 
-interface OrderLinkProps {
+interface CheckoutLinkProps {
   className?: string;
 }
 
-const OrderLink = ({ className }: OrderLinkProps) => {
+const CheckoutLink = ({ className }: CheckoutLinkProps) => {
   const t = useTranslations('OrderLink');
 
   return (
-    <Link href="#" passHref>
+    <Link href="/checkout" passHref>
       <Anchor className={className}>{t('text')}</Anchor>
     </Link>
   );
 };
 
-export default OrderLink;
+export default CheckoutLink;

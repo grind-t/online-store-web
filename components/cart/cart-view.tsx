@@ -1,8 +1,8 @@
 import { useCartMutation, useCartQuery } from './cart-provider';
 import { useMediaQuery } from '@react-hookz/web';
 import Item from 'components/cart/cart-item';
+import StandaloneCheckoutLink from 'components/cart/checkout-link';
 import StandaloneGoBackButton from 'components/cart/go-back-button';
-import StandaloneOrderLink from 'components/cart/order-link';
 import StandaloneCartIcon from 'components/common/icons/cart-icon';
 import StandaloneTrashIcon from 'components/common/icons/trash-icon';
 import { HeadingLevel, nextHeadingLevel } from 'lib/accessibility';
@@ -97,8 +97,8 @@ const GoBackButton = styled(StandaloneGoBackButton)`
   justify-self: start;
 `;
 
-const OrderLink = styled(StandaloneOrderLink)`
-  grid-area: order;
+const CheckoutLink = styled(StandaloneCheckoutLink)`
+  grid-area: checkout;
   justify-self: center;
 
   @media ${up(breakpoints.md)} {
@@ -113,7 +113,7 @@ const Container = styled.section`
     'quantity'
     'items'
     'price'
-    'order';
+    'checkout';
   min-height: inherit;
   width: 100%;
   margin: 0 auto;
@@ -125,7 +125,7 @@ const Container = styled.section`
       'bar bar'
       'items items'
       'quantity price'
-      'back order';
+      'back checkout';
     min-height: initial;
     max-width: 53rem;
     padding: 0.875rem;
@@ -187,7 +187,7 @@ const CartView = ({ container, headingLevel, className }: CartViewProps) => {
         <TotalPriceValue>{formatPrice(totalPrice)}</TotalPriceValue>
       </TotalPrice>
       {upMD && <GoBackButton />}
-      <OrderLink />
+      <CheckoutLink />
     </Container>
   );
 };
