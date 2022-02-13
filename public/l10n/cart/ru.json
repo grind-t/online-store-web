@@ -16,7 +16,7 @@
   "GoBackButton": {
     "text": "Вернуться назад"
   },
-  "OrderLink": {
+  "CheckoutLink": {
     "text": "Оформить заказ"
   }
 }

@@ -22,7 +22,7 @@ interface CheckoutLinkProps {
 }
 
 const CheckoutLink = ({ className }: CheckoutLinkProps) => {
-  const t = useTranslations('OrderLink');
+  const t = useTranslations('CheckoutLink');
 
   return (
     <Link href="/checkout" passHref>
