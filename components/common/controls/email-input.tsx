@@ -12,8 +12,8 @@ const EmailInput = ({ label, register }: EmailInputProps) => {
   return (
     <Input
       type="email"
-      placeholder={t('emailPlaceholder')}
-      {...register(label, { required: t('emailRequired') })}
+      placeholder={t('placeholder')}
+      {...register(label, { required: t('required') })}
     />
   );
 };

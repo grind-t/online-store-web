@@ -12,10 +12,10 @@ const PasswordInput = ({ label, register }: PasswordInputProps) => {
   return (
     <Input
       type="password"
-      placeholder={t('passwordPlaceholder')}
+      placeholder={t('placeholder')}
       {...register(label, {
-        required: t('passwordRequired'),
-        minLength: { value: 6, message: t('minPasswordLength') },
+        required: t('required'),
+        minLength: { value: 6, message: t('minLength') },
       })}
     />
   );

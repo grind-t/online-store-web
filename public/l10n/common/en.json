@@ -1,1 +1,11 @@
-{}
+{
+  "EmailInput": {
+    "placeholder": "Email",
+    "required": "Please enter your email address."
+  },
+  "PasswordInput": {
+    "placeholder": "Password",
+    "required": "Please enter your password.",
+    "minLength": "The password must contain at least 6 characters"
+  }
+}
