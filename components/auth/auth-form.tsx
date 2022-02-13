@@ -1,3 +1,5 @@
+import EmailInput from 'components/common/controls/email-input';
+import PasswordInput from 'components/common/controls/password-input';
 import { HeadingLevel } from 'lib/accessibility';
 import { signIn, signUp } from 'lib/auth';
 import { useTranslations } from 'next-intl';
@@ -13,30 +15,6 @@ const Heading = styled.h1`
   font-weight: normal;
   letter-spacing: 0.01em;
   text-align: center;
-`;
-
-const Input = styled.input`
-  display: block;
-  width: 100%;
-  min-height: 3rem;
-  padding: 0 1rem;
-  margin: 1.5rem 0;
-  border: 1px solid black;
-  border-radius: 0.5rem;
-  font-size: 1.5rem;
-
-  :focus {
-    outline: none;
-  }
-
-  :invalid {
-    border: 1px solid red;
-  }
-
-  ::placeholder {
-    color: #cacaca;
-    text-align: center;
-  }
 `;
 
 const SubmitButton = styled.button`
@@ -108,31 +86,12 @@ const AuthForm = ({ headingLevel }: AuthFormProps) => {
       );
   };
 
-  const EmailInput = () => (
-    <Input
-      type="email"
-      placeholder={t('emailPlaceholder')}
-      {...register('email', { required: t('emailRequired') })}
-    />
-  );
-
-  const PasswordInput = () => (
-    <Input
-      type="password"
-      placeholder={t('passwordPlaceholder')}
-      {...register('password', {
-        required: t('passwordRequired'),
-        minLength: { value: 6, message: t('minPasswordLength') },
-      })}
-    />
-  );
-
   if (router.asPath.includes('#sign-up')) {
     return (
       <Form onSubmit={handleSubmit(handleSignUp)}>
         <Heading as={headingLevel}>{t('signUpHeading')}</Heading>
-        <EmailInput />
-        <PasswordInput />
+        <EmailInput label="email" register={register} />
+        <PasswordInput label="password" register={register} />
         <SubmitButton>{t('signUpButton')}</SubmitButton>
         <Link href="#sign-in" shallow passHref>
           <Anchor>{t('goBackLink')}</Anchor>
@@ -145,8 +104,8 @@ const AuthForm = ({ headingLevel }: AuthFormProps) => {
   return (
     <Form onSubmit={handleSubmit(handleSignIn)}>
       <Heading as={headingLevel}>{t('signInHeading')}</Heading>
-      <EmailInput />
-      <PasswordInput />
+      <EmailInput label="email" register={register} />
+      <PasswordInput label="password" register={register} />
       <SubmitButton>{t('signInButton')}</SubmitButton>
       <Link href="#sign-up" shallow passHref>
         <Anchor>{t('haveNoAccountLink')}</Anchor>
