@@ -1,4 +1,5 @@
 import EmailInput from 'components/common/controls/email-input';
+import { placeOrder } from 'lib/checkout';
 import { useTranslations } from 'next-intl';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
@@ -36,7 +37,7 @@ const CheckoutForm = () => {
   const t = useTranslations('CheckoutForm');
 
   return (
-    <Form>
+    <Form onSubmit={handleSubmit((data) => placeOrder(data.email))}>
       <EmailInput label="email" register={register} />
       <SubmitButton>{t('submit')}</SubmitButton>
     </Form>
