@@ -1,0 +1,13 @@
+{
+  "OrderTableRow": {
+    "paid": "Paid",
+    "notPaid": "Not paid",
+    "pay": "Pay"
+  },
+  "OrderTable": {
+    "nameHeader": "Name",
+    "orderNumHeader": "Order",
+    "statusHeader": "Status",
+    "productHeader": "Product/service"
+  }
+}

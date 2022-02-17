@@ -1,4 +1,27 @@
 {
+  "Header": {
+    "heading": "Дорогие услуги - дёшево!",
+    "guestNav": {
+      "signIn": "Войти"
+    },
+    "userNav": {
+      "profile": "Профиль",
+      "orders": "Заказы",
+      "signOut": "Выйти"
+    }
+  },
+  "CartLink": {
+    "title": "Корзина",
+    "sum": "Сумма",
+    "numOfItems": "Количество товаров"
+  },
+  "Navigation": {
+    "closeMenu": "Закрыть меню",
+    "openMenu": "Открыть меню"
+  },
+  "Footer": {
+    "offer": "Оферта"
+  },
   "EmailInput": {
     "placeholder": "Эл. почта",
     "required": "Пожалуйста, введите свой адрес электронной почты"

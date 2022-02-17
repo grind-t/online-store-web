@@ -1,0 +1,13 @@
+{
+  "OrderTableRow": {
+    "paid": "Оплачен",
+    "notPaid": "Ожидает оплаты",
+    "pay": "Оплатить"
+  },
+  "OrderTable": {
+    "nameHeader": "Название",
+    "orderNumHeader": "Заказ",
+    "statusHeader": "Статус",
+    "productHeader": "Товар/услуга"
+  }
+}

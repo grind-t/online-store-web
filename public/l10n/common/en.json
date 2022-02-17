@@ -1,4 +1,27 @@
 {
+  "Header": {
+    "heading": "Ebcommerce",
+    "guestNav": {
+      "signIn": "Sign in"
+    },
+    "userNav": {
+      "profile": "Profile",
+      "orders": "Orders",
+      "signOut": "Sign out"
+    }
+  },
+  "CartLink": {
+    "title": "Cart",
+    "sum": "Sum",
+    "numOfItems": "Number of items"
+  },
+  "Navigation": {
+    "closeMenu": "Close menu",
+    "openMenu": "Open menu"
+  },
+  "Footer": {
+    "offer": "Offer"
+  },
   "EmailInput": {
     "placeholder": "Email",
     "required": "Please enter your email address."

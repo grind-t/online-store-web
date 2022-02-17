@@ -44,14 +44,14 @@ const CartLink = styled(StandaloneCartLink)`
   }
 `;
 
-const Header = styled(HeaderTemplate)`
+const Container = styled(HeaderTemplate)`
   position: relative;
 `;
 //#endregion
 
-const StoreHeader = () => {
+const Header = () => {
   const user = useAuth();
-  const t = useTranslations('StoreHeader');
+  const t = useTranslations('Header');
 
   const guestNav = useMemo<NavigationItem[]>(
     () => [
@@ -78,7 +78,7 @@ const StoreHeader = () => {
   );
 
   return (
-    <Header>
+    <Container>
       <BearIcon />
       <Heading>{t('heading')}</Heading>
       <CartLink />
@@ -86,8 +86,8 @@ const StoreHeader = () => {
         items={user ? userNav : guestNav}
         hiddenItems={user ? guestNav : userNav}
       />
-    </Header>
+    </Container>
   );
 };
 
-export default StoreHeader;
+export default Header;

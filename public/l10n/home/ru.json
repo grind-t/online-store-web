@@ -1,24 +1,4 @@
 {
-  "StoreHeader": {
-    "heading": "Дорогие услуги - дёшево!",
-    "guestNav": {
-      "signIn": "Войти"
-    },
-    "userNav": {
-      "profile": "Профиль",
-      "orders": "Заказы",
-      "signOut": "Выйти"
-    }
-  },
-  "CartLink": {
-    "title": "Корзина",
-    "sum": "Сумма",
-    "numOfItems": "Количество товаров"
-  },
-  "Navigation": {
-    "closeMenu": "Закрыть меню",
-    "openMenu": "Открыть меню"
-  },
   "ProductsView": {
     "allProductsCategory": "Все",
     "sortByPopularityOption": "популярности",
@@ -36,8 +16,5 @@
   },
   "AddToCartButton": {
     "text": "Добавить"
-  },
-  "StoreFooter": {
-    "offer": "Оферта"
   }
 }
