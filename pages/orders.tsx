@@ -1,4 +1,5 @@
 import AuthProvider from 'components/auth/auth-provider';
+import CartProvider from 'components/cart/cart-provider';
 import Header from 'components/common/sections/header';
 import PageTemplate from 'components/common/templates/page-template';
 import OrderTable from 'components/orders/order-table';
@@ -50,7 +51,11 @@ const Orders = () => {
 };
 
 Orders.getLayout = function getLayout(page: ReactElement) {
-  return <AuthProvider>{page}</AuthProvider>;
+  return (
+    <AuthProvider>
+      <CartProvider>{page}</CartProvider>
+    </AuthProvider>
+  );
 };
 
 export default Orders;
