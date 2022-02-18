@@ -1,4 +1,3 @@
-import { useCartMutation, useCartQuery } from './cart-provider';
 import { useMediaQuery } from '@react-hookz/web';
 import Item from 'components/cart/cart-item';
 import StandaloneCheckoutLink from 'components/cart/checkout-link';
@@ -7,6 +6,7 @@ import StandaloneCartIcon from 'components/common/icons/cart-icon';
 import StandaloneTrashIcon from 'components/common/icons/trash-icon';
 import { HeadingLevel, nextHeadingLevel } from 'lib/accessibility';
 import { getTotalCartItems, getTotalCartPrice } from 'lib/cart';
+import { useCartQuery, useCartMutation } from 'lib/hooks/cart';
 import { formatPrice, zeroDinero } from 'lib/money';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';

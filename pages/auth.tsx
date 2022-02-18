@@ -1,5 +1,4 @@
 import AuthForm from 'components/auth/auth-form';
-import AuthProvider from 'components/auth/auth-provider';
 import PageTemplate from 'components/common/templates/page-template';
 import { GetStaticProps } from 'next';
 import Head from 'next/head';
@@ -35,10 +34,6 @@ const SignIn = () => {
       </main>
     </Page>
   );
-};
-
-SignIn.getLayout = function getLayout(page: ReactElement) {
-  return <AuthProvider>{page}</AuthProvider>;
 };
 
 export default SignIn;

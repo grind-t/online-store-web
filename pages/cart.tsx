@@ -1,6 +1,4 @@
 import { useMediaQuery } from '@react-hookz/web';
-import AuthProvider from 'components/auth/auth-provider';
-import CartProvider from 'components/cart/cart-provider';
 import StandaloneCartView from 'components/cart/cart-view';
 import HeaderTemplate from 'components/common/templates/header-template';
 import PageTemplate from 'components/common/templates/page-template';
@@ -46,14 +44,6 @@ const Cart = () => {
       {upMD && <HeaderTemplate />}
       <CartView />
     </PageTemplate>
-  );
-};
-
-Cart.getLayout = function getLayout(page: ReactElement) {
-  return (
-    <AuthProvider>
-      <CartProvider>{page}</CartProvider>
-    </AuthProvider>
   );
 };
 

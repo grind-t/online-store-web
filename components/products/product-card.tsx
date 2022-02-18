@@ -1,12 +1,9 @@
 import AddToCartButton from 'components/cart/add-to-cart-button';
-import {
-  useCartItemQuery,
-  useCartMutation,
-} from 'components/cart/cart-provider';
 import CustomInput from 'components/common/utils/custom-input';
 import ProductInfo from 'components/products/product-info';
 import { dinero } from 'dinero.js';
 import { HeadingLevel } from 'lib/accessibility';
+import { useCartItemQuery, useCartMutation } from 'lib/hooks/cart';
 import { defaultCurrency, formatPrice } from 'lib/money';
 import { Product, getProductOptions, findVariant } from 'lib/products';
 import { useTranslations } from 'next-intl';

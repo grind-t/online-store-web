@@ -1,8 +1,8 @@
-import { useCartQuery } from './cart-provider';
 import { useMediaQuery } from '@react-hookz/web';
 import CartIcon from 'components/common/icons/cart-icon';
 import VisuallyHidden from 'components/common/utils/visually-hidden';
 import { getTotalCartItems, getTotalCartPrice } from 'lib/cart';
+import { useCartQuery } from 'lib/hooks/cart';
 import { formatPrice, zeroDinero } from 'lib/money';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';

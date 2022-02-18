@@ -1,5 +1,3 @@
-import { useUpdateEffect } from '@react-hookz/web';
-import { useAuth } from 'components/auth/auth-provider';
 import { getUser } from 'lib/auth';
 import {
   CartItem,
@@ -9,7 +7,7 @@ import {
   setCartItem,
 } from 'lib/cart';
 import { Cart, CartProductVariant, getCart } from 'lib/cart';
-import { createContext, ReactNode, useContext, useCallback } from 'react';
+import { useCallback } from 'react';
 import useSWR, { useSWRConfig } from 'swr';
 
 interface State {
@@ -29,26 +27,17 @@ async function getState(): Promise<State> {
   };
 }
 
-const cartKey = 'cart';
-const CartContext = createContext<State | undefined>(undefined);
+export const cartKey = 'cart';
 
-export interface CartProviderProps {
-  children: ReactNode;
+export function useCartQuery() {
+  const { data } = useSWR(cartKey, getState);
+  return data?.cart;
 }
 
-export const CartProvider = ({ children }: CartProviderProps) => {
-  const user = useAuth();
-  const { data, mutate } = useSWR(cartKey, getState);
-  useUpdateEffect(() => {
-    mutate();
-  }, [user, mutate]);
-  return <CartContext.Provider value={data}>{children}</CartContext.Provider>;
-};
-
-export const useCartQuery = () => useContext(CartContext)?.cart;
-
-export const useCartItemQuery = (variantId: number) =>
-  useContext(CartContext)?.itemsIndex[variantId];
+export function useCartItemQuery(variantId: number) {
+  const { data } = useSWR(cartKey, getState);
+  return data?.itemsIndex[variantId];
+}
 
 export const useCartMutation = () => {
   const { cache, mutate } = useSWRConfig();
@@ -118,5 +107,3 @@ export const useCartMutation = () => {
   }, [cache, mutate]);
   return { add, remove, clear };
 };
-
-export default CartProvider;

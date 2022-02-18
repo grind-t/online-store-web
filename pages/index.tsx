@@ -1,5 +1,3 @@
-import AuthProvider from 'components/auth/auth-provider';
-import CartProvider from 'components/cart/cart-provider';
 import StoreFooter from 'components/common/sections/footer';
 import StoreHeader from 'components/common/sections/header';
 import PageTemplate from 'components/common/templates/page-template';
@@ -7,7 +5,6 @@ import ProductsView from 'components/products/products-view';
 import { Product, getProducts } from 'lib/products';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
-import { ReactElement } from 'react';
 import styled from 'styled-components';
 import { up } from 'styles/mixins';
 import { breakpoints } from 'styles/varibles';
@@ -65,14 +62,6 @@ const Home = ({ products }: HomeProps) => {
       </Main>
       <StoreFooter />
     </PageTemplate>
-  );
-};
-
-Home.getLayout = function getLayout(page: ReactElement) {
-  return (
-    <AuthProvider>
-      <CartProvider>{page}</CartProvider>
-    </AuthProvider>
   );
 };
 

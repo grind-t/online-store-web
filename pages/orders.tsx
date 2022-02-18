@@ -1,11 +1,8 @@
-import AuthProvider from 'components/auth/auth-provider';
-import CartProvider from 'components/cart/cart-provider';
 import Header from 'components/common/sections/header';
 import PageTemplate from 'components/common/templates/page-template';
 import OrderTable from 'components/orders/order-table';
 import { GetStaticProps } from 'next';
 import Head from 'next/head';
-import { ReactElement } from 'react';
 import styled from 'styled-components';
 import { up } from 'styles/mixins';
 import { breakpoints } from 'styles/varibles';
@@ -47,14 +44,6 @@ const Orders = () => {
         <OrderTable />
       </Main>
     </PageTemplate>
-  );
-};
-
-Orders.getLayout = function getLayout(page: ReactElement) {
-  return (
-    <AuthProvider>
-      <CartProvider>{page}</CartProvider>
-    </AuthProvider>
   );
 };
 

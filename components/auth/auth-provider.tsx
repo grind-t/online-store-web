@@ -1,4 +1,5 @@
-import { getUser, onAuthStateChanged, User } from 'lib/auth';
+import { onAuthStateChanged, User } from 'lib/auth';
+import { cartKey } from 'lib/hooks/cart';
 import {
   createContext,
   ReactNode,
@@ -6,6 +7,7 @@ import {
   useEffect,
   useState,
 } from 'react';
+import { useSWRConfig } from 'swr';
 
 const AuthContext = createContext<User | undefined>(undefined);
 
@@ -15,7 +17,15 @@ export interface AuthProviderProps {
 
 const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User>();
-  useEffect(() => onAuthStateChanged(setUser), []);
+  const { mutate } = useSWRConfig();
+  useEffect(
+    () =>
+      onAuthStateChanged((user) => {
+        setUser(user);
+        mutate(cartKey);
+      }),
+    [mutate]
+  );
   return <AuthContext.Provider value={user}>{children}</AuthContext.Provider>;
 };
 
