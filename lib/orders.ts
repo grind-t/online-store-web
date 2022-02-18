@@ -44,7 +44,7 @@ const orderItemQuery = `
   variant:${productVariantTable}(${orderProductVariantQuery})
 `;
 
-export async function getOrderItems(): Promise<OrderItem[]> {
+export async function getAllOrderItems(): Promise<OrderItem[]> {
   const { data, error } = await supabase
     .from<OrderItem>(orderItemTable)
     .select(orderItemQuery);

@@ -1,4 +1,5 @@
-import { getOrderItems, OrderItem, orderItemTable } from 'lib/orders';
+import { useAllOrderItems } from 'lib/hooks/orders';
+import { OrderItem } from 'lib/orders';
 import { useTranslations } from 'next-intl';
 import styled from 'styled-components';
 import { up } from 'styles/mixins';
@@ -94,7 +95,7 @@ const OrderTableRow = ({ item }: { item: OrderItem }) => {
 };
 
 const OrderTable = () => {
-  const { data: items, error } = useSWR(orderItemTable, getOrderItems);
+  const items = useAllOrderItems();
   const t = useTranslations('OrderTable');
 
   return (
