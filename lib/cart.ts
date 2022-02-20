@@ -4,63 +4,63 @@ import { zeroDinero, defaultCurrency } from 'lib/money';
 import { productTable, productVariantTable } from 'lib/products';
 import { supabase } from 'lib/supabase';
 
-export interface CartProduct {
+export interface LineItemProduct {
   id: number;
   image: string;
   name: string;
 }
 
-export interface CartProductVariant {
+export interface LineItemProductVariant {
   id: number;
   stock: number;
   price: number;
   characteristics: Record<string, string>;
-  product: CartProduct;
+  product: LineItemProduct;
 }
 
-export interface CartItem {
-  variant: CartProductVariant;
+export interface LineItem {
+  variant: LineItemProductVariant;
   quantity: number;
 }
 
 export interface Cart {
-  items: CartItem[];
+  items: LineItem[];
 }
 
-export interface CartItemEntity {
+export interface LineItemEntity {
   variantId: number;
   quantity: number;
 }
 
 interface LocalCart {
-  items: Record<string, CartItemEntity>;
+  items: Record<string, LineItemEntity>;
 }
 
 const cartItemTable = 'cart_items';
 const cartTable = 'carts';
 const localCartKey = 'cart';
 
-const cartProductQuery = `
+export const lineItemProductQuery = `
   id,
   image,
   name
 `;
 
-const cartProductVariantQuery = `
+export const lineItemProductVariantQuery = `
   id,
   stock,
   price,
   characteristics,
-  product:${productTable}(${cartProductQuery})
+  product:${productTable}(${lineItemProductQuery})
 `;
 
-const cartItemQuery = `
-  variant:${productVariantTable}(${cartProductVariantQuery}),
+export const lineItemQuery = `
+  variant:${productVariantTable}(${lineItemProductVariantQuery}),
   quantity
 `;
 
 const cartQuery = `
-  items:${cartItemTable}(${cartItemQuery})
+  items:${cartItemTable}(${lineItemQuery})
 `;
 
 export function getEmptyCart(): Cart {
@@ -96,8 +96,8 @@ async function getCartFromLocalStorage(): Promise<Cart> {
   const items = getLocalCart().items;
   const ids = Object.values(items).map((v) => v.variantId);
   const { data, error } = await supabase
-    .from<CartProductVariant>(productVariantTable)
-    .select(cartProductVariantQuery)
+    .from<LineItemProductVariant>(productVariantTable)
+    .select(lineItemProductVariantQuery)
     .in('id', ids);
   if (error) throw new Error(error.message);
   if (!data) return getEmptyCart();
@@ -123,7 +123,7 @@ export async function getCart(user?: User): Promise<Cart> {
 }
 
 export async function setCartItem(
-  item: CartItem | CartItemEntity,
+  item: LineItem | LineItemEntity,
   user?: User
 ): Promise<void> {
   if ('variant' in item) {
@@ -183,12 +183,12 @@ export async function clearCart(user?: User): Promise<void> {
   }
 }
 
-export function getTotalCartItems(cart: Cart): number {
-  return cart.items.reduce((total, item) => total + item.quantity, 0);
+export function getItemCount(items: LineItem[]): number {
+  return items.reduce((total, item) => total + item.quantity, 0);
 }
 
-export function getTotalCartPrice(cart: Cart): Dinero<number> {
-  return cart.items.reduce((total, item) => {
+export function getTotalPrice(items: LineItem[]): Dinero<number> {
+  return items.reduce((total, item) => {
     const variantPrice = dinero({
       amount: item.variant.price,
       currency: defaultCurrency,

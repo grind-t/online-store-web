@@ -1,7 +1,7 @@
 import { useMediaQuery } from '@react-hookz/web';
 import CartIcon from 'components/common/icons/cart-icon';
 import VisuallyHidden from 'components/common/utils/visually-hidden';
-import { getTotalCartItems, getTotalCartPrice } from 'lib/cart';
+import { getItemCount, getTotalPrice } from 'lib/cart';
 import { useCartQuery } from 'lib/hooks/cart';
 import { formatPrice, zeroDinero } from 'lib/money';
 import { useTranslations } from 'next-intl';
@@ -49,11 +49,11 @@ const CompactContent = () => <Icon />;
 const DetailedContent = () => {
   const cart = useCartQuery();
   const totalItems = useMemo(
-    () => (cart ? getTotalCartItems(cart) : 0),
+    () => (cart ? getItemCount(cart.items) : 0),
     [cart]
   );
   const totalPrice = useMemo(
-    () => (cart ? getTotalCartPrice(cart) : zeroDinero),
+    () => (cart ? getTotalPrice(cart.items) : zeroDinero),
     [cart]
   );
   const t = useTranslations('CartLink');

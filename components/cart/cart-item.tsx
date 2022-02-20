@@ -4,7 +4,7 @@ import CrossIcon from 'components/common/icons/cross-icon';
 import VisuallyHidden from 'components/common/utils/visually-hidden';
 import { dinero, multiply } from 'dinero.js';
 import { HeadingLevel } from 'lib/accessibility';
-import { CartItem, CartProductVariant } from 'lib/cart';
+import { LineItem, LineItemProductVariant } from 'lib/cart';
 import { defaultCurrency, formatPrice } from 'lib/money';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
@@ -163,9 +163,9 @@ const Container = styled.div`
 interface ItemProps {
   container?: 'li' | 'div';
   headingLevel?: HeadingLevel;
-  item: CartItem;
+  item: LineItem;
   className?: string;
-  onAdd?: (variant: CartProductVariant, quantity?: number) => void;
+  onAdd?: (variant: LineItemProductVariant, quantity?: number) => void;
   onRemove?: (variantId: number, quantity?: number) => void;
 }
 

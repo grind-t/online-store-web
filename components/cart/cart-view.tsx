@@ -5,7 +5,7 @@ import StandaloneGoBackButton from 'components/cart/go-back-button';
 import StandaloneCartIcon from 'components/common/icons/cart-icon';
 import StandaloneTrashIcon from 'components/common/icons/trash-icon';
 import { HeadingLevel, nextHeadingLevel } from 'lib/accessibility';
-import { getTotalCartItems, getTotalCartPrice } from 'lib/cart';
+import { getItemCount, getTotalPrice } from 'lib/cart';
 import { useCartQuery, useCartMutation } from 'lib/hooks/cart';
 import { formatPrice, zeroDinero } from 'lib/money';
 import { useTranslations } from 'next-intl';
@@ -144,11 +144,11 @@ const CartView = ({ container, headingLevel, className }: CartViewProps) => {
   const cart = useCartQuery();
   const { add, remove, clear } = useCartMutation();
   const totalItems = useMemo(
-    () => (cart ? getTotalCartItems(cart) : 0),
+    () => (cart ? getItemCount(cart.items) : 0),
     [cart]
   );
   const totalPrice = useMemo(
-    () => (cart ? getTotalCartPrice(cart) : zeroDinero),
+    () => (cart ? getTotalPrice(cart.items) : zeroDinero),
     [cart]
   );
   const upMD = useMediaQuery(up(breakpoints.md));

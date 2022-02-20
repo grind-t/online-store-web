@@ -1,18 +1,18 @@
 import { getUser } from 'lib/auth';
 import {
-  CartItem,
+  LineItem,
   clearCart,
   getEmptyCart,
   removeCartItem,
   setCartItem,
 } from 'lib/cart';
-import { Cart, CartProductVariant, getCart } from 'lib/cart';
+import { Cart, LineItemProductVariant, getCart } from 'lib/cart';
 import { useCallback } from 'react';
 import useSWR, { useSWRConfig } from 'swr';
 
 interface State {
   cart: Cart;
-  itemsIndex: Record<string, CartItem>;
+  itemsIndex: Record<string, LineItem>;
 }
 
 async function getState(): Promise<State> {
@@ -23,7 +23,7 @@ async function getState(): Promise<State> {
     itemsIndex: cart.items.reduce((index, item) => {
       index[item.variant.id] = item;
       return index;
-    }, {} as Record<string, CartItem>),
+    }, {} as Record<string, LineItem>),
   };
 }
 
@@ -42,15 +42,15 @@ export function useCartItemQuery(variantId: number) {
 export const useCartMutation = () => {
   const { cache, mutate } = useSWRConfig();
   const add = useCallback(
-    async (variant: CartProductVariant, quantity: number = 1) => {
+    async (variant: LineItemProductVariant, quantity: number = 1) => {
       const user = getUser();
       const state = cache.get(cartKey) as State | undefined;
       if (!state) return;
       const item = state.itemsIndex[variant.id];
-      const nextItem: CartItem = item
+      const nextItem: LineItem = item
         ? { ...item, quantity: item.quantity + quantity }
         : { variant, quantity };
-      const nextItemsIndex: Record<string, CartItem> = {
+      const nextItemsIndex: Record<string, LineItem> = {
         ...state.itemsIndex,
         [variant.id]: nextItem,
       };
@@ -72,7 +72,7 @@ export const useCartMutation = () => {
       const item = state.itemsIndex[variantId];
       if (!item) return;
       const nextQuantity = item.quantity - quantity;
-      let nextItemsIndex: Record<string, CartItem>;
+      let nextItemsIndex: Record<string, LineItem>;
       if (nextQuantity > 0) {
         nextItemsIndex = {
           ...state.itemsIndex,
