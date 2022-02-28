@@ -2,7 +2,8 @@
   "OrderTableRow": {
     "paid": "Paid",
     "notPaid": "Not paid",
-    "pay": "Pay"
+    "pay": "Pay",
+    "go": "Go"
   },
   "OrderTable": {
     "nameHeader": "Name",

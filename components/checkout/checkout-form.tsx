@@ -1,5 +1,5 @@
 import EmailInput from 'components/common/controls/email-input';
-import { placeOrder } from 'lib/checkout';
+import { placeOrder } from 'lib/orders';
 import { useTranslations } from 'next-intl';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';

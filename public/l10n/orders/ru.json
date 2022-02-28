@@ -2,7 +2,8 @@
   "OrderTableRow": {
     "paid": "Оплачен",
     "notPaid": "Ожидает оплаты",
-    "pay": "Оплатить"
+    "pay": "Оплатить",
+    "go": "Перейти"
   },
   "OrderTable": {
     "nameHeader": "Название",

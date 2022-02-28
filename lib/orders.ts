@@ -1,47 +1,39 @@
-import { productTable, productVariantTable } from 'lib/products';
+import { LineItem, lineItemQuery } from 'lib/cart';
 import { supabase } from 'lib/supabase';
 
-export interface OrderProduct {
-  name: string;
-}
-
-export interface OrderProductVariant {
+export interface OrderEntity {
   id: number;
-  product: OrderProduct;
-  characteristics: Record<string, string>;
+  userId: string;
+  email: string;
+  paymentId?: string;
 }
 
-export interface Order {
-  id: number;
-  paymentId?: number;
+export interface Order extends OrderEntity {
+  items: LineItem[];
 }
 
-export interface OrderItem {
-  order: Order;
-  variant: OrderProductVariant;
+export interface OrderItem extends LineItem {
+  order: OrderEntity;
 }
 
 export const orderTable = 'orders';
 export const orderItemTable = 'order_items';
 
-const orderProductQuery = `
-  name
-`;
-
-const orderProductVariantQuery = `
+export const orderEntityQuery = `
   id,
-  product:${productTable}(${orderProductQuery}),
-  characteristics
-`;
-
-const orderQuery = `
-  id,
+  userId:user_id,
+  email,
   paymentId:payment_id
 `;
 
-const orderItemQuery = `
-  order:${orderTable}(${orderQuery}),
-  variant:${productVariantTable}(${orderProductVariantQuery})
+export const orderQuery = `
+  ${orderEntityQuery},
+  items:${orderItemTable}(${lineItemQuery})
+`;
+
+export const orderItemQuery = `
+  order:${orderTable}(${orderEntityQuery}),
+  ${lineItemQuery}
 `;
 
 export async function getAllOrderItems(): Promise<OrderItem[]> {
@@ -51,3 +43,12 @@ export async function getAllOrderItems(): Promise<OrderItem[]> {
   if (error) throw new Error(error.message);
   return data || [];
 }
+
+export async function placeOrder(email: string) {
+  const { error } = await supabase.rpc('place_order', {
+    order_input: { email },
+  });
+  if (error) throw new Error(error.message);
+}
+
+export { getItemCount, getTotalPrice } from 'lib/cart';

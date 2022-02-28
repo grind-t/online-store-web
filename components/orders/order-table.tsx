@@ -1,10 +1,11 @@
 import { useAllOrderItems } from 'lib/hooks/orders';
+import { usePayment } from 'lib/hooks/payment';
 import { OrderItem } from 'lib/orders';
+import { createPayment } from 'lib/payment';
 import { useTranslations } from 'next-intl';
 import styled from 'styled-components';
 import { up } from 'styles/mixins';
 import { breakpoints } from 'styles/varibles';
-import useSWR from 'swr';
 
 //#region styled
 const Button = styled.button`
@@ -80,15 +81,30 @@ const Table = styled.table`
 const OrderTableRow = ({ item }: { item: OrderItem }) => {
   const t = useTranslations('OrderTableRow');
   const { order, variant } = item;
+  const payment = usePayment(order.paymentId);
   const options = Object.values(variant.characteristics).join(', ');
   const name = `${variant.product.name} (${options})`;
+  const loading = order.paymentId && !payment;
+
+  const handlePayment = () => {
+    createPayment(order.id)
+      .then((payment) => {
+        location.replace(payment.confirmation.confirmation_url);
+      })
+      .catch(console.error);
+  };
+
   return (
     <tr>
       <td>{name}</td>
       <td>{`№${order.id}`}</td>
-      <td>{t('notPaid')}</td>
+      <td>{loading ? '' : payment?.paid ? t('paid') : t('notPaid')}</td>
       <td>
-        <Button>{t('pay')}</Button>
+        {!loading && (
+          <Button onClick={handlePayment}>
+            {payment?.paid ? t('go') : t('pay')}
+          </Button>
+        )}
       </td>
     </tr>
   );
