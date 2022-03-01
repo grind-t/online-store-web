@@ -17,33 +17,45 @@ import { breakpoints } from 'styles/varibles';
 const ImageContainer = styled.div`
   width: 2.25rem;
   height: 2.25rem;
-  margin: 0.3125rem 0.25rem 0 0;
+  margin: 0.25rem 0.25rem 0 0;
   border-radius: 0.25rem;
   box-shadow: 0 1rem 1.25rem rgba(0, 0, 0, 0.05);
   line-height: 0;
   overflow: hidden;
 
   @media ${up(breakpoints.xs)} {
-    width: 3.625rem;
-    height: 3.625rem;
-    margin: 0 0.375rem 0 0;
+    width: 3rem;
+    height: 3rem;
+    margin: 0 0.5rem 0 0;
+  }
+
+  @media ${up(breakpoints.sm)} {
+    width: 3.5rem;
+    height: 3.5rem;
   }
 
   @media ${up(breakpoints.md)} {
     width: 5rem;
     height: 5rem;
-    margin: 0 0.5rem 0 0;
     border-radius: 0.625rem;
   }
 `;
 
 const Heading = styled.h2`
-  font-size: 1.125rem;
-  font-weight: inherit;
+  font-size: 1rem;
+  font-weight: normal;
   letter-spacing: 0.01em;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 
   @media ${up(breakpoints.xs)} {
+    font-size: 1.125rem;
+  }
+
+  @media ${up(breakpoints.sm)} {
     font-size: 1.25rem;
+    font-weight: bold;
   }
 
   @media ${up(breakpoints.md)} {
@@ -52,6 +64,10 @@ const Heading = styled.h2`
 `;
 
 const Description = styled.p`
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
   color: #8d8d8d;
   font-size: 0.875rem;
   letter-spacing: 0.01em;
@@ -60,8 +76,9 @@ const Description = styled.p`
     font-size: 1rem;
   }
 
-  @media ${up(breakpoints.md)} {
+  @media ${up(breakpoints.sm)} {
     font-size: 1.125rem;
+    font-weight: bold;
   }
 `;
 
@@ -70,13 +87,10 @@ const InfoContainer = styled.div`
 
   @media ${up(breakpoints.xs)} {
     max-width: 11.5rem;
-    margin-top: 0.4375rem;
   }
 
-  @media ${up(breakpoints.md)} {
+  @media ${up(breakpoints.sm)} {
     max-width: 14rem;
-    margin-top: 0.875rem;
-    font-weight: bold;
   }
 `;
 
@@ -84,7 +98,11 @@ const QuantityInput = styled(InputStepper)`
   font-size: 0.875rem;
 
   @media ${up(breakpoints.xs)} {
-    font-size: 1.125rem;
+    font-size: 1rem;
+  }
+
+  @media ${up(breakpoints.sm)} {
+    font-size: 1.25rem;
   }
 
   @media ${up(breakpoints.md)} {
@@ -94,16 +112,18 @@ const QuantityInput = styled(InputStepper)`
 
 const Price = styled.strong`
   display: block;
-  margin-top: 0.5rem;
-  font-size: 1.125rem;
+  font-size: 1rem;
   letter-spacing: 0.01em;
 
   @media ${up(breakpoints.xs)} {
+    font-size: 1.125rem;
+  }
+
+  @media ${up(breakpoints.sm)} {
     font-size: 1.25rem;
   }
 
   @media ${up(breakpoints.md)} {
-    margin-top: 0;
     font-size: 1.375rem;
   }
 `;
@@ -123,10 +143,6 @@ const RemoveItemButton = styled.button.attrs({ type: 'button' })`
   text-align: center;
   font-size: 0.875rem;
 
-  @media ${up(breakpoints.xs)} {
-    font-size: 1.125rem;
-  }
-
   @media ${up(breakpoints.md)} {
     font-size: 1.375rem;
   }
@@ -135,32 +151,39 @@ const RemoveItemButton = styled.button.attrs({ type: 'button' })`
 const ControlsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 0.625rem;
-  margin-left: auto;
+  margin: 0.5rem 0 0 auto;
+
+  & > * + * {
+    margin-top: 0.5rem;
+  }
 
   @media ${up(breakpoints.md)} {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
     width: 43.5%;
-    margin-top: 1.5rem;
+    margin: 0 2rem 0 auto;
+
+    & > * + * {
+      margin-top: 0;
+    }
   }
 `;
 
 const Container = styled.div`
   display: flex;
   align-items: flex-start;
-  padding-top: 0.625rem;
+  padding-top: 0.75rem;
   border-bottom: 1px solid #f4f4f4;
 
   @media ${up(breakpoints.md)} {
-    min-height: 8.75rem;
-    padding-top: 1.875rem;
+    align-items: center;
+    padding: 2rem 0;
   }
 `;
 //#endregion
 
-interface ItemProps {
+export interface CartItemProps {
   container?: 'li' | 'div';
   headingLevel?: HeadingLevel;
   item: LineItem;
@@ -169,14 +192,14 @@ interface ItemProps {
   onRemove?: (variantId: number, quantity?: number) => void;
 }
 
-const Item = ({
+const CartItem = ({
   container,
   headingLevel,
   item,
   className,
   onAdd,
   onRemove,
-}: ItemProps) => {
+}: CartItemProps) => {
   const t = useTranslations('CartItem');
   const upMD = useMediaQuery(up(breakpoints.md));
 
@@ -199,7 +222,7 @@ const Item = ({
       </ImageContainer>
       <InfoContainer>
         <Heading as={headingLevel}>{heading}</Heading>
-        {/*<Description>{product.description}</Description>*/}
+        <Description>{product.description}</Description>
       </InfoContainer>
       <ControlsContainer>
         <QuantityInput
@@ -221,4 +244,4 @@ const Item = ({
   );
 };
 
-export default Item;
+export default CartItem;

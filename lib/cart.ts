@@ -8,6 +8,7 @@ export interface LineItemProduct {
   id: number;
   image: string;
   name: string;
+  description: string;
 }
 
 export interface LineItemProductVariant {
@@ -43,7 +44,8 @@ const localCartKey = 'cart';
 export const lineItemProductQuery = `
   id,
   image,
-  name
+  name,
+  description
 `;
 
 export const lineItemProductVariantQuery = `
