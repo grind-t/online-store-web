@@ -4,7 +4,6 @@ import HeaderTemplate from 'components/common/templates/header-template';
 import PageTemplate from 'components/common/templates/page-template';
 import { GetStaticProps } from 'next';
 import Head from 'next/head';
-import { ReactElement } from 'react';
 import styled from 'styled-components';
 import { up } from 'styles/mixins';
 import { breakpoints } from 'styles/varibles';
@@ -23,12 +22,14 @@ const CartView = styled(StandaloneCartView).attrs({
   container: 'main',
   headingLevel: 'h1',
 })`
+  padding: 0.5rem;
+
   @media ${up(breakpoints.md)} {
-    margin-top: 0.625rem;
+    padding: 1rem;
   }
 
   @media ${up(breakpoints.xxl)} {
-    margin-top: 6.25rem;
+    padding-top: 6rem;
   }
 `;
 //#endregion

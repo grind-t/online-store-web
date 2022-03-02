@@ -1,6 +1,7 @@
 import { useMediaQuery } from '@react-hookz/web';
 import Item from 'components/cart/cart-item';
 import StandaloneCheckoutLink from 'components/cart/checkout-link';
+import EmptyCartView from 'components/cart/empty-cart-view';
 import StandaloneGoBackButton from 'components/cart/go-back-button';
 import StandaloneCartIcon from 'components/common/icons/cart-icon';
 import StandaloneTrashIcon from 'components/common/icons/trash-icon';
@@ -117,7 +118,6 @@ const Container = styled.section`
   min-height: inherit;
   width: 100%;
   margin: 0 auto;
-  padding: 0.5rem;
 
   @media ${up(breakpoints.md)} {
     grid-template-columns: 1fr 1fr;
@@ -155,9 +155,14 @@ const CartView = ({ container, headingLevel, className }: CartViewProps) => {
   const t = useTranslations('CartView');
 
   if (!cart) return null;
-
   if (!cart.items.length)
-    return <div style={{ textAlign: 'center' }}>{t('isEmpty')}</div>;
+    return (
+      <EmptyCartView
+        container={container}
+        headingLevel={headingLevel}
+        className={className}
+      />
+    );
 
   return (
     <Container as={container} className={className}>
