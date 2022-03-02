@@ -21,6 +21,7 @@ const SubmitButton = styled.button`
   display: block;
   width: 100%;
   min-height: 3rem;
+  margin-top: 2.25rem;
   padding: 0 1rem;
   background: #fe5f1e;
   border: none;
@@ -50,6 +51,10 @@ const Message = styled.strong`
 const Form = styled.form`
   max-width: 20rem;
   padding: 1rem;
+
+  & > input {
+    margin-top: 1.5rem;
+  }
 `;
 //#endregion
 

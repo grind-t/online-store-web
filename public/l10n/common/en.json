@@ -22,6 +22,12 @@
   "Footer": {
     "offer": "Offer"
   },
+  "NameInput": {
+    "placeholder": "Name"
+  },
+  "ContactInput": {
+    "placeholder": "Telegram / WhatsApp"
+  },
   "EmailInput": {
     "placeholder": "Email",
     "required": "Please enter your email address."

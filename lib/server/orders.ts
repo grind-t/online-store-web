@@ -1,4 +1,4 @@
-import { OrderEntity, Order, orderTable, orderQuery } from 'lib/orders';
+import { Order, orderTable, orderQuery } from 'lib/orders';
 import { ProblemDetails } from 'lib/problem-details';
 import { admin } from 'lib/server/supabase';
 

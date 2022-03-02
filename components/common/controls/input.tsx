@@ -5,7 +5,6 @@ const Input = styled.input`
   width: 100%;
   min-height: 3rem;
   padding: 0 1rem;
-  margin: 1.5rem 0;
   border: 1px solid black;
   border-radius: 0.5rem;
   font-size: 1.5rem;

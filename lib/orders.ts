@@ -4,7 +4,9 @@ import { supabase } from 'lib/supabase';
 export interface OrderEntity {
   id: number;
   userId: string;
-  email: string;
+  recipientName: string;
+  recipientEmail: string;
+  recipientContact: string;
   paymentId?: string;
 }
 
@@ -16,13 +18,21 @@ export interface OrderItem extends LineItem {
   order: OrderEntity;
 }
 
+export interface Recipient {
+  name: string;
+  email: string;
+  contact: string;
+}
+
 export const orderTable = 'orders';
 export const orderItemTable = 'order_items';
 
 export const orderEntityQuery = `
   id,
   userId:user_id,
-  email,
+  recipientName:recipient_name,
+  recipientEmail:recipient_email,
+  recipientContact:recipient_contact,
   paymentId:payment_id
 `;
 
@@ -44,9 +54,9 @@ export async function getAllOrderItems(): Promise<OrderItem[]> {
   return data || [];
 }
 
-export async function placeOrder(email: string) {
+export async function placeOrder(recipient: Recipient) {
   const { error } = await supabase.rpc('place_order', {
-    order_input: { email },
+    recipient_input: recipient,
   });
   if (error) throw new Error(error.message);
 }

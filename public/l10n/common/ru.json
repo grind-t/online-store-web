@@ -22,6 +22,12 @@
   "Footer": {
     "offer": "Оферта"
   },
+  "NameInput": {
+    "placeholder": "Имя"
+  },
+  "ContactInput": {
+    "placeholder": "Telegram / WhatsApp"
+  },
   "EmailInput": {
     "placeholder": "Эл. почта",
     "required": "Пожалуйста, введите свой адрес электронной почты"

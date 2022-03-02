@@ -6,8 +6,6 @@ import { getOrder, updateOrder } from 'lib/server/orders';
 import { getPayment, postPayment, PendingPayment } from 'lib/server/payment';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-const returnUrl = 'https://marketolon.netlify.app/';
-
 const paymenStatusProblem = new ProblemDetails({
   status: StatusCodes.FORBIDDEN,
   detail: 'Payment already in succeeded status',
@@ -20,6 +18,9 @@ async function handler(
   if (req.method === 'POST') {
     const token = req.headers['x-supabase-auth'] as string;
     const orderId = req.body.orderId as number;
+    const host = req.headers['host'] || 'marketolon.netlify.app';
+    const protocol = host.startsWith('localhost') ? 'http' : 'https';
+    const returnUrl = `${protocol}://${host}/orders`;
     const user = await getUser(token);
     const order = await getOrder(orderId);
     if (order.paymentId) {
