@@ -20,9 +20,14 @@ const ImageContainer = styled.div`
   }
 
   @media ${up(breakpoints.lg)} {
+    width: 16.5rem;
+    height: 14rem;
+    margin-top: 2rem;
+  }
+
+  @media ${up(breakpoints.xxl)} {
     width: 18.75rem;
     height: 15.9375rem;
-    margin-top: 2rem;
   }
 `;
 
@@ -43,6 +48,10 @@ const Heading = styled.h1`
 
   @media ${up(breakpoints.lg)} {
     margin-top: 0;
+    font-size: 1.75rem;
+  }
+
+  @media ${up(breakpoints.xxl)} {
     font-size: 2rem;
   }
 `;
@@ -52,12 +61,17 @@ const Pargraph = styled.p`
 
   @media ${up(breakpoints.lg)} {
     display: block;
-    max-width: 44.5rem;
+    max-width: 36rem;
     margin-top: 1rem;
-    font-size: 1.375rem;
+    font-size: 1.125rem;
     font-weight: bold;
     color: #777777;
     text-align: center;
+  }
+
+  @media ${up(breakpoints.xxl)} {
+    max-width: 44rem;
+    font-size: 1.375rem;
   }
 `;
 
