@@ -1,8 +1,9 @@
 import { StatusCodes } from 'http-status-codes';
+import { Payment } from 'lib/payment';
 import { ProblemDetails } from 'lib/problem-details';
 import { getUser } from 'lib/server/auth';
 import { handleError } from 'lib/server/middleware';
-import { getPayment, Payment } from 'lib/server/payment';
+import { getPayment } from 'lib/server/payment';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 const authProblem = new ProblemDetails({ status: StatusCodes.FORBIDDEN });
@@ -18,7 +19,11 @@ async function handler(
     const user = await getUser(token);
     const payment = await getPayment(paymentId);
     if (user.id !== payment.metadata.user_id) throw authProblem;
-    res.status(StatusCodes.OK).json(payment);
+    res.status(StatusCodes.OK).json({
+      id: payment.id,
+      status: payment.status,
+      paid: payment.paid,
+    });
   } else {
     res.setHeader('Allow', ['GET']);
     throw new ProblemDetails({ status: StatusCodes.METHOD_NOT_ALLOWED });

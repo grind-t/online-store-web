@@ -1,6 +1,19 @@
 import { ProblemDetails } from 'lib/problem-details';
-import { Payment, PendingPayment } from 'lib/server/payment';
 import { supabase } from 'lib/supabase';
+
+export interface Payment {
+  id: string;
+  status: 'pending' | 'succeeded' | 'canceled';
+  paid: boolean;
+}
+
+export interface PendingPayment extends Payment {
+  status: 'pending';
+  confirmation: {
+    type: 'redirect';
+    confirmation_url: string;
+  };
+}
 
 const apiUrl = () => `${location.origin}/api/payment`;
 

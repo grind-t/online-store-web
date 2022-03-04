@@ -3,18 +3,20 @@ import { randomUUID } from 'crypto';
 import { toSnapshot, toUnit } from 'dinero.js';
 import { Order, getTotalPrice } from 'lib/orders';
 import { ProblemDetails } from 'lib/problem-details';
+import { env } from 'process';
 
-export interface Payment {
+export interface YookassaPayment {
   id: string;
   status: 'pending' | 'succeeded' | 'canceled';
   paid: boolean;
   metadata: {
     order_id: number;
     user_id: string;
+    secret: string;
   };
 }
 
-export interface PendingPayment extends Payment {
+export interface YookassaPendingPayment extends YookassaPayment {
   status: 'pending';
   confirmation: {
     type: 'redirect';
@@ -22,7 +24,16 @@ export interface PendingPayment extends Payment {
   };
 }
 
-export interface PaymentError {
+export interface YookassaNotification {
+  event:
+    | 'payment.waiting_for_capture'
+    | 'payment.succeeded'
+    | 'payment.canceled'
+    | 'refund.succeeded';
+  object: YookassaPayment;
+}
+
+export interface YookassaPaymentError {
   type: string;
   id: string;
   code: string;
@@ -36,7 +47,7 @@ const key = process.env.YOOKASSA_SECRET_KEY;
 const credentials = Buffer.from(`${shopId}:${key}`).toString('base64');
 const authorizationHeader = `Basic ${credentials}`;
 
-export async function getPayment(id: string): Promise<Payment> {
+export async function getPayment(id: string): Promise<YookassaPayment> {
   const response = await fetch(`${apiUrl}/${id}`, {
     headers: { Authorization: authorizationHeader },
   });
@@ -47,19 +58,14 @@ export async function getPayment(id: string): Promise<Payment> {
       detail: body.description,
     });
   }
-  return {
-    id: body.id,
-    status: body.status,
-    paid: body.paid,
-    metadata: body.metadata,
-  };
+  return body;
 }
 
 export async function postPayment(
   order: Order,
   user: User,
   returnUrl: string
-): Promise<PendingPayment> {
+): Promise<YookassaPendingPayment> {
   const price = getTotalPrice(order.items);
   const { currency, scale } = toSnapshot(price);
   const response = await fetch(apiUrl, {
@@ -82,6 +88,7 @@ export async function postPayment(
       metadata: {
         order_id: order.id,
         user_id: user.id,
+        secret: env.PAYMENT_SECRET,
       },
     }),
   });
@@ -92,11 +99,5 @@ export async function postPayment(
       detail: body.description,
     });
   }
-  return {
-    id: body.id,
-    status: body.status,
-    paid: body.paid,
-    confirmation: body.confirmation,
-    metadata: body.metadata,
-  };
+  return body;
 }
