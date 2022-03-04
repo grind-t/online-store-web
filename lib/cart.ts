@@ -52,7 +52,6 @@ export const lineItemProductVariantQuery = `
   id,
   stock,
   price,
-  sales,
   characteristics,
   product:${productTable}(${lineItemProductQuery})
 `;
