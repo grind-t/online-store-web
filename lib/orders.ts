@@ -1,5 +1,13 @@
+import { Dinero, dinero, add, multiply } from 'dinero.js';
 import { LineItem, lineItemQuery } from 'lib/cart';
+import { zeroDinero, defaultCurrency } from 'lib/money';
 import { supabase } from 'lib/supabase';
+
+export interface Recipient {
+  name: string;
+  email: string;
+  contact: string;
+}
 
 export interface OrderEntity {
   id: number;
@@ -10,18 +18,12 @@ export interface OrderEntity {
   paymentId?: string;
 }
 
-export interface Order extends OrderEntity {
-  items: LineItem[];
-}
-
 export interface OrderItem extends LineItem {
   order: OrderEntity;
 }
 
-export interface Recipient {
-  name: string;
-  email: string;
-  contact: string;
+export interface Order extends OrderEntity {
+  items: LineItem[];
 }
 
 export const orderTable = 'orders';
@@ -42,11 +44,11 @@ export const orderQuery = `
 `;
 
 export const orderItemQuery = `
-  order:${orderTable}(${orderEntityQuery}),
-  ${lineItemQuery}
+  ${lineItemQuery},
+  order:${orderTable}(${orderEntityQuery})
 `;
 
-export async function getAllOrderItems(): Promise<OrderItem[]> {
+export async function getOrderItems(): Promise<OrderItem[]> {
   const { data, error } = await supabase
     .from<OrderItem>(orderItemTable)
     .select(orderItemQuery);
@@ -61,4 +63,17 @@ export async function placeOrder(recipient: Recipient) {
   if (error) throw new Error(error.message);
 }
 
-export { getItemCount, getTotalPrice } from 'lib/cart';
+export function getItemCount(items: LineItem[]): number {
+  return items.reduce((total, item) => total + item.quantity, 0);
+}
+
+export function getTotalPrice(items: LineItem[]): Dinero<number> {
+  return items.reduce((total, item) => {
+    const variantPrice = dinero({
+      amount: item.variant.price,
+      currency: defaultCurrency,
+    });
+    const itemPrice = multiply(variantPrice, item.quantity);
+    return add(total, itemPrice);
+  }, zeroDinero);
+}

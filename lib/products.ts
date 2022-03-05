@@ -1,38 +1,58 @@
 import { supabase } from 'lib/supabase';
 
-export interface ProductVariant {
+export interface ProductVariantEntity {
   id: number;
-  stock: number;
+  productId: number;
   price: number;
+  stock: number;
+  sales: number;
   characteristics: Record<string, string>;
 }
 
-export interface Product {
+export interface ProductEntity {
   id: number;
   image: string;
   name: string;
   description: string;
   characteristics: Record<string, string>;
-  variants: ProductVariant[];
+}
+
+export interface ProductVariant extends ProductVariantEntity {
+  product: ProductEntity;
+}
+
+export interface Product extends ProductEntity {
+  variants: ProductVariantEntity[];
 }
 
 export const productVariantTable = 'product_variants';
 export const productTable = 'products';
 
-const productVariantQuery = `
+export const productVariantEntityQuery = `
   id,
-  stock,
+  productId:product_id,
   price,
+  stock,
+  sales,
   characteristics
 `;
 
-const productQuery = `
+export const productEntityQuery = `
   id,
   image,
   name,
   description,
-  characteristics,
-  variants:${productVariantTable}(${productVariantQuery})
+  characteristics
+`;
+
+export const productVariantQuery = `
+  ${productVariantEntityQuery},
+  product:${productTable}(${productEntityQuery})
+`;
+
+export const productQuery = `
+  ${productEntityQuery},
+  variants:${productVariantTable}(${productVariantEntityQuery})
 `;
 
 export async function getProducts(): Promise<Product[]> {
@@ -56,9 +76,9 @@ export function getProductOptions(product: Product): Record<string, string[]> {
 }
 
 export function findVariant(
-  variants: ProductVariant[],
+  variants: ProductVariantEntity[],
   characteristics: Record<string, string>
-): ProductVariant | undefined {
+): ProductVariantEntity | undefined {
   const keys = Object.keys(characteristics);
   return variants.find((variant) =>
     keys.every((key) => characteristics[key] === variant.characteristics[key])

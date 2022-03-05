@@ -1,36 +1,22 @@
-import { Dinero, dinero, add, multiply } from 'dinero.js';
 import { User } from 'lib/auth';
-import { zeroDinero, defaultCurrency } from 'lib/money';
-import { productTable, productVariantTable } from 'lib/products';
+import {
+  ProductVariant,
+  productVariantQuery,
+  productVariantTable,
+} from 'lib/products';
 import { supabase } from 'lib/supabase';
-
-export interface LineItemProduct {
-  id: number;
-  image: string;
-  name: string;
-  description: string;
-}
-
-export interface LineItemProductVariant {
-  id: number;
-  stock: number;
-  price: number;
-  characteristics: Record<string, string>;
-  product: LineItemProduct;
-}
-
-export interface LineItem {
-  variant: LineItemProductVariant;
-  quantity: number;
-}
-
-export interface Cart {
-  items: LineItem[];
-}
 
 export interface LineItemEntity {
   variantId: number;
   quantity: number;
+}
+
+export interface LineItem extends LineItemEntity {
+  variant: ProductVariant;
+}
+
+export interface Cart {
+  items: LineItem[];
 }
 
 interface LocalCart {
@@ -41,24 +27,14 @@ const cartItemTable = 'cart_items';
 const cartTable = 'carts';
 const localCartKey = 'cart';
 
-export const lineItemProductQuery = `
-  id,
-  image,
-  name,
-  description
-`;
-
-export const lineItemProductVariantQuery = `
-  id,
-  stock,
-  price,
-  characteristics,
-  product:${productTable}(${lineItemProductQuery})
+export const lineItemEntityQuery = `
+  variantId:variant_id,
+  quantity
 `;
 
 export const lineItemQuery = `
-  variant:${productVariantTable}(${lineItemProductVariantQuery}),
-  quantity
+  ${lineItemEntityQuery},
+  variant:${productVariantTable}(${productVariantQuery})
 `;
 
 const cartQuery = `
@@ -98,15 +74,16 @@ async function getCartFromLocalStorage(): Promise<Cart> {
   const items = getLocalCart().items;
   const ids = Object.values(items).map((v) => v.variantId);
   const { data, error } = await supabase
-    .from<LineItemProductVariant>(productVariantTable)
-    .select(lineItemProductVariantQuery)
+    .from<ProductVariant>(productVariantTable)
+    .select(productVariantQuery)
     .in('id', ids);
   if (error) throw new Error(error.message);
   if (!data) return getEmptyCart();
   return {
     items: data.map((variant) => ({
-      variant,
+      variantId: variant.id,
       quantity: items[variant.id].quantity,
+      variant,
     })),
   };
 }
@@ -125,12 +102,9 @@ export async function getCart(user?: User): Promise<Cart> {
 }
 
 export async function setCartItem(
-  item: LineItem | LineItemEntity,
+  item: LineItemEntity,
   user?: User
 ): Promise<void> {
-  if ('variant' in item) {
-    item = { variantId: item.variant.id, quantity: item.quantity };
-  }
   if (user) {
     const { error } = await supabase.from(cartItemTable).upsert(
       {
@@ -183,19 +157,4 @@ export async function clearCart(user?: User): Promise<void> {
   } else {
     clearLocalCart();
   }
-}
-
-export function getItemCount(items: LineItem[]): number {
-  return items.reduce((total, item) => total + item.quantity, 0);
-}
-
-export function getTotalPrice(items: LineItem[]): Dinero<number> {
-  return items.reduce((total, item) => {
-    const variantPrice = dinero({
-      amount: item.variant.price,
-      currency: defaultCurrency,
-    });
-    const itemPrice = multiply(variantPrice, item.quantity);
-    return add(total, itemPrice);
-  }, zeroDinero);
 }

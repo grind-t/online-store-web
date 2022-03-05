@@ -6,7 +6,8 @@ import {
   removeCartItem,
   setCartItem,
 } from 'lib/cart';
-import { Cart, LineItemProductVariant, getCart } from 'lib/cart';
+import { Cart, getCart } from 'lib/cart';
+import { ProductVariant } from 'lib/products';
 import { useCallback } from 'react';
 import useSWR, { useSWRConfig } from 'swr';
 
@@ -42,14 +43,14 @@ export function useCartItemQuery(variantId: number) {
 export const useCartMutation = () => {
   const { cache, mutate } = useSWRConfig();
   const add = useCallback(
-    async (variant: LineItemProductVariant, quantity: number = 1) => {
+    async (variant: ProductVariant, quantity: number = 1) => {
       const user = getUser();
       const state = cache.get(cartKey) as State | undefined;
       if (!state) return;
       const item = state.itemsIndex[variant.id];
       const nextItem: LineItem = item
         ? { ...item, quantity: item.quantity + quantity }
-        : { variant, quantity };
+        : { variantId: variant.id, quantity, variant };
       const nextItemsIndex: Record<string, LineItem> = {
         ...state.itemsIndex,
         [variant.id]: nextItem,

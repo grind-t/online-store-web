@@ -1,4 +1,4 @@
-import { useAllOrderItems } from 'lib/hooks/orders';
+import { useOrderItems } from 'lib/hooks/orders';
 import { usePayment } from 'lib/hooks/payment';
 import { OrderItem } from 'lib/orders';
 import { createPayment } from 'lib/payment';
@@ -111,7 +111,7 @@ const OrderTableRow = ({ item }: { item: OrderItem }) => {
 };
 
 const OrderTable = () => {
-  const items = useAllOrderItems();
+  const items = useOrderItems();
   const t = useTranslations('OrderTable');
 
   return (

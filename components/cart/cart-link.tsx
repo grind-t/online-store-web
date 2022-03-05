@@ -1,9 +1,9 @@
 import { useMediaQuery } from '@react-hookz/web';
 import CartIcon from 'components/common/icons/cart-icon';
 import VisuallyHidden from 'components/common/utils/visually-hidden';
-import { getItemCount, getTotalPrice } from 'lib/cart';
 import { useCartQuery } from 'lib/hooks/cart';
 import { formatPrice, zeroDinero } from 'lib/money';
+import { getItemCount, getTotalPrice } from 'lib/orders';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useMemo } from 'react';

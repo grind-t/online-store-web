@@ -1,9 +1,9 @@
-import { getAllOrderItems } from 'lib/orders';
+import { getOrderItems } from 'lib/orders';
 import useSWR from 'swr';
 
-export const allOrderItemsKey = 'orders';
+export const orderItemsKey = 'orders';
 
-export function useAllOrderItems() {
-  const { data } = useSWR(allOrderItemsKey, getAllOrderItems);
+export function useOrderItems() {
+  const { data } = useSWR(orderItemsKey, getOrderItems);
   return data;
 }
