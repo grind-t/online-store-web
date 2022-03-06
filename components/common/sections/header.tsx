@@ -11,8 +11,10 @@ import HeaderTemplate, {
   xsFontSize,
   lerpByFontSize,
 } from 'components/common/templates/header-template';
+import VisuallyHidden from 'components/common/utils/visually-hidden';
 import { signOut } from 'lib/auth';
 import { useTranslations } from 'next-intl';
+import Link from 'next/link';
 import { useMemo } from 'react';
 import styled from 'styled-components';
 import { em, up } from 'styles/mixins';
@@ -20,8 +22,11 @@ import { breakpoints } from 'styles/varibles';
 
 //#region styled
 const BearIcon = styled(StandaloneBearIcon)`
-  flex: none;
   width: ${lerpByFontSize(42, 60)};
+`;
+
+const HomeAnchor = styled.a`
+  flex: none;
   margin-right: ${em(15, xsFontSize)};
 `;
 
@@ -79,7 +84,12 @@ const Header = () => {
 
   return (
     <Container>
-      <BearIcon />
+      <Link href="/" passHref>
+        <HomeAnchor>
+          <VisuallyHidden>{t('home')}</VisuallyHidden>
+          <BearIcon />
+        </HomeAnchor>
+      </Link>
       <Heading>{t('heading')}</Heading>
       <CartLink />
       <Navigation
