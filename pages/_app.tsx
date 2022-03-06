@@ -1,4 +1,5 @@
 import AuthProvider from 'components/auth/auth-provider';
+import Route from 'components/common/utils/route';
 import { NextIntlProvider } from 'next-intl';
 import { AppProps } from 'next/app';
 import { UIDReset } from 'react-uid';
@@ -27,7 +28,9 @@ const App = ({ Component, pageProps }: AppProps) => {
       <UIDReset>
         <NextIntlProvider messages={pageProps.messages}>
           <AuthProvider>
-            <Component {...pageProps} />
+            <Route isProtected={pageProps.isProtected}>
+              <Component {...pageProps} />
+            </Route>
           </AuthProvider>
         </NextIntlProvider>
       </UIDReset>

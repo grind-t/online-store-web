@@ -11,6 +11,7 @@ const Page = styled(PageTemplate)`
 
 export const getStaticProps: GetStaticProps = ({ locale }) => ({
   props: {
+    isProtected: true,
     messages: {
       ...require(`/public/l10n/common/${locale}.json`),
       ...require(`/public/l10n/checkout/${locale}.json`),
