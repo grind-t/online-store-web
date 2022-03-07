@@ -1,3 +1,4 @@
+import { admin } from './supabase';
 import { User } from '@supabase/supabase-js';
 import { randomUUID } from 'crypto';
 import { toSnapshot, toUnit } from 'dinero.js';
@@ -100,4 +101,11 @@ export async function postPayment(
     });
   }
   return body;
+}
+
+export async function paymentSucceeded(orderId: number) {
+  const { status, error } = await admin.rpc('payment_succeeded', {
+    order_id_input: orderId,
+  });
+  if (error) throw new ProblemDetails({ status, detail: error.message });
 }

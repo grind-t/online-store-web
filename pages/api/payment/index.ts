@@ -6,16 +6,27 @@ import { handleError } from 'lib/server/middleware';
 import { getOrder, updateOrder } from 'lib/server/orders';
 import {
   getPayment,
+  paymentSucceeded,
   postPayment,
   YookassaNotification,
 } from 'lib/server/payment';
-import { admin } from 'lib/server/supabase';
 import { NextApiRequest, NextApiResponse } from 'next';
+import nodemailer from 'nodemailer';
 import { env } from 'process';
 
 const paymenStatusProblem = new ProblemDetails({
   status: StatusCodes.FORBIDDEN,
   detail: 'Payment already in succeeded status',
+});
+
+const transporter = nodemailer.createTransport({
+  host: 'smtp.yandex.ru',
+  port: 465,
+  secure: true,
+  auth: {
+    user: env.MAIL_LOGIN,
+    pass: env.MAIL_PASSWORD,
+  },
 });
 
 async function handleNotification(req: NextApiRequest, res: NextApiResponse) {
@@ -24,10 +35,15 @@ async function handleNotification(req: NextApiRequest, res: NextApiResponse) {
   const { order_id, secret } = payment.metadata;
   if (secret !== env.PAYMENT_SECRET)
     throw new ProblemDetails({ status: StatusCodes.FORBIDDEN });
-  const { status, error } = await admin.rpc('add_sales', {
-    order_id_input: order_id,
+  const order = await getOrder(order_id);
+  await transporter.sendMail({
+    from: env.MAIL_ADDRESS, // sender address
+    to: order.recipientEmail, // list of receivers
+    subject: 'Hello ✔', // Subject line
+    text: 'Hello world?', // plain text body
+    html: '<b>Hello world?</b>', // html body
   });
-  if (error) throw new ProblemDetails({ status, detail: error.message });
+  await paymentSucceeded(order_id);
   res.status(StatusCodes.OK).json({});
 }
 
@@ -60,8 +76,8 @@ async function handlePost(
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { method, body } = req;
-  if (body?.type === 'notification') handleNotification(req, res);
-  else if (method === 'POST') handlePost(req, res);
+  if (body?.type === 'notification') await handleNotification(req, res);
+  else if (method === 'POST') await handlePost(req, res);
   else {
     res.setHeader('Allow', ['POST']);
     throw new ProblemDetails({ status: StatusCodes.METHOD_NOT_ALLOWED });
