@@ -2,7 +2,7 @@ import StoreFooter from 'components/common/sections/footer';
 import StoreHeader from 'components/common/sections/header';
 import PageTemplate from 'components/common/templates/page-template';
 import ProductsView from 'components/products/products-view';
-import { Product, getProducts } from 'lib/products';
+import { Product, getProducts, SortBy } from 'lib/products';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import styled from 'styled-components';
@@ -33,14 +33,21 @@ const Main = styled.main`
 
 interface HomeProps {
   products: Product[];
+  sortBy: SortBy;
+  sortAscending?: boolean;
 }
 
 export const getServerSideProps: GetServerSideProps<HomeProps> = async ({
+  query,
   locale,
 }) => {
+  const sortBy: SortBy = Number.parseInt(query['sort-by'] as any) || 0;
+  const sortAscending = query['sort-asc'] !== undefined;
   return {
     props: {
-      products: await getProducts(),
+      products: await getProducts(sortBy, sortAscending),
+      sortBy,
+      sortAscending,
       messages: {
         ...require(`/public/l10n/common/${locale}.json`),
         ...require(`/public/l10n/home/${locale}.json`),
@@ -49,7 +56,7 @@ export const getServerSideProps: GetServerSideProps<HomeProps> = async ({
   };
 };
 
-const Home = ({ products }: HomeProps) => {
+const Home = ({ products, sortBy, sortAscending }: HomeProps) => {
   return (
     <PageTemplate>
       <Head>
@@ -58,7 +65,12 @@ const Home = ({ products }: HomeProps) => {
       </Head>
       <StoreHeader />
       <Main>
-        <ProductsView products={products} headingLevel="h2" />
+        <ProductsView
+          products={products}
+          sortBy={sortBy}
+          sortAscending={sortAscending}
+          headingLevel="h2"
+        />
       </Main>
       <StoreFooter />
     </PageTemplate>

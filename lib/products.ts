@@ -25,8 +25,14 @@ export interface Product extends ProductEntity {
   variants: ProductVariantEntity[];
 }
 
+export enum SortBy {
+  Popularity,
+  Price,
+  Alphabet,
+}
+
 export const productVariantTable = 'product_variants';
-export const productTable = 'products';
+export const productTable = 'products_view';
 
 export const productVariantEntityQuery = `
   id,
@@ -55,10 +61,16 @@ export const productQuery = `
   variants:${productVariantTable}(${productVariantEntityQuery})
 `;
 
-export async function getProducts(): Promise<Product[]> {
+export async function getProducts(
+  sortBy: SortBy,
+  sortAscending?: boolean
+): Promise<Product[]> {
+  const sortByColumns = ['sales', 'min_price', 'name'];
+  const sortByColumn = sortByColumns[sortBy];
   const { data, error } = await supabase
-    .from<Product>(productTable)
-    .select(productQuery);
+    .from(productTable)
+    .select(productQuery)
+    .order(sortByColumn, { ascending: sortAscending });
   if (error) throw new Error(error.message);
   return data || [];
 }

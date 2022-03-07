@@ -2,8 +2,9 @@ import CategoryList from 'components/products/category-list';
 import ProductCard from 'components/products/product-card';
 import Sorting from 'components/products/sorting';
 import { HeadingLevel } from 'lib/accessibility';
-import { Product } from 'lib/products';
+import { Product, SortBy } from 'lib/products';
 import { useTranslations } from 'next-intl';
+import { useRouter } from 'next/router';
 import styled from 'styled-components';
 import { up, rem } from 'styles/mixins';
 import { breakpoints } from 'styles/varibles';
@@ -105,15 +106,20 @@ const Container = styled.div`
 
 interface ProductsViewProps {
   products: Product[];
+  sortBy: SortBy;
+  sortAscending?: boolean;
   headingLevel?: HeadingLevel;
   className?: string;
 }
 
 const ProductsView = ({
   products,
+  sortBy,
+  sortAscending,
   headingLevel,
   className,
 }: ProductsViewProps) => {
+  const router = useRouter();
   const t = useTranslations('ProductsView');
 
   const categories = [t('allProductsCategory')];
@@ -123,11 +129,21 @@ const ProductsView = ({
     t('sortByAlphabetOption'),
   ];
 
+  const handleSortingChange = (by: string, asc?: boolean) => {
+    const sortBy = sortingOptions.indexOf(by);
+    router.replace(`?sort-by=${sortBy}${asc ? '&sort-asc' : ''}`);
+  };
+
   return (
     <Container className={className}>
       <ViewOptions>
         <CategoryList items={categories} />
-        <Sorting options={sortingOptions} by={sortingOptions[0]} />
+        <Sorting
+          options={sortingOptions}
+          by={sortingOptions[sortBy]}
+          asc={sortAscending}
+          onSortingChange={handleSortingChange}
+        />
       </ViewOptions>
       <ProductList>
         {products.map((product) => (

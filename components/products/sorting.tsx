@@ -48,6 +48,7 @@ const Option = styled.li<{ highlighted?: boolean }>`
   padding: 10px 12px;
   ${(props) =>
     props.highlighted && 'background: rgba(254, 95, 30, 0.05); color: #FE5F1E;'}
+  cursor: pointer;
 
   &:first-of-type {
     margin-top: 13px;
@@ -74,11 +75,19 @@ interface SortingProps {
   by: string;
   asc?: boolean;
   className?: string;
+  onSortingChange?: (by: string, asc?: boolean) => void;
 }
 
-const Sorting = ({ options, by, asc, className }: SortingProps) => {
+const Sorting = ({
+  options,
+  by,
+  asc,
+  className,
+  onSortingChange,
+}: SortingProps) => {
   const t = useTranslations('Sorting');
   const uid = useUID();
+
   const {
     isOpen,
     selectedItem,
@@ -87,11 +96,17 @@ const Sorting = ({ options, by, asc, className }: SortingProps) => {
     getMenuProps,
     highlightedIndex,
     getItemProps,
-  } = useSelect({ id: uid, items: options, defaultSelectedItem: by });
+  } = useSelect({
+    id: uid,
+    items: options,
+    selectedItem: by,
+    onSelectedItemChange: ({ selectedItem }) =>
+      onSortingChange && onSortingChange(selectedItem as string, asc),
+  });
 
   return (
     <Container className={className}>
-      <OrderToggle>
+      <OrderToggle onClick={() => onSortingChange && onSortingChange(by, !asc)}>
         <ArrowIcon down={!asc} />
       </OrderToggle>
       <OptionsLabel {...getLabelProps()}>{t('sortBy') + ':'}</OptionsLabel>
