@@ -55,7 +55,7 @@ const Container = styled(HeaderTemplate)`
 //#endregion
 
 const Header = () => {
-  const user = useAuth();
+  const { user } = useAuth();
   const t = useTranslations('Header');
 
   const guestNav = useMemo<NavigationItem[]>(

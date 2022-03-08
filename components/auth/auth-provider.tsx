@@ -1,4 +1,4 @@
-import { onAuthStateChanged, User } from 'lib/auth';
+import { getUser, onAuthStateChanged, User } from 'lib/auth';
 import { cartKey } from 'lib/hooks/cart';
 import {
   createContext,
@@ -9,24 +9,29 @@ import {
 } from 'react';
 import { useSWRConfig } from 'swr';
 
-const AuthContext = createContext<User | undefined>(undefined);
+export interface Auth {
+  user?: User;
+  isUserLoading?: boolean;
+}
 
 export interface AuthProviderProps {
   children: ReactNode;
 }
 
+const AuthContext = createContext<Auth>({});
+
 const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [user, setUser] = useState<User>();
+  const [auth, setAuth] = useState<Auth>({ isUserLoading: true });
   const { mutate } = useSWRConfig();
-  useEffect(
-    () =>
-      onAuthStateChanged((user) => {
-        setUser(user);
-        mutate(cartKey);
-      }),
-    [mutate]
-  );
-  return <AuthContext.Provider value={user}>{children}</AuthContext.Provider>;
+  useEffect(() => {
+    // Set user in effect to avoid hydratation error.
+    setAuth({ user: getUser() });
+    return onAuthStateChanged((user) => {
+      setAuth({ user });
+      mutate(cartKey);
+    });
+  }, [mutate]);
+  return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
 };
 
 export const useAuth = () => useContext(AuthContext);

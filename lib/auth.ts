@@ -20,7 +20,6 @@ export function getUser(): User | undefined {
 }
 
 export function onAuthStateChanged(cb: AuthStateChangedCallback): Unsubscribe {
-  cb(getUser());
   return (
     supabase.auth.onAuthStateChange((_event, session) =>
       cb(fromSB(session?.user))

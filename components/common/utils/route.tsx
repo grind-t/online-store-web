@@ -8,14 +8,15 @@ interface RouteProps {
 }
 
 const Route = ({ isProtected, children }: RouteProps) => {
-  const user = useAuth();
+  const { user, isUserLoading } = useAuth();
   const router = useRouter();
-  const isSignInRedirect = isProtected && !user;
   useEffect(() => {
-    if (isSignInRedirect) router.replace('/auth#sign-in');
-  }, [router, isSignInRedirect]);
-  if (isSignInRedirect) return null;
-  return <>{children}</>;
+    if (isProtected && !isUserLoading && !user) {
+      router.replace('/auth#sign-in');
+    }
+  }, [router, isProtected, user, isUserLoading]);
+  if (!isProtected || user) return <>{children}</>;
+  return null;
 };
 
 export default Route;
