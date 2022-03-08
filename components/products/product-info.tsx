@@ -1,7 +1,10 @@
+import { useClickOutside } from '@react-hookz/web';
 import CrossIcon from 'components/common/icons/cross-icon';
 import VisuallyHidden from 'components/common/utils/visually-hidden';
 import { HeadingLevel } from 'lib/accessibility';
+import { noop } from 'lib/utils';
 import { useTranslations } from 'next-intl';
+import { useRef } from 'react';
 import styled from 'styled-components';
 import { up } from 'styles/mixins';
 import { breakpoints } from 'styles/varibles';
@@ -103,11 +106,14 @@ const ProductInfo = ({
   headingLevel,
   onClose,
 }: ProductInfoProps) => {
+  const containerRef = useRef(null);
   const t = useTranslations('ProductInfo');
+
+  useClickOutside(containerRef, onClose || noop);
 
   return (
     <Overlay isVisible={isVisible}>
-      <Container>
+      <Container ref={containerRef}>
         <Content>
           <Heading as={headingLevel}>{name}</Heading>
           <Paragraph>{description}</Paragraph>
