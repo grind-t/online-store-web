@@ -9,11 +9,42 @@ import { defaultCurrency, formatPrice } from 'lib/money';
 import { ProductVariant } from 'lib/products';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
-import styled from 'styled-components';
+import Popup from 'reactjs-popup';
+import styled, { keyframes } from 'styled-components';
 import { up } from 'styles/mixins';
 import { breakpoints } from 'styles/varibles';
 
 //#region styled
+
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1
+  }
+`;
+
+const Tooltip = styled(Popup).attrs({
+  on: ['hover', 'focus'],
+  closeOnDocumentClick: true,
+})`
+  &-content {
+    max-width: 70vw;
+    max-width: min(70vw, 46rem);
+    padding: 0.25rem 0.5rem;
+    color: white;
+    font-size: 0.875rem;
+    background: black;
+    border-radius: 0.5rem;
+    animation: ${fadeIn} 250ms ease-in;
+  }
+
+  &-arrow {
+    color: black;
+  }
+`;
 
 const ImageContainer = styled.div`
   width: 2.25rem;
@@ -222,8 +253,18 @@ const CartItem = ({
         <Image src={image} alt={product.name} width="80" height="80" />
       </ImageContainer>
       <InfoContainer>
-        <Heading as={headingLevel}>{heading}</Heading>
-        <Description>{product.description}</Description>
+        <Tooltip
+          trigger={<Heading as={headingLevel}>{heading}</Heading>}
+          position="top left"
+        >
+          {heading}
+        </Tooltip>
+        <Tooltip
+          trigger={<Description>{product.description}</Description>}
+          position="bottom left"
+        >
+          {product.description}
+        </Tooltip>
       </InfoContainer>
       <ControlsContainer>
         <QuantityInput
