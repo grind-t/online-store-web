@@ -4,6 +4,7 @@ import PageTemplate from 'components/common/templates/page-template';
 import ProductsView from 'components/products/products-view';
 import { Product, getProducts, SortBy } from 'lib/products';
 import { GetServerSideProps } from 'next';
+import { useTranslations } from 'next-intl';
 import Head from 'next/head';
 import styled from 'styled-components';
 import { up } from 'styles/mixins';
@@ -57,11 +58,14 @@ export const getServerSideProps: GetServerSideProps<HomeProps> = async ({
 };
 
 const Home = ({ products, sortBy, sortAscending }: HomeProps) => {
+  const t = useTranslations('Home');
+
   return (
     <PageTemplate>
       <Head>
         <title>TODO</title>
         <link rel="icon" href="/images/favicon.ico" />
+        <meta name="description" content={t('metaDescription')} />
       </Head>
       <StoreHeader />
       <Main>

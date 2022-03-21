@@ -1,4 +1,7 @@
 {
+  "Home": {
+    "metaDescription": "Cheap digital goods and services"
+  },
   "ProductsView": {
     "allProductsCategory": "All",
     "sortByPopularityOption": "popularity",
