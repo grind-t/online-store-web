@@ -7,6 +7,7 @@ import { HeadingLevel } from 'lib/accessibility';
 import { LineItem } from 'lib/cart';
 import { defaultCurrency, formatPrice } from 'lib/money';
 import { ProductVariant } from 'lib/products';
+import { getImageUrl } from 'lib/supabase';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Popup from 'reactjs-popup';
@@ -240,7 +241,6 @@ const CartItem = ({
   const selectedOptions = Object.values(item.variant.characteristics)
     .join(', ')
     .toLowerCase();
-  const image = product.image;
   const heading = `${product.name}, ${selectedOptions}`;
   const price = multiply(
     dinero({ amount: variant.price, currency: defaultCurrency }),
@@ -250,7 +250,12 @@ const CartItem = ({
   return (
     <Container as={container} className={className}>
       <ImageContainer>
-        <Image src={image} alt={product.name} width="80" height="80" />
+        <Image
+          src={getImageUrl(product.image, 320, 320)}
+          alt={product.name}
+          width="80"
+          height="80"
+        />
       </ImageContainer>
       <InfoContainer>
         <Tooltip

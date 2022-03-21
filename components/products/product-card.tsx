@@ -6,6 +6,7 @@ import { HeadingLevel } from 'lib/accessibility';
 import { useCartItemQuery, useCartMutation } from 'lib/hooks/cart';
 import { defaultCurrency, formatPrice } from 'lib/money';
 import { Product, getProductOptions, findVariant } from 'lib/products';
+import { getImageUrl } from 'lib/supabase';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { ChangeEvent, useMemo, useState, useEffect } from 'react';
@@ -109,7 +110,7 @@ const ProductCard = ({ product, headingLevel }: ProductCardProps) => {
     <>
       <ImageContainer onClick={() => showInfo(true)}>
         <Image
-          src={product.image}
+          src={getImageUrl(product.image, 320, 278)}
           alt={product.name}
           width="360"
           height="313"
