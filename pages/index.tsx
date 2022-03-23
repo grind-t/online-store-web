@@ -2,7 +2,7 @@ import StoreFooter from 'components/common/sections/footer';
 import StoreHeader from 'components/common/sections/header';
 import PageTemplate from 'components/common/templates/page-template';
 import ProductsView from 'components/products/products-view';
-import { Product, getProducts, SortBy } from 'lib/products';
+import { ProductFull, getProducts, SortBy } from 'lib/products';
 import { GetServerSideProps } from 'next';
 import { useTranslations } from 'next-intl';
 import Head from 'next/head';
@@ -33,7 +33,7 @@ const Main = styled.main`
 //#endregion
 
 interface HomeProps {
-  products: Product[];
+  products: ProductFull[];
   sortBy: SortBy;
   sortAscending?: boolean;
 }

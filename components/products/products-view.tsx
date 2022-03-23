@@ -2,7 +2,7 @@ import CategoryList from 'components/products/category-list';
 import ProductCard from 'components/products/product-card';
 import Sorting from 'components/products/sorting';
 import { HeadingLevel } from 'lib/accessibility';
-import { Product, SortBy } from 'lib/products';
+import { ProductFull, SortBy } from 'lib/products';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
@@ -105,7 +105,7 @@ const Container = styled.div`
 //#endregion
 
 interface ProductsViewProps {
-  products: Product[];
+  products: ProductFull[];
   sortBy: SortBy;
   sortAscending?: boolean;
   headingLevel?: HeadingLevel;

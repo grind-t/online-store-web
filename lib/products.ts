@@ -1,6 +1,6 @@
 import { supabase } from 'lib/supabase';
 
-export interface ProductVariantEntity {
+export interface ProductVariant {
   id: number;
   productId: number;
   price: number;
@@ -9,7 +9,7 @@ export interface ProductVariantEntity {
   characteristics: Record<string, string>;
 }
 
-export interface ProductEntity {
+export interface Product {
   id: number;
   image: string;
   name: string;
@@ -17,12 +17,12 @@ export interface ProductEntity {
   characteristics: Record<string, string>;
 }
 
-export interface ProductVariant extends ProductVariantEntity {
-  product: ProductEntity;
+export interface ProductVariantFull extends ProductVariant {
+  product: Product;
 }
 
-export interface Product extends ProductEntity {
-  variants: ProductVariantEntity[];
+export interface ProductFull extends Product {
+  variants: ProductVariant[];
 }
 
 export enum SortBy {
@@ -34,7 +34,7 @@ export enum SortBy {
 export const productVariantTable = 'product_variants';
 export const productTable = 'products_view';
 
-export const productVariantEntityQuery = `
+export const productVariantQuery = `
   id,
   productId:product_id,
   price,
@@ -43,7 +43,7 @@ export const productVariantEntityQuery = `
   characteristics
 `;
 
-export const productEntityQuery = `
+export const productQuery = `
   id,
   image,
   name,
@@ -51,31 +51,33 @@ export const productEntityQuery = `
   characteristics
 `;
 
-export const productVariantQuery = `
-  ${productVariantEntityQuery},
-  product:${productTable}(${productEntityQuery})
+export const productVariantFullQuery = `
+  ${productVariantQuery},
+  product:${productTable}(${productQuery})
 `;
 
-export const productQuery = `
-  ${productEntityQuery},
-  variants:${productVariantTable}(${productVariantEntityQuery})
+export const productFullQuery = `
+  ${productQuery},
+  variants:${productVariantTable}(${productVariantQuery})
 `;
 
 export async function getProducts(
   sortBy: SortBy,
   sortAscending?: boolean
-): Promise<Product[]> {
+): Promise<ProductFull[]> {
   const sortByColumns = ['sales', 'min_price', 'name'];
   const sortByColumn = sortByColumns[sortBy];
   const { data, error } = await supabase
     .from(productTable)
-    .select(productQuery)
+    .select(productFullQuery)
     .order(sortByColumn, { ascending: sortAscending });
   if (error) throw new Error(error.message);
   return data || [];
 }
 
-export function getProductOptions(product: Product): Record<string, string[]> {
+export function getProductOptions(
+  product: ProductFull
+): Record<string, string[]> {
   const options: Record<string, string[]> = {};
   const variants = product.variants;
   const keys = Object.keys(variants[0].characteristics);
@@ -88,9 +90,9 @@ export function getProductOptions(product: Product): Record<string, string[]> {
 }
 
 export function findVariant(
-  variants: ProductVariantEntity[],
+  variants: ProductVariant[],
   characteristics: Record<string, string>
-): ProductVariantEntity | undefined {
+): ProductVariant | undefined {
   const keys = Object.keys(characteristics);
   return variants.find((variant) =>
     keys.every((key) => characteristics[key] === variant.characteristics[key])

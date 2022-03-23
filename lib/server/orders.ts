@@ -1,4 +1,4 @@
-import { Order, orderTable, orderQuery } from 'lib/orders';
+import { OrderFull, orderTable, orderFullQuery } from 'lib/orders';
 import { ProblemDetails } from 'lib/problem-details';
 import { admin } from 'lib/server/supabase';
 
@@ -7,10 +7,10 @@ export const orderIdProblem = new ProblemDetails({
   detail: 'Invalid order id',
 });
 
-export async function getOrder(id: number): Promise<Order> {
+export async function getOrder(id: number): Promise<OrderFull> {
   const { data, status, error } = await admin
-    .from<Order>(orderTable)
-    .select(orderQuery)
+    .from<OrderFull>(orderTable)
+    .select(orderFullQuery)
     .match({ id })
     .maybeSingle();
   if (error) {

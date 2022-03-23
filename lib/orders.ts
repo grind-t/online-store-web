@@ -1,5 +1,5 @@
 import { Dinero, dinero, add, multiply } from 'dinero.js';
-import { LineItem, lineItemQuery } from 'lib/cart';
+import { LineItemFull, lineItemFullQuery } from 'lib/cart';
 import { zeroDinero, defaultCurrency } from 'lib/money';
 import { supabase } from 'lib/supabase';
 
@@ -9,7 +9,7 @@ export interface Recipient {
   contact: string;
 }
 
-export interface OrderEntity {
+export interface Order {
   id: number;
   userId: string;
   recipientName: string;
@@ -18,18 +18,18 @@ export interface OrderEntity {
   paymentId?: string;
 }
 
-export interface OrderItem extends LineItem {
-  order: OrderEntity;
+export interface OrderItemFull extends LineItemFull {
+  order: Order;
 }
 
-export interface Order extends OrderEntity {
-  items: LineItem[];
+export interface OrderFull extends Order {
+  items: LineItemFull[];
 }
 
 export const orderTable = 'orders';
 export const orderItemTable = 'order_items';
 
-export const orderEntityQuery = `
+export const orderQuery = `
   id,
   userId:user_id,
   recipientName:recipient_name,
@@ -38,20 +38,20 @@ export const orderEntityQuery = `
   paymentId:payment_id
 `;
 
-export const orderQuery = `
-  ${orderEntityQuery},
-  items:${orderItemTable}(${lineItemQuery})
+export const orderItemFullQuery = `
+  ${lineItemFullQuery},
+  order:${orderTable}(${orderQuery})
 `;
 
-export const orderItemQuery = `
-  ${lineItemQuery},
-  order:${orderTable}(${orderEntityQuery})
+export const orderFullQuery = `
+  ${orderQuery},
+  items:${orderItemTable}(${lineItemFullQuery})
 `;
 
-export async function getOrderItems(): Promise<OrderItem[]> {
+export async function getOrderItems(): Promise<OrderItemFull[]> {
   const { data, error } = await supabase
-    .from<OrderItem>(orderItemTable)
-    .select(orderItemQuery);
+    .from<OrderItemFull>(orderItemTable)
+    .select(orderItemFullQuery);
   if (error) throw new Error(error.message);
   return data || [];
 }
@@ -63,11 +63,11 @@ export async function placeOrder(recipient: Recipient) {
   if (error) throw new Error(error.message);
 }
 
-export function getItemCount(items: LineItem[]): number {
+export function getItemCount(items: LineItemFull[]): number {
   return items.reduce((total, item) => total + item.quantity, 0);
 }
 
-export function getTotalPrice(items: LineItem[]): Dinero<number> {
+export function getTotalPrice(items: LineItemFull[]): Dinero<number> {
   return items.reduce((total, item) => {
     const variantPrice = dinero({
       amount: item.variant.price,

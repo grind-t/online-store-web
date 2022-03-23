@@ -5,7 +5,7 @@ import { dinero } from 'dinero.js';
 import { HeadingLevel } from 'lib/accessibility';
 import { useCartItemQuery, useCartMutation } from 'lib/hooks/cart';
 import { defaultCurrency, formatPrice } from 'lib/money';
-import { Product, getProductOptions, findVariant } from 'lib/products';
+import { ProductFull, getProductOptions, findVariant } from 'lib/products';
 import { getImageUrl } from 'lib/supabase';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
@@ -63,7 +63,7 @@ const PurchaseContainer = styled.div`
 //#endregion
 
 interface ProductCardProps {
-  product: Product;
+  product: ProductFull;
   headingLevel?: HeadingLevel;
 }
 

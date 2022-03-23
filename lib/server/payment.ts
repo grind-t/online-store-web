@@ -2,7 +2,7 @@ import { admin } from './supabase';
 import { User } from '@supabase/supabase-js';
 import { randomUUID } from 'crypto';
 import { toSnapshot, toUnit } from 'dinero.js';
-import { Order, getTotalPrice } from 'lib/orders';
+import { OrderFull, getTotalPrice } from 'lib/orders';
 import { ProblemDetails } from 'lib/problem-details';
 import { env } from 'process';
 
@@ -63,7 +63,7 @@ export async function getPayment(id: string): Promise<YookassaPayment> {
 }
 
 export async function postPayment(
-  order: Order,
+  order: OrderFull,
   user: User,
   returnUrl: string
 ): Promise<YookassaPendingPayment> {

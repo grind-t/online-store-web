@@ -1,6 +1,6 @@
 import { useOrderItems } from 'lib/hooks/orders';
 import { usePayment } from 'lib/hooks/payment';
-import { OrderItem } from 'lib/orders';
+import { OrderItemFull } from 'lib/orders';
 import { createPayment } from 'lib/payment';
 import { useTranslations } from 'next-intl';
 import styled from 'styled-components';
@@ -78,7 +78,7 @@ const Table = styled.table`
 `;
 //#endregion
 
-const OrderTableRow = ({ item }: { item: OrderItem }) => {
+const OrderTableRow = ({ item }: { item: OrderItemFull }) => {
   const t = useTranslations('OrderTableRow');
   const { order, variant } = item;
   const payment = usePayment(order.paymentId);

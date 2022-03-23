@@ -1,19 +1,19 @@
 import { getUser } from 'lib/auth';
 import {
-  LineItem,
+  LineItemFull,
   clearCart,
   getEmptyCart,
   removeCartItem,
   setCartItem,
 } from 'lib/cart';
 import { Cart, getCart } from 'lib/cart';
-import { ProductVariant } from 'lib/products';
+import { ProductVariantFull } from 'lib/products';
 import { useCallback } from 'react';
 import useSWR, { useSWRConfig } from 'swr';
 
 interface State {
   cart: Cart;
-  itemsIndex: Record<string, LineItem>;
+  itemsIndex: Record<string, LineItemFull>;
 }
 
 async function getState(): Promise<State> {
@@ -24,7 +24,7 @@ async function getState(): Promise<State> {
     itemsIndex: cart.items.reduce((index, item) => {
       index[item.variant.id] = item;
       return index;
-    }, {} as Record<string, LineItem>),
+    }, {} as Record<string, LineItemFull>),
   };
 }
 
@@ -43,15 +43,15 @@ export function useCartItemQuery(variantId: number) {
 export const useCartMutation = () => {
   const { cache, mutate } = useSWRConfig();
   const add = useCallback(
-    async (variant: ProductVariant, quantity: number = 1) => {
+    async (variant: ProductVariantFull, quantity: number = 1) => {
       const user = getUser();
       const state = cache.get(cartKey) as State | undefined;
       if (!state) return;
       const item = state.itemsIndex[variant.id];
-      const nextItem: LineItem = item
+      const nextItem: LineItemFull = item
         ? { ...item, quantity: item.quantity + quantity }
         : { variantId: variant.id, quantity, variant };
-      const nextItemsIndex: Record<string, LineItem> = {
+      const nextItemsIndex: Record<string, LineItemFull> = {
         ...state.itemsIndex,
         [variant.id]: nextItem,
       };
@@ -73,7 +73,7 @@ export const useCartMutation = () => {
       const item = state.itemsIndex[variantId];
       if (!item) return;
       const nextQuantity = item.quantity - quantity;
-      let nextItemsIndex: Record<string, LineItem>;
+      let nextItemsIndex: Record<string, LineItemFull>;
       if (nextQuantity > 0) {
         nextItemsIndex = {
           ...state.itemsIndex,

@@ -1,44 +1,44 @@
 import { User } from 'lib/auth';
 import {
-  ProductVariant,
-  productVariantQuery,
+  ProductVariantFull,
+  productVariantFullQuery,
   productVariantTable,
 } from 'lib/products';
 import { supabase } from 'lib/supabase';
 
-export interface LineItemEntity {
+export interface LineItem {
   variantId: number;
   quantity: number;
 }
 
-export interface LineItem extends LineItemEntity {
-  variant: ProductVariant;
+export interface LineItemFull extends LineItem {
+  variant: ProductVariantFull;
 }
 
 export interface Cart {
-  items: LineItem[];
+  items: LineItemFull[];
 }
 
 interface LocalCart {
-  items: Record<string, LineItemEntity>;
+  items: Record<string, LineItem>;
 }
 
 const cartItemTable = 'cart_items';
 const cartTable = 'carts';
 const localCartKey = 'cart';
 
-export const lineItemEntityQuery = `
+export const lineItemQuery = `
   variantId:variant_id,
   quantity
 `;
 
-export const lineItemQuery = `
-  ${lineItemEntityQuery},
-  variant:${productVariantTable}(${productVariantQuery})
+export const lineItemFullQuery = `
+  ${lineItemQuery},
+  variant:${productVariantTable}(${productVariantFullQuery})
 `;
 
 const cartQuery = `
-  items:${cartItemTable}(${lineItemQuery})
+  items:${cartItemTable}(${lineItemFullQuery})
 `;
 
 export function getEmptyCart(): Cart {
@@ -74,8 +74,8 @@ async function getCartFromLocalStorage(): Promise<Cart> {
   const items = getLocalCart().items;
   const ids = Object.values(items).map((v) => v.variantId);
   const { data, error } = await supabase
-    .from<ProductVariant>(productVariantTable)
-    .select(productVariantQuery)
+    .from<ProductVariantFull>(productVariantTable)
+    .select(productVariantFullQuery)
     .in('id', ids);
   if (error) throw new Error(error.message);
   if (!data) return getEmptyCart();
@@ -101,10 +101,7 @@ export async function getCart(user?: User): Promise<Cart> {
   return user ? getCartFromDatabase() : getCartFromLocalStorage();
 }
 
-export async function setCartItem(
-  item: LineItemEntity,
-  user?: User
-): Promise<void> {
+export async function setCartItem(item: LineItem, user?: User): Promise<void> {
   if (user) {
     const { error } = await supabase.from(cartItemTable).upsert(
       {
