@@ -9,15 +9,14 @@ import { ProductFull, getProductOptions, findVariant } from 'lib/products';
 import { getImageUrl } from 'lib/supabase';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
-import { ChangeEvent, useMemo, useState, useEffect } from 'react';
+import { ChangeEvent, useMemo, useState } from 'react';
 import styled from 'styled-components';
-import { em } from 'styles/mixins';
 
 //#region styled
 // https://github.com/vercel/next.js/discussions/18312
 const ImageContainer = styled.button`
   display: block;
-  margin-bottom: 5px;
+  margin-bottom: 0.3125rem;
   background: none;
   border: none;
   line-height: 0;
@@ -28,9 +27,8 @@ const Option = styled(CustomInput).attrs({ type: 'radio' })`
   flex: 1;
   max-width: 50%;
   min-width: max-content;
-  margin: 3px;
-  padding: 3px 11px;
-  border-radius: 5px;
+  padding: 0.25rem 0.625rem;
+  border-radius: 0.375rem;
   ${(props) =>
     props.checked &&
     'background: white; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);'}
@@ -40,17 +38,24 @@ const Option = styled(CustomInput).attrs({ type: 'radio' })`
 const OptionGroup = styled.div`
   display: flex;
   flex-wrap: wrap;
+
+  & > ${Option} + ${Option} {
+    margin-left: 0.375rem;
+  }
 `;
 
 const OptionsContainer = styled.div`
-  padding: 3px;
+  padding: 0.375rem;
   background: #f3f3f3;
-  border-radius: 10px;
-  font-size: ${em(15)};
+  border-radius: 0.625rem;
+
+  & > ${OptionGroup} + ${OptionGroup} {
+    margin-top: 0.375rem;
+  }
 `;
 
 const Price = styled.strong`
-  font-size: ${em(21)};
+  font-size: 1.25rem;
   letter-spacing: 0.015em;
 `;
 
@@ -58,7 +63,7 @@ const PurchaseContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 14px;
+  margin-top: 0.875rem;
 `;
 //#endregion
 
@@ -68,12 +73,12 @@ interface ProductCardProps {
 }
 
 const ProductCard = ({ product, headingLevel }: ProductCardProps) => {
-  const options = useMemo(
+  const allOptions = useMemo(
     () => Object.entries(getProductOptions(product)),
     [product]
   );
   const [selectedOptions, setSelectedOptions] = useState(() =>
-    options.reduce((selected, [option, values]) => {
+    allOptions.reduce((selected, [option, values]) => {
       selected[option] = values[0];
       return selected;
     }, {} as Record<string, string>)
@@ -102,10 +107,6 @@ const ProductCard = ({ product, headingLevel }: ProductCardProps) => {
     add({ ...variant, product: product });
   };
 
-  useEffect(() => {
-    document.body.style.overflow = isInfoVisible ? 'hidden' : '';
-  }, [isInfoVisible]);
-
   return (
     <>
       <ImageContainer onClick={() => showInfo(true)}>
@@ -123,9 +124,9 @@ const ProductCard = ({ product, headingLevel }: ProductCardProps) => {
         headingLevel={headingLevel}
         onClose={() => showInfo(false)}
       />
-      {options.length && (
+      {allOptions.length && (
         <OptionsContainer>
-          {options.map(([option, values]) => (
+          {allOptions.map(([option, values]) => (
             <OptionGroup key={option}>
               {values.map((value) => (
                 <Option
