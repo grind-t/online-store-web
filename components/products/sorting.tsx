@@ -3,7 +3,6 @@ import { useSelect } from 'downshift';
 import { useTranslations } from 'next-intl';
 import { useUID } from 'react-uid';
 import styled from 'styled-components';
-import { em } from 'styles/mixins';
 
 //#region styled
 const ArrowIcon = styled(StandaloneArrowIcon)<{ down?: boolean }>`
@@ -11,16 +10,17 @@ const ArrowIcon = styled(StandaloneArrowIcon)<{ down?: boolean }>`
 `;
 
 const OrderToggle = styled.button.attrs({ type: 'button' })`
-  margin-right: 2px;
+  margin-right: 0.25rem;
   background: none;
   border: none;
   line-height: 0;
-  cursor: pointer;
 `;
 
 const OptionsLabel = styled.label`
-  margin-right: 1px;
+  margin-right: 0.25rem;
   color: #2c2c2c;
+  font-size: 0.875rem;
+  letter-spacing: 0.015em;
 `;
 
 const OptionsToggle = styled.button.attrs({ type: 'button' })`
@@ -30,43 +30,44 @@ const OptionsToggle = styled.button.attrs({ type: 'button' })`
   border-style: dashed;
   border-width: 0 0 1px 0;
   color: #fe5f1e;
+  font-size: 0.875rem;
+  letter-spacing: 0.015em;
 `;
 
 const Options = styled.ul`
   position: absolute;
-  top: 24px;
-  right: 0px;
-  width: 134px;
+  top: 1.5rem;
+  right: 0;
+  width: 8.375rem;
   background: white;
-  border-radius: 10px;
+  border-radius: 0.625rem;
   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.09);
   list-style: none;
   z-index: 1;
 `;
 
 const Option = styled.li<{ highlighted?: boolean }>`
-  padding: 10px 12px;
+  padding: 0.625rem 0.75rem;
+  font-size: 0.875rem;
+  letter-spacing: 0.015em;
+  cursor: default;
   ${(props) =>
     props.highlighted && 'background: rgba(254, 95, 30, 0.05); color: #FE5F1E;'}
-  cursor: pointer;
 
   &:first-of-type {
-    margin-top: 13px;
+    margin-top: 0.875rem;
   }
 
   &:last-of-type {
-    margin-bottom: 13px;
+    margin-bottom: 0.875rem;
   }
 `;
 
 const Container = styled.div`
   position: relative;
   display: flex;
-  height: fit-content;
   min-width: max-content;
   color: #2c2c2c;
-  font-size: ${em(14)};
-  letter-spacing: 0.015em;
 `;
 //#endregion
 
