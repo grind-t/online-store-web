@@ -1,3 +1,4 @@
+import { Category } from 'lib/products';
 import { useEffect, useRef } from 'react';
 // @ts-ignore
 import ScrollBooster from 'scrollbooster';
@@ -51,9 +52,9 @@ const Viewport = styled.div`
 //#endregion
 
 interface CategoryListProps {
-  items: string[];
+  items: Category[];
   className?: string;
-  onSelect?: (category: string) => void;
+  onSelect?: (category: Category) => void;
 }
 
 const CategoryList = ({ items, className, onSelect }: CategoryListProps) => {
@@ -77,8 +78,10 @@ const CategoryList = ({ items, className, onSelect }: CategoryListProps) => {
     <Viewport ref={viewport} className={className}>
       <List ref={content}>
         {items.map((v) => (
-          <li key={v}>
-            <CategoryButton>{v}</CategoryButton>
+          <li key={v.id}>
+            <CategoryButton onClick={() => onSelect && onSelect(v)}>
+              {v.name}
+            </CategoryButton>
           </li>
         ))}
       </List>

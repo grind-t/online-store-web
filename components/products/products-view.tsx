@@ -2,7 +2,13 @@ import CategoryList from 'components/products/category-list';
 import ProductCard from 'components/products/product-card';
 import Sorting from 'components/products/sorting';
 import { HeadingLevel } from 'lib/accessibility';
-import { ProductFull, SortBy } from 'lib/products';
+import {
+  Category,
+  getProductSearchParams,
+  getProductSearchQuery,
+  ProductFull,
+  ProductSearchParams,
+} from 'lib/products';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
@@ -105,43 +111,53 @@ const Container = styled.div`
 //#endregion
 
 interface ProductsViewProps {
+  categories: Category[];
   products: ProductFull[];
-  sortBy: SortBy;
-  sortAscending?: boolean;
   headingLevel?: HeadingLevel;
   className?: string;
 }
 
 const ProductsView = ({
+  categories,
   products,
-  sortBy,
-  sortAscending,
   headingLevel,
   className,
 }: ProductsViewProps) => {
-  const router = useRouter();
   const t = useTranslations('ProductsView');
+  const router = useRouter();
 
-  const categories = [t('allProductsCategory')];
   const sortingOptions = [
     t('sortByPopularityOption'),
     t('sortByPriceOption'),
     t('sortByAlphabetOption'),
   ];
+  const searchParams = getProductSearchParams(router.query);
+
+  const handleSearchChange = (params: ProductSearchParams) => {
+    router.replace({
+      pathname: router.pathname,
+      query: getProductSearchQuery(params),
+    });
+  };
+
+  const handleCategoryChange = (category: Category) => {
+    handleSearchChange({ ...searchParams, categoryId: category.id });
+  };
 
   const handleSortingChange = (by: string, asc?: boolean) => {
     const sortBy = sortingOptions.indexOf(by);
-    router.replace(`?sort-by=${sortBy}${asc ? '&sort-asc' : ''}`);
+    const sortAscending = asc;
+    handleSearchChange({ ...searchParams, sortBy, sortAscending });
   };
 
   return (
     <Container className={className}>
       <ViewOptions>
-        <CategoryList items={categories} />
+        <CategoryList items={categories} onSelect={handleCategoryChange} />
         <Sorting
           options={sortingOptions}
-          by={sortingOptions[sortBy]}
-          asc={sortAscending}
+          by={sortingOptions[searchParams.sortBy]}
+          asc={searchParams.sortAscending}
           onSortingChange={handleSortingChange}
         />
       </ViewOptions>

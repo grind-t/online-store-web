@@ -3,7 +3,6 @@
     "metaDescription": "Cheap digital goods and services"
   },
   "ProductsView": {
-    "allProductsCategory": "All",
     "sortByPopularityOption": "popularity",
     "sortByPriceOption": "price",
     "sortByAlphabetOption": "alphabet"

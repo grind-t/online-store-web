@@ -3,7 +3,6 @@
     "metaDescription": "Дешевые цифровые товары и услуги"
   },
   "ProductsView": {
-    "allProductsCategory": "Все",
     "sortByPopularityOption": "популярности",
     "sortByPriceOption": "цене",
     "sortByAlphabetOption": "алфавиту"
