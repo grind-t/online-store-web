@@ -3,45 +3,55 @@ import { useEffect, useRef } from 'react';
 // @ts-ignore
 import ScrollBooster from 'scrollbooster';
 import styled from 'styled-components';
-import { em, lerpByEM, up } from 'styles/mixins';
+import { up } from 'styles/mixins';
 import { breakpoints } from 'styles/varibles';
 
 //#region styled
-const minFontSize = 14;
-const maxFontSize = 18;
-const lerpByFontSize = (from: number, to: number) =>
-  lerpByEM(from, to, minFontSize, maxFontSize);
-
 const CategoryButton = styled.button.attrs({ type: 'button' })`
-  min-width: ${lerpByFontSize(14, 18)};
-  padding: ${lerpByFontSize(4, 11)} ${lerpByFontSize(10, 18)};
+  min-width: 3rem;
+  padding: 0.25rem 0.625rem;
   background: #282828;
   border: none;
-  border-radius: ${lerpByFontSize(33, 99)} ${lerpByFontSize(20, 60)}
-    ${lerpByFontSize(20, 60)} ${lerpByFontSize(10, 30)};
+  border-radius: 2rem 1.25rem 1.25rem 0.625rem;
   color: white;
-  font-size: 1em;
+  font-size: 0.875rem;
   letter-spacing: 0.015em;
   text-align: center;
-  cursor: pointer;
+
+  @media ${up(breakpoints.xs)} {
+    min-width: 4rem;
+    padding: 0.375rem 0.875rem;
+    border-radius: 3.25rem 2rem 2rem 1rem;
+    font-size: 1rem;
+  }
+
+  @media ${up(breakpoints.md)} {
+    min-width: 5.25rem;
+    padding: 0.625rem 1.125rem;
+    border-radius: 6.25rem 3.75rem 3.75rem 1.875rem;
+    font-size: 1.125rem;
+  }
 `;
 
 const List = styled.ul`
   display: flex;
   min-width: max-content;
-  font-size: ${em(14)};
   list-style: none;
 
   & > li + li {
-    margin-left: ${em(5)};
+    margin-left: 0.25rem;
   }
 
   @media ${up(breakpoints.xs)} {
-    font-size: ${em((maxFontSize + minFontSize) / 2)};
+    & > li + li {
+      margin-left: 0.375rem;
+    }
   }
 
-  @media ${up(breakpoints.xxl)} {
-    font-size: ${em(maxFontSize)};
+  @media ${up(breakpoints.md)} {
+    & > li + li {
+      margin-left: 0.5rem;
+    }
   }
 `;
 
