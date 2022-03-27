@@ -116,7 +116,7 @@ export async function getCategories(): Promise<Category[]> {
     .from(categoryTable)
     .select(categoryQuery);
   if (error) throw new Error(error.message);
-  return data;
+  return data || [];
 }
 
 export function getProductOptions(
