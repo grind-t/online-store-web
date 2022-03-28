@@ -262,4 +262,30 @@ AS $$
   from items
   where product_variants.id = items.variant_id;
 $$;
+
+-- Dummy data
+
+insert into categories (name)
+values
+  ('Frontend'),
+  ('Backend');
+
+insert into products (image, name, description)
+values
+  ('nextjs-logo', 'Next.js', 'Awesome Open Source React Framework'),
+  ('supabase-logo', 'Supabase', 'Awesome Open Source BaaS');
+
+insert into product_variants (product_id, stock, price)
+values
+  (1, 999, 100),
+  (2, 999, 100);
+
+insert into product_categories (category_id, product_id)
+values
+  (1, 1),
+  (2, 1),
+  (2, 2);
+
+update products set is_visible = true;
+
 ```
