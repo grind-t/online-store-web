@@ -9,12 +9,8 @@ const Input = styled.input`
   border-radius: 0.5rem;
   font-size: 1.5rem;
 
-  :focus {
-    outline: none;
-  }
-
-  :invalid {
-    border: 1px solid red;
+  :focus:invalid {
+    outline-color: red;
   }
 
   ::placeholder {
