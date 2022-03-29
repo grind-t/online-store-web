@@ -251,7 +251,7 @@ const CartItem = ({
     <Container as={container} className={className}>
       <ImageContainer>
         <Image
-          src={getImageUrl(product.image, 320, 320)}
+          src={getImageUrl(product.image, 80, 80)}
           alt={product.name}
           width="80"
           height="80"

@@ -111,7 +111,7 @@ const ProductCard = ({ product, headingLevel }: ProductCardProps) => {
     <>
       <ImageContainer onClick={() => showInfo(true)}>
         <Image
-          src={getImageUrl(product.image, 320, 278)}
+          src={getImageUrl(product.image, 360, 313)}
           alt={product.name}
           width="360"
           height="313"
